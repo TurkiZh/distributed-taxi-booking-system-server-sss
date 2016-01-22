@@ -1,2 +1,2 @@
 
-A Distributed Taxi Booking server application
+A Distributed Taxi Booking System server application
