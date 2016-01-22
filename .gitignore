@@ -11,6 +11,7 @@ nb-configuration.xml
 # Eclipse
 .settings/
 .classpath
+.project
 
 # Maven
 target/
