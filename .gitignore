@@ -6,9 +6,11 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
+nb-configuration.xml
 
 # Eclipse
 .settings/
+.classpath
 
 # Maven
 target/
