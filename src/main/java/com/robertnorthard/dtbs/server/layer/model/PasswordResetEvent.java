@@ -20,7 +20,7 @@ public class PasswordResetEvent implements Serializable {
     private long id;
     private String username;
     private String code;
-    private boolean used;
+    private boolean active;
     private DateTime createdAt;
     private DateTime expiry;
 
@@ -32,7 +32,7 @@ public class PasswordResetEvent implements Serializable {
         this.expiry = expiry;
         
         this.createdAt = new DateTime();
-        this.used = false;
+        this.active = true;
     }
 
     /**
@@ -66,14 +66,63 @@ public class PasswordResetEvent implements Serializable {
     /**
      * Set reset code to used. 
      */
-    public void setUsed(){
-        this.used = true;
+    public void setInactive(){
+        this.setActive(false);
     }
     
     /**
      * @return true if reset code used, else false.
      */
-    public boolean isUsed(){
-        return this.used;
+    public boolean isActive(){
+        return this.active;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * @param used the used to set
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * @param createdAt the createdAt to set
+     */
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    /**
+     * @param expiry the expiry to set
+     */
+    public void setExpiry(DateTime expiry) {
+        this.expiry = expiry;
     }
 }

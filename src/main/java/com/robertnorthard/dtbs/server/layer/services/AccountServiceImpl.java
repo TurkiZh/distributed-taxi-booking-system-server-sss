@@ -10,6 +10,7 @@ import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
+import java.util.List;
 import org.joda.time.DateTime;
 
 /**
@@ -133,6 +134,9 @@ public class AccountServiceImpl implements AccountService{
         PasswordResetEvent event = new PasswordResetEvent(
                 username,resetCode,expireDate);
         
+        // Set all current password resets for the user iactive.
+        this.deactivePasswordResets(username);
+        
         // save password reset event
         this.passwordResetDao.persistEntity(event);
         
@@ -142,5 +146,18 @@ public class AccountServiceImpl implements AccountService{
                         + resetCode + " and expires on " 
                         + expireDate.toString("DD-MM-YYYY hh:mm:ss"),
                 account.getEmail());
+    }
+    
+    /**
+     * Set all active password resets for the specified user inactive.
+     * @param username username to search by.
+     */
+    private void deactivePasswordResets(String username){
+        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
+        
+        for(PasswordResetEvent e: events){
+            e.setInactive();
+            this.passwordResetDao.update(e);
+        }
     }
 }

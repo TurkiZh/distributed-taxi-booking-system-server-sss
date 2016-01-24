@@ -16,7 +16,7 @@ public class EntityDaoImpl<K,V> implements EntityDao<K,V> {
 
     private static final Logger LOGGER = Logger.getLogger(EntityDaoImpl.class.getName());
     
-    private Class<V> persistentClass;
+    private final Class<V> persistentClass;
     
     private final EntityManagerFactory factory;
     private final EntityManager em;
