@@ -32,4 +32,10 @@ public class AuthenticationServiceImplTest {
                         this.authenticationService
                                 .hashPassword("Password01")));
     }
+    
+    @Test
+    public void generatePassword(){
+        assertTrue(this.authenticationService.generateCode(10).length() == 10);
+        assertTrue(this.authenticationService.generateCode("1", 4).equals("1111"));
+    }
 }

@@ -44,7 +44,7 @@ public class Account implements Serializable {
     }
     
     /**
-     * Check if a password matches.
+     * Return true if provided password matches hash else false.
      * @param password 
      * @return true if password matches, else false.
      */
@@ -85,7 +85,7 @@ public class Account implements Serializable {
     }
     
     /**
-     * Return collection of user roles.
+     * Return collection of the user's roles.
      * @return a collection of the user's roles.
      */
     public List<String> getRoles(){

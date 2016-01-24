@@ -3,6 +3,7 @@ package com.robertnorthard.dtbs.server.layer.services;
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
+import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 
 /**
@@ -23,7 +24,7 @@ public interface AccountService {
             throws AccountAlreadyExistsException, AccountInvalidException;
     
     /**
-     * Authenticate
+     * Authenticate a user.
      * @param username username of account
      * @param password password of account
      * @return account object if authentication successful else null.
@@ -40,4 +41,12 @@ public interface AccountService {
      * return null.
      */
     public Account findAccount(final String username);   
+    
+    /**
+     * Reset account password.
+     * @param username username of account to reset.
+     * @throws AccountNotFoundException account not found
+     */
+    public void resetPassword(final String username)
+            throws AccountNotFoundException;
 }

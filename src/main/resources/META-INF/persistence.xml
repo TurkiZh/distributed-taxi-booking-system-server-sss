@@ -3,6 +3,7 @@
   <persistence-unit name="com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>sample</jta-data-source>
     <class>com.robertnorthard.dtbs.server.layer.model.Account</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.PasswordResetEvent</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

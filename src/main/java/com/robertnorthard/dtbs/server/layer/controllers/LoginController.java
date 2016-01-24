@@ -2,7 +2,7 @@ package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.layer.model.Account;
-import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpErrorResponse;
+import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponse;
 import com.robertnorthard.dtbs.server.layer.services.AccountService;
 import com.robertnorthard.dtbs.server.layer.services.AccountServiceImpl;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
@@ -43,12 +43,12 @@ public class LoginController {
             return this.mapper.getObjectAsJson(ac);
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-             return this.mapper.getObjectAsJson(new HttpErrorResponse(
+             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "0" 
             ));
         } catch (AccountAuthenticationFailed ex) {
-             return this.mapper.getObjectAsJson(new HttpErrorResponse(
+             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
             ));

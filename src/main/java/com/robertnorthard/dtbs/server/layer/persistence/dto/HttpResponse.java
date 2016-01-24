@@ -6,7 +6,7 @@ import java.util.Date;
  * HTTP error response data transfer object.
  * @author robertnorthard
  */
-public class HttpErrorResponse {
+public class HttpResponse {
     
     private String message;
     private String code;
@@ -17,7 +17,7 @@ public class HttpErrorResponse {
      * @param message message
      * @param code response code
      */
-    public HttpErrorResponse(String message, String code){
+    public HttpResponse(String message, String code){
         this.message = message;
         this.code = code;
         this.timestamp = new Date();

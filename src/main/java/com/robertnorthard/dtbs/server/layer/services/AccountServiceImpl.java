@@ -3,10 +3,14 @@ package com.robertnorthard.dtbs.server.layer.services;
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
+import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.PasswordResetEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
+import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
+import org.joda.time.DateTime;
 
 /**
  * Account Service interface implementation.
@@ -15,6 +19,7 @@ import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
 public class AccountServiceImpl implements AccountService{
 
     private final AccountDao dao;
+    private final PasswordResetEventDao passwordResetDao;
     private final AuthenticationService authService;
     private final MailStrategy mailStrategy;
     
@@ -23,6 +28,7 @@ public class AccountServiceImpl implements AccountService{
      */
     public AccountServiceImpl(){
         this.dao = new AccountDao();
+        this.passwordResetDao = new PasswordResetEventDao();
         this.authService = new AuthenticationServiceImpl();
         this.mailStrategy = new SmtpMailStrategy();
     }
@@ -37,7 +43,7 @@ public class AccountServiceImpl implements AccountService{
      * @throws AccountInvalidException invalid email address
      */
     @Override
-    public void registerAccount(Account acct) 
+    public void registerAccount(final Account acct) 
             throws AccountAlreadyExistsException, AccountInvalidException{
         
         // check if acount with username already exists
@@ -60,7 +66,7 @@ public class AccountServiceImpl implements AccountService{
             this.dao.persistEntity(acct);
             
             // email account registration confirmation.
-            this.mailStrategy.sendMail("DTMS - Registration Confirmation", 
+            this.mailStrategy.sendMail("DTBS - Registration Confirmation", 
                     "Your account, with username "  + acct.getUsername() + 
                             " has been activated.", acct.getEmail());
         }else{
@@ -77,8 +83,8 @@ public class AccountServiceImpl implements AccountService{
      * return null.
      */
     @Override
-    public Account findAccount(String username) {
-        return this.dao.findEntityById(username);
+    public Account findAccount(final String username) {
+        return this.dao.findEntityById(username);       
     }
 
     @Override
@@ -98,4 +104,43 @@ public class AccountServiceImpl implements AccountService{
 
         return account;
     }
-}  
+
+    /**
+     * Reset account password via temporary code.
+     * 1 - Generate temporary code
+     * 2 - Create reset event.
+     * 3 - Send email to use with temporary access code.
+     * @param username username of account to reset.
+     * @throws AccountNotFoundException account not found.
+     */
+    @Override
+    public void resetPassword(final String username) 
+            throws AccountNotFoundException {
+        
+        Account account = this.findAccount(username);
+        
+        if(account == null){
+            throw new AccountNotFoundException();
+        }
+        
+        // generate temporary reset code
+        String resetCode = this.authService.generateCode(4);
+        
+        // calculate reset expiry
+        DateTime expireDate = new DateTime().plusDays(1);
+        
+        // create new password reset event with reset code, account username and expiry.
+        PasswordResetEvent event = new PasswordResetEvent(
+                username,resetCode,expireDate);
+        
+        // save password reset event
+        this.passwordResetDao.persistEntity(event);
+        
+        // send email with temporary code
+        this.mailStrategy.sendMail("DTBS - Reset Password", 
+                "Your temporary code to reset your password is " 
+                        + resetCode + " and expires on " 
+                        + expireDate.toString("DD-MM-YYYY hh:mm:ss"),
+                account.getEmail());
+    }
+}
