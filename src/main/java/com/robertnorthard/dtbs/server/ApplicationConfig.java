@@ -19,10 +19,14 @@ public class ApplicationConfig extends ResourceConfig {
         register(AccountController.class);
         register(LoginController.class);
         
-        // Filters
+        // Filters        
+        /* 
+        In order to use security annotations (package javax.annotation.security) 
+        to restrict access to your resources you need to register RolesAllowedDynamicFeature.
+        Source: http://stackoverflow.com/questions/21536321/securitycontext-doesnt-work-with-rolesallowed
+        */
         register(RolesAllowedDynamicFeature.class);
         register(AuthenticationFilter.class);
     }
-
 }
  
