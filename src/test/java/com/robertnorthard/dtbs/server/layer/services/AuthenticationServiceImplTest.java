@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.services.tests;
+package com.robertnorthard.dtbs.server.layer.services;
 
 import com.robertnorthard.dtbs.server.layer.services.AuthenticationService;
 import com.robertnorthard.dtbs.server.layer.services.AuthenticationServiceImpl;
