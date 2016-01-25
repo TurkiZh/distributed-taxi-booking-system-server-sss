@@ -125,4 +125,16 @@ public class PasswordResetEvent implements Serializable {
     public void setExpiry(DateTime expiry) {
         this.expiry = expiry;
     }
+
+    /**
+     * Return true if code is valid, has not expired and is active, else false.
+     * @param code code to check.
+     * @return true if code is valid, has not expired and is active, else false.
+     */
+    public boolean validateCode(String code) {
+        
+        return this.code.equals(code) 
+                && this.isActive()
+                && new DateTime().isBefore(this.expiry);
+    }
 }

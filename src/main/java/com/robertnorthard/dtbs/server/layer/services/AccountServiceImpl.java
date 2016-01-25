@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService{
 
     /**
      * Return account with corresponding username.
-     * @param username username
+     * @param username username.
      * @return an account with the corresponding username. 
      * If the account does not exist
      * return null.
@@ -146,6 +146,59 @@ public class AccountServiceImpl implements AccountService{
                         + resetCode + " and expires on " 
                         + expireDate.toString("DD-MM-YYYY hh:mm:ss"),
                 account.getEmail());
+    }
+    
+    /**
+     * 
+     * @param code temporary authentication code.
+     * @param username username to authenticate with.
+     * @param newPassword new password for user.
+     * @throws AccountAuthenticationFailed if username and code do not match a valid, active password reset event.
+     * @throws AccountNotFoundException account not found but password resets exist. Indicates data integrity issues. 
+     */
+    @Override
+    public void resetPassword(final String code, final String username, final String newPassword) 
+            throws AccountAuthenticationFailed, AccountNotFoundException{
+        
+        // authenticate code.
+        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
+        
+        if(authenticateTemporaryCredentials(username, code)){
+            
+            Account account = this.findAccount(username);
+            
+            if(account != null){
+                
+                // create hash of new password
+                String passwordHash = this.authService.hashPassword(newPassword);
+                
+                // store password hash
+                account.setPassword(passwordHash);
+                
+                //update account
+                this.dao.update(account);
+
+                // on success deactive all password resets for account
+                this.deactivePasswordResets(username);
+            }else{
+                throw new AccountNotFoundException();
+            }
+        }else{
+            throw new AccountAuthenticationFailed();
+        }   
+    }
+    
+    private boolean authenticateTemporaryCredentials(final String username, final String code){
+        // authenticate code.
+        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
+        
+        for(PasswordResetEvent event: events){
+            if(event.validateCode(code)){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**

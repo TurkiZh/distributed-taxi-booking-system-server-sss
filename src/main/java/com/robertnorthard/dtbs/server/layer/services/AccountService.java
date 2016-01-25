@@ -49,4 +49,15 @@ public interface AccountService {
      */
     public void resetPassword(final String username)
             throws AccountNotFoundException;
+    
+    /**
+     * 
+     * @param code temporary authentication code.
+     * @param username username to authenticate with.
+     * @param newPassword new password for user.
+     * @throws AccountAuthenticationFailed if username and code do not match a valid, active password reset event.
+     * @throws AccountNotFoundException account not found but password resets exist. Indicates data integrity issues.
+     */
+    public void resetPassword(final String code, final String username, final String newPassword) 
+            throws AccountAuthenticationFailed, AccountNotFoundException;
 }

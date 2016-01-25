@@ -16,7 +16,6 @@ public class PasswordResetEventDao extends EntityDaoImpl<Long,PasswordResetEvent
     private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU");
     private final EntityManager em  = factory.createEntityManager();
         
-  
     /**
      * Find password reset code using username, code with status of active.
      *  Return list as there is a possibility user reset their account multiple times and an 

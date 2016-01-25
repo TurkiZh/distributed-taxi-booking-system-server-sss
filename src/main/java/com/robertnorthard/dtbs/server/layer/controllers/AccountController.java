@@ -1,6 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
+import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
@@ -15,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 /**
  * Account controller for managing external interactions with data model.
  * TODO: Add generic HTTP response and status codes.
@@ -91,6 +94,40 @@ public class AccountController {
             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
+            ));
+        }
+    }
+    
+
+    @POST
+    @Path("/{username}/reset/{code}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String resetPassword(@PathParam("username") String username, @PathParam("code") String code, String message) {
+        
+        try {
+            JSONObject object = new JSONObject(message);
+          
+            this.accountService.resetPassword(code,username,object.getString("password"));
+    
+            return this.mapper.getObjectAsJson(new HttpResponse(
+                    "Password change successful",
+                    "0"
+            ));
+           
+        } catch (JSONException ex) {
+             return this.mapper.getObjectAsJson(new HttpResponse(
+                    ex.getMessage(),
+                    "1"
+            ));
+        }catch (AccountAuthenticationFailed ex) {
+             return this.mapper.getObjectAsJson(new HttpResponse(
+                    ex.getMessage(),
+                    "2"
+            ));
+        } catch (AccountNotFoundException ex) {
+             return this.mapper.getObjectAsJson(new HttpResponse(
+                    ex.getMessage(),
+                    "3"
             ));
         }
     }

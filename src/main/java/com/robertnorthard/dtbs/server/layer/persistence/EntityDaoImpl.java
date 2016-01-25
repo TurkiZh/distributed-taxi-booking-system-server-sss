@@ -18,15 +18,14 @@ public class EntityDaoImpl<K,V> implements EntityDao<K,V> {
     
     private final Class<V> persistentClass;
     
-    private final EntityManagerFactory factory;
-    private final EntityManager em;
+    private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU");
+    private final EntityManager em  = factory.createEntityManager();
+        
     
     /**
      * Default constructor for class EntityDaoImpl
     */
     public EntityDaoImpl(){
-        this.factory = Persistence.createEntityManagerFactory("com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU");
-        this.em = factory.createEntityManager();
         
         // Source - http://stackoverflow.com/questions/3403909/get-generic-type-of-class-at-runtime
         this.persistentClass = (Class<V>) ((ParameterizedType) getClass()
@@ -71,6 +70,8 @@ public class EntityDaoImpl<K,V> implements EntityDao<K,V> {
      */
     @Override
     public void update(V entity) {
+        em.getTransaction().begin();
         this.em.merge(entity);
+        em.getTransaction().commit();
     }
 }
