@@ -18,8 +18,8 @@ public class PasswordResetEventDao extends EntityDaoImpl<Long,PasswordResetEvent
         
     /**
      * Find password reset code using username, code with status of active.
-     *  Return list as there is a possibility user reset their account multiple times and an 
-     *  identical reset code is generated.
+     * Return list as there is a possibility user reset their account multiple times and an 
+     * identical reset code is generated.
      * @param username username to search by.
      * @param code reset code to search by.
      * @return collection of PasswordResetEvent with matching username and code.
