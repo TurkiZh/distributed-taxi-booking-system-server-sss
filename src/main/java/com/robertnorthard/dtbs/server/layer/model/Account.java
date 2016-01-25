@@ -27,7 +27,7 @@ public class Account implements Serializable {
         this.roles = new ArrayList<>();
     }
      
-    /**
+    /** 
      * Constructor for account.
      * @param username user's username
      * @param password user's password hash

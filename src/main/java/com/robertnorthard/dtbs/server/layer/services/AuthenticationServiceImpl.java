@@ -1,5 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.services;
 
+import java.util.Base64;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -87,5 +89,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throws IllegalArgumentException{
         return this.generateCode(
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567", length);
+    }
+
+    /**
+     * Return username and password from base64 encoded string.
+     * @param base64Encoding base64 encoding
+     * @return base64 decoded username and password.
+     * @throws IllegalArgumentException if password or hash null.
+     */
+    @Override
+    public String base64Decode(String base64Encoding) 
+            throws IllegalArgumentException{
+        
+        if(base64Encoding==null) throw new IllegalArgumentException();
+        
+        String decoded = new String(Base64.getDecoder()
+                .decode(base64Encoding.getBytes()));
+ 
+        return decoded;
     }
 }

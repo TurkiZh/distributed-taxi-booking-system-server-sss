@@ -9,6 +9,7 @@ import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,6 +35,7 @@ public class LoginController {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public String login(String credentials){
         try {
             Account ac = this.mapper.readValue(credentials, Account.class);

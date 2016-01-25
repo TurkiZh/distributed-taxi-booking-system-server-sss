@@ -213,4 +213,32 @@ public class AccountServiceImpl implements AccountService{
             this.passwordResetDao.update(e);
         }
     }
+
+    @Override
+    public Account authenticate(String base64Credentials) throws AccountAuthenticationFailed {
+        
+        Account authAccount = null;
+        String[] credentials = null;
+        
+        try {
+            String base64Decode = this.authService.base64Decode(base64Credentials);
+            credentials = base64Decode.split(":");
+            System.out.println(credentials.length);
+            
+            if(credentials.length != 2){
+                throw new IllegalArgumentException("Invalid Authorisation token.");
+            }
+            
+            // username - credentials[0]
+            // password - credentials[1]
+            authAccount = this.authenticate("example", "example");
+            
+        } catch (IllegalArgumentException ex) {
+            throw ex;
+        } catch(AccountAuthenticationFailed ex){
+            throw new AccountAuthenticationFailed();
+        }
+        
+        return authAccount;
+    }
 }

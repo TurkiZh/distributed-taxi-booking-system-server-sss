@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.services;
 
+
 /**
  * Authentication Service interface. Manages password hashing and verification.
  * @author robertnorthard
@@ -23,8 +24,17 @@ public interface AuthenticationService {
      * @throws IllegalArgumentException if password or hash null.
      */
     public boolean checkPassword(String password, String hash) 
-            throws IllegalArgumentException;
+            throws IllegalArgumentException; 
     
+    
+    /**
+     * Return username and password from base64 encoded string.
+     * @param base64Encoding base64 encoding
+     * @return base64 decoded username and password.
+     * @throws IllegalArgumentException if password or hash null.
+     */
+    public String base64Decode(final String base64Encoding) 
+            throws IllegalArgumentException;
     
     /**
      * Generate a random code.

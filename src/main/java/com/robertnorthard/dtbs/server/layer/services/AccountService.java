@@ -33,6 +33,15 @@ public interface AccountService {
     public Account authenticate(String username, String password) 
             throws AccountAuthenticationFailed;
     
+    /**
+     * Authenticate user from base64 encoded message.
+     * @param base64Credentials base64 encoded credentials
+     * @return account object if authentication successful else null.
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
+    public Account authenticate(final String base64Credentials) 
+            throws AccountAuthenticationFailed;
+    
      /**
      * Return account with corresponding username.
      * @param username username

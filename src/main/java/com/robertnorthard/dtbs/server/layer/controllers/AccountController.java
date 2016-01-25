@@ -10,12 +10,15 @@ import com.robertnorthard.dtbs.server.layer.services.AccountService;
 import com.robertnorthard.dtbs.server.layer.services.AccountServiceImpl;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 /**
@@ -28,6 +31,7 @@ public class AccountController {
     
     private final AccountService accountService;
     private final DataMapper mapper;
+    
     
     public AccountController(){
         this.accountService = new AccountServiceImpl();
@@ -46,6 +50,7 @@ public class AccountController {
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public String registerAccount(String account){
         try {
             Account ac = this.mapper.readValue(account, Account.class);
@@ -78,8 +83,11 @@ public class AccountController {
     @POST
     @Path("/{username}/reset")
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public String resetAccount(@PathParam("username") String username) 
             throws AccountNotFoundException{
+        
+        
         
         try{
             this.accountService.resetPassword(username);
@@ -102,7 +110,8 @@ public class AccountController {
     @POST
     @Path("/{username}/reset/{code}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String resetPassword(@PathParam("username") String username, @PathParam("code") String code, String message) {
+    @PermitAll
+    public String resetPassword(@Context SecurityContext sc, @PathParam("username") String username, @PathParam("code") String code, String message) {
         
         try {
             JSONObject object = new JSONObject(message);
