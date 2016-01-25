@@ -106,7 +106,7 @@ public class PasswordResetEvent implements Serializable {
     }
 
     /**
-     * @param used the used to set
+     * @param active the used to set
      */
     public void setActive(boolean active) {
         this.active = active;

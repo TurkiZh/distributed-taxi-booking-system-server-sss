@@ -43,7 +43,7 @@ public class Account implements Serializable {
     
     /**
      * Return true if provided password matches hash else false.
-     * @param password 
+     * @param password password to check. 
      * @return true if password matches, else false.
      */
     public boolean checkPassword(String password){

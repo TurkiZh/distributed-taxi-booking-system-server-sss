@@ -39,9 +39,9 @@ public interface AuthenticationService {
     /**
      * Generate a random code.
      * @param validCodeCharacters valid code characters
-     * @param length length of code to generate. Length of password must be > 0.
+     * @param length length of code to generate. Length of password must be more than 0.
      * @return a random code with the specified length
-     * @throw IllegalArgumentException length and length of validCodeCharacters cannot be 0. 
+     * @throws IllegalArgumentException length and length of validCodeCharacters cannot be 0. 
      */
     public String generateCode(String validCodeCharacters, int length) 
             throws IllegalArgumentException;
@@ -50,7 +50,7 @@ public interface AuthenticationService {
      * Generate code with default valid code characters.
      * @param length length of code to generate
      * @return a random code with with the specified length
-     * @IllegalArgumentException length cannot be 0. 
+     * @throws IllegalArgumentException length cannot be 0. 
      */
     public String generateCode(int length) 
             throws IllegalArgumentException;

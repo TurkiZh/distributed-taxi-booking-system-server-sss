@@ -12,13 +12,16 @@ import javax.ws.rs.core.SecurityContext;
 public class AccountSecurityContext implements SecurityContext {
 
     private final Account account;
+    private final String requireUri;
     
     /**
      * Constructor for class UserSecurityContext.
-     * @param account account to wrap
+     * @param account account to encapsulate in security context.
+     * @param requireUri access url.
      */
-    public AccountSecurityContext(Account account){
+    public AccountSecurityContext(Account account, String requireUri){
         this.account = account;
+        this.requireUri = requireUri;
     }
     /**
      * Returns a java.security.Principal object containing the name of the current 
@@ -53,7 +56,7 @@ public class AccountSecurityContext implements SecurityContext {
      */
     @Override
     public boolean isSecure() {
-        return false;
+        return this.requireUri.startsWith("https");
     }
 
 

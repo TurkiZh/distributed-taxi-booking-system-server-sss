@@ -88,6 +88,13 @@ public class AccountServiceImpl implements AccountService{
         return this.dao.findEntityById(username);       
     }
 
+    /**
+     * Authenticate a user.
+     * @param username username of account
+     * @param password password of account
+     * @return account object if authentication successful else null.
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
     @Override
     public Account authenticate(String username, String password) 
             throws AccountAuthenticationFailed{
@@ -214,14 +221,23 @@ public class AccountServiceImpl implements AccountService{
         }
     }
 
+    /**
+     * Authenticate user from base64 encoded message.
+     * @param base64HttpCredentials base64 encoded credentials
+     * @return account object if authentication successful else null.
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
     @Override
-    public Account authenticate(String base64Credentials) throws AccountAuthenticationFailed {
+    public Account authenticate(String base64HttpCredentials) throws AccountAuthenticationFailed {
         
         Account authAccount = null;
         String[] credentials = null;
         
         try {
-            String base64Decode = this.authService.base64Decode(base64Credentials);
+            // Remove HTTP bearer e.g. Authorization: Basic base64EncodedUsernameAndPassword
+            base64HttpCredentials = base64HttpCredentials.replaceFirst("[Bb]asic ", "");
+            
+            String base64Decode = this.authService.base64Decode(base64HttpCredentials);
             credentials = base64Decode.split(":");
             System.out.println(credentials.length);
             
