@@ -10,24 +10,26 @@ import com.robertnorthard.dtbs.server.layer.services.AccountService;
 import com.robertnorthard.dtbs.server.layer.services.AccountServiceImpl;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
 /**
  * Account controller for managing external interactions with data model.
- * TODO: Add generic HTTP response and status codes.
  * @author robertnorthard
  */
 @Path("/account")
 public class AccountController {
+    
+    private static final Logger LOGGER = Logger.getLogger(AccountController.class.getName());
     
     private final AccountService accountService;
     private final DataMapper mapper;
@@ -57,16 +59,19 @@ public class AccountController {
             this.accountService.registerAccount(ac);
             return this.mapper.writeValueAsString(ac);
         } catch (AccountAlreadyExistsException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
             ));
         }catch(IOException ex){
+            LOGGER.log(Level.WARNING, null, ex);
             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "0"
             ));
         } catch (AccountInvalidException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "2"
@@ -98,7 +103,7 @@ public class AccountController {
             ));
             
         } catch (AccountNotFoundException ex) {
-            
+            LOGGER.log(Level.WARNING, null, ex);
             return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
@@ -111,7 +116,7 @@ public class AccountController {
     @Path("/{username}/reset/{code}")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
-    public String resetPassword(@Context SecurityContext sc, @PathParam("username") String username, @PathParam("code") String code, String message) {
+    public String resetPassword(@PathParam("username") String username, @PathParam("code") String code, String message) {
         
         try {
             JSONObject object = new JSONObject(message);
@@ -124,16 +129,19 @@ public class AccountController {
             ));
            
         } catch (JSONException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
              return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
             ));
         }catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.WARNING, null, ex);
              return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "2"
             ));
         } catch (AccountNotFoundException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
              return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "3"

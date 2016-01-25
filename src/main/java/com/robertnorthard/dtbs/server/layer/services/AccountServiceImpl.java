@@ -109,7 +109,6 @@ public class AccountServiceImpl implements AccountService{
              throw new AccountAuthenticationFailed();
         }
         
-
         return account;
     }
 
@@ -166,9 +165,6 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void resetPassword(final String code, final String username, final String newPassword) 
             throws AccountAuthenticationFailed, AccountNotFoundException{
-        
-        // authenticate code.
-        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
         
         if(authenticateTemporaryCredentials(username, code)){
             
@@ -235,11 +231,10 @@ public class AccountServiceImpl implements AccountService{
         
         try {
             // Remove HTTP bearer e.g. Authorization: Basic base64EncodedUsernameAndPassword
-            base64HttpCredentials = base64HttpCredentials.replaceFirst("[Bb]asic ", "");
+            String filteredBase64HttpCredentials = base64HttpCredentials.replaceFirst("[Bb]asic ", "");
             
-            String base64Decode = this.authService.base64Decode(base64HttpCredentials);
+            String base64Decode = this.authService.base64Decode(filteredBase64HttpCredentials);
             credentials = base64Decode.split(":");
-            System.out.println(credentials.length);
             
             if(credentials.length != 2){
                 throw new IllegalArgumentException("Invalid Authorisation token.");
@@ -252,7 +247,7 @@ public class AccountServiceImpl implements AccountService{
         } catch (IllegalArgumentException ex) {
             throw ex;
         } catch(AccountAuthenticationFailed ex){
-            throw new AccountAuthenticationFailed();
+            throw ex;
         }
         
         return authAccount;

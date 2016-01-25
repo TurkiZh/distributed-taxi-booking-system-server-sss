@@ -12,13 +12,15 @@ public class ConfigService {
 
     private static final Logger LOGGER = Logger.getLogger(
             ConfigService.class.getName());
-
+    
     /**
      * Represents configuration loaders
      */
     private static final ConfigLoader[] LOADERS = new ConfigLoader[] { 
         new ClassPathConfigLoader() 
     };
+
+    private ConfigService() {}
 
     public static Properties getConfig(String conf) {
         try {

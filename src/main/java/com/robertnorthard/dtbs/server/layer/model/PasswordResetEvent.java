@@ -24,7 +24,11 @@ public class PasswordResetEvent implements Serializable {
     private DateTime createdAt;
     private DateTime expiry;
 
-    public PasswordResetEvent() {}
+    /**
+     * Needed by JPA
+     */
+    public PasswordResetEvent() {
+    }
     
     public PasswordResetEvent(String username,String code,DateTime expiry){
         this.username = username;

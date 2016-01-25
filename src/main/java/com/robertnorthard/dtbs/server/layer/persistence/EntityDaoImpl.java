@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -13,8 +12,6 @@ import javax.persistence.Persistence;
  * @param <V> type of object to manipulate
  */
 public class EntityDaoImpl<K,V> implements EntityDao<K,V> {
-
-    private static final Logger LOGGER = Logger.getLogger(EntityDaoImpl.class.getName());
     
     private final Class<V> persistentClass;
     

@@ -14,5 +14,5 @@ public interface ConfigLoader {
      * @return the associated properties object.
      * @throws RuntimeException if unable to load application configuration.
      */
-    public Properties getConfig(String conf) throws RuntimeException;
+    public Properties getConfig(String conf);
 }

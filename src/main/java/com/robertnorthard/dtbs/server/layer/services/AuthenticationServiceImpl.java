@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.services;
 
 import java.util.Base64;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,11 +29,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param password plaintext password
      * @param hash hashed password
      * @return true if plaintext password and hash match, else false.
-     * @throws IllegalArgumentException if password or hash null.
      */
     @Override
-    public boolean checkPassword(String password, String hash) 
-            throws IllegalArgumentException{
+    public boolean checkPassword(String password, String hash) {
         
         if(password == null || hash==null){
             IllegalArgumentException e = new IllegalArgumentException(
@@ -51,11 +48,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param validCodeCharacters valid code characters
      * @param length length of code to generate. Length of password must be more than 0.
      * @return a random code with the specified length
-     * @throws IllegalArgumentException length and validCodeCharacters cannot be 0. 
      */
     @Override
-    public String generateCode(String validCodeCharacters, int length)
-            throws IllegalArgumentException{
+    public String generateCode(String validCodeCharacters, int length){
         
         if(length== 0 || validCodeCharacters.length() == 0){
              IllegalArgumentException e = new IllegalArgumentException(
@@ -82,11 +77,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * Generate code with default valid code characters.
      * @param length length of code to generate
      * @return a random code with with the specified length
-     * @throws IllegalArgumentException length cannot be 0. 
      */
     @Override
-    public String generateCode(int length) 
-            throws IllegalArgumentException{
+    public String generateCode(int length) {
         return this.generateCode(
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567", length);
     }
@@ -95,17 +88,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * Return username and password from base64 encoded string.
      * @param base64Encoding base64 encoding
      * @return base64 decoded username and password.
-     * @throws IllegalArgumentException if password or hash null.
      */
     @Override
-    public String base64Decode(String base64Encoding) 
-            throws IllegalArgumentException{
+    public String base64Decode(String base64Encoding) {
         
-        if(base64Encoding==null) throw new IllegalArgumentException();
+        if(base64Encoding==null){
+            throw new IllegalArgumentException();
+        }
         
-        String decoded = new String(Base64.getDecoder()
+        return new String(Base64.getDecoder()
                 .decode(base64Encoding.getBytes()));
- 
-        return decoded;
+
     }
 }

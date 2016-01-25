@@ -18,39 +18,43 @@ import javax.ws.rs.core.MediaType;
 
 /**
  * Account controller for managing external interactions with data model.
+ *
  * @author robertnorthard
  */
 @Path("/auth")
 public class LoginController {
-    
+
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
+
     private AccountService accountService;
-     private final DataMapper mapper;
-    
-    public LoginController(){
+    private final DataMapper mapper;
+
+    public LoginController() {
         this.accountService = new AccountServiceImpl();
         this.mapper = DataMapper.getInstance();
     }
-    
+
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
-    public String login(String credentials){
+    public String login(String credentials) {
         try {
             Account ac = this.mapper.readValue(credentials, Account.class);
             ac = this.accountService
                     .authenticate(ac.getUsername(), ac.getPassword());
-            
+
             return this.mapper.getObjectAsJson(ac);
         } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-             return this.mapper.getObjectAsJson(new HttpResponse(
+            LOGGER.log(Level.SEVERE, null, ex);
+            return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
-                    "0" 
+                    "0"
             ));
         } catch (AccountAuthenticationFailed ex) {
-             return this.mapper.getObjectAsJson(new HttpResponse(
+            LOGGER.log(Level.SEVERE, null, ex);
+            return this.mapper.getObjectAsJson(new HttpResponse(
                     ex.getMessage(),
                     "1"
             ));

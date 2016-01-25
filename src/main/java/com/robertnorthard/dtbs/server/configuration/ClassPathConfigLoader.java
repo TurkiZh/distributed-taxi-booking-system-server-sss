@@ -3,6 +3,8 @@ package com.robertnorthard.dtbs.server.configuration;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class facilitates reading properties from files on the class path.
@@ -10,12 +12,15 @@ import java.util.Properties;
  */
 public class ClassPathConfigLoader implements ConfigLoader {
 
+      private static final Logger LOGGER = Logger.getLogger(
+            ClassPathConfigLoader.class.getName());
+    
     /**
      * Return properties from file on the class path.
      * @param file file to read properties from.
      */
     @Override
-    public Properties getConfig(String file) throws RuntimeException {
+    public Properties getConfig(String file) {
 
         Properties properties = new Properties();
 
@@ -25,9 +30,9 @@ public class ClassPathConfigLoader implements ConfigLoader {
                 properties.load(reader);
                 return properties;
             }
-        } catch (Throwable e) {
-            throw new RuntimeException(String.format(
-                    "Unable to find properties file - [%s]", file));
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, null,e);
+            return null;
         }
     }
 }
