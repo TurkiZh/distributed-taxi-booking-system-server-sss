@@ -240,9 +240,9 @@ public class AccountServiceImpl implements AccountService{
                 throw new IllegalArgumentException("Invalid Authorisation token.");
             }
             
-            // username - credentials[0]
+            //username - credentials[0]
             // password - credentials[1]
-            authAccount = this.authenticate("example", "example");
+            authAccount = this.authenticate(credentials[0], credentials[1]);
             
         } catch (IllegalArgumentException ex) {
             throw ex;

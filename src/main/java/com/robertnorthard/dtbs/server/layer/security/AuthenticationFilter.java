@@ -38,7 +38,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
             requestContext.setSecurityContext(new AccountSecurityContext(account, requestUri));
             
         } catch (AccountAuthenticationFailed ex) {
-            LOGGER.log(Level.INFO, null, ex);
+            LOGGER.log(Level.INFO, "User not authenticated", "");
         }
     } 
 }
