@@ -6,7 +6,7 @@ import java.util.Properties;
  * This interface represents a configuration loader.
  * @author robertnorthard
  */
-public interface ConfigLoader {
+public interface ConfigLoaderStrategy {
 
     /**
      * 

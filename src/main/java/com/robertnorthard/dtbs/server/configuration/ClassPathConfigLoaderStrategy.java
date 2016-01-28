@@ -10,10 +10,10 @@ import java.util.logging.Logger;
  * This class facilitates reading properties from files on the class path.
  * @author robertnorthard
  */
-public class ClassPathConfigLoader implements ConfigLoader {
+public class ClassPathConfigLoaderStrategy implements ConfigLoaderStrategy {
 
       private static final Logger LOGGER = Logger.getLogger(
-            ClassPathConfigLoader.class.getName());
+            ClassPathConfigLoaderStrategy.class.getName());
     
     /**
      * Return properties from file on the class path.

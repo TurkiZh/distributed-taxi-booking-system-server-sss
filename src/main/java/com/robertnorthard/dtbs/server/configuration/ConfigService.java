@@ -16,15 +16,15 @@ public class ConfigService {
     /**
      * Represents configuration loaders
      */
-    private static final ConfigLoader[] LOADERS = new ConfigLoader[] { 
-        new ClassPathConfigLoader() 
+    private static final ConfigLoaderStrategy[] LOADERS = new ConfigLoaderStrategy[] { 
+        new ClassPathConfigLoaderStrategy() 
     };
 
     private ConfigService() {}
 
     public static Properties getConfig(String conf) {
         try {
-            for (ConfigLoader configLoader : LOADERS) {
+            for (ConfigLoaderStrategy configLoader : LOADERS) {
                 Properties properties = configLoader.getConfig(conf);
 
                 if (properties != null)
