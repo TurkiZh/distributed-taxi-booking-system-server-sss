@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class facilitates reading properties from files on the class path.
+ * This class facilitates reading properties from files from the Java classpath.
  * @author robertnorthard
  */
 public class ClassPathConfigLoaderStrategy implements ConfigLoaderStrategy {
