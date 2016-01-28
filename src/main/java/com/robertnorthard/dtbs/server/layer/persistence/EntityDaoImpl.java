@@ -16,8 +16,7 @@ public class EntityDaoImpl<K,V> implements EntityDao<K,V> {
     private final Class<V> persistentClass;
     
     private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU");
-    private final EntityManager em  = factory.createEntityManager();
-        
+    private final EntityManager em  = factory.createEntityManager();    
     
     /**
      * Default constructor for class EntityDaoImpl
