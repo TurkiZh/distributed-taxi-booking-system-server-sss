@@ -34,7 +34,6 @@ public class AccountController {
     private final AccountService accountService;
     private final DataMapper mapper;
     
-    
     public AccountController(){
         this.accountService = new AccountServiceImpl();
         this.mapper = DataMapper.getInstance();
@@ -57,25 +56,26 @@ public class AccountController {
         try {
             Account ac = this.mapper.readValue(account, Account.class);
             this.accountService.registerAccount(ac);
-            return this.mapper.writeValueAsString(ac);
+            
+            return new HttpResponse(ac, "0").toString();
         } catch (AccountAlreadyExistsException ex) {
             LOGGER.log(Level.WARNING, null, ex);
-            return this.mapper.getObjectAsJson(new HttpResponse(
+            return new HttpResponse(
                     ex.getMessage(),
                     "1"
-            ));
+            ).toString(); 
         }catch(IOException ex){
             LOGGER.log(Level.WARNING, null, ex);
-            return this.mapper.getObjectAsJson(new HttpResponse(
-                    ex.getMessage(),
-                    "0"
-            ));
-        } catch (AccountInvalidException ex) {
-            LOGGER.log(Level.WARNING, null, ex);
-            return this.mapper.getObjectAsJson(new HttpResponse(
+            return new HttpResponse(
                     ex.getMessage(),
                     "2"
-            ));
+            ).toString();
+        } catch (AccountInvalidException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
+            return new HttpResponse(
+                    ex.getMessage(),
+                    "3"
+            ).toString();
         }
     }
     
@@ -92,22 +92,20 @@ public class AccountController {
     public String resetAccount(@PathParam("username") String username) 
             throws AccountNotFoundException{
         
-        
-        
         try{
             this.accountService.resetPassword(username);
             
-           return this.mapper.getObjectAsJson(new HttpResponse(
+           return new HttpResponse(
                    "Password reset sent.",
                     "0"
-            ));
+            ).toString();
             
         } catch (AccountNotFoundException ex) {
             LOGGER.log(Level.WARNING, null, ex);
-            return this.mapper.getObjectAsJson(new HttpResponse(
+            return new HttpResponse(
                     ex.getMessage(),
                     "1"
-            ));
+            ).toString();
         }
     }
     
@@ -123,29 +121,29 @@ public class AccountController {
           
             this.accountService.resetPassword(code,username,object.getString("password"));
     
-            return this.mapper.getObjectAsJson(new HttpResponse(
+            return new HttpResponse(
                     "Password change successful",
                     "0"
-            ));
+            ).toString();
            
         } catch (JSONException ex) {
             LOGGER.log(Level.WARNING, null, ex);
-             return this.mapper.getObjectAsJson(new HttpResponse(
+             return new HttpResponse(
                     ex.getMessage(),
-                    "1"
-            ));
+                    "1" 
+            ).toString();
         }catch (AccountAuthenticationFailed ex) {
             LOGGER.log(Level.WARNING, null, ex);
-             return this.mapper.getObjectAsJson(new HttpResponse(
+             return new HttpResponse(
                     ex.getMessage(),
-                    "2"
-            ));
+                    "2" 
+            ).toString();
         } catch (AccountNotFoundException ex) {
             LOGGER.log(Level.WARNING, null, ex);
-             return this.mapper.getObjectAsJson(new HttpResponse(
+             return new HttpResponse(
                     ex.getMessage(),
                     "3"
-            ));
+            ).toString();
         }
     }
 }
