@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence.dto;
 
+import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.util.Date;
 
 /**
@@ -8,47 +9,47 @@ import java.util.Date;
  */
 public class HttpResponse {
     
-    private String message;
-    private String code;
+    private Object data;
+    private String status;
     private Date timestamp;
     
     /**
      * 
-     * @param message message
-     * @param code response code
+     * @param data data to send.
+     * @param status status code for response.
      */
-    public HttpResponse(String message, String code){
-        this.message = message;
-        this.code = code;
+    public HttpResponse(Object data, String status){
+        this.data = data;
+        this.status = status;
         this.timestamp = new Date();
     }
 
     /**
      * @return the message
      */
-    public String getMessage() {
-        return message;
+    public Object getData() {
+        return data;
     }
 
     /**
-     * @param message the message to set
+     * @param data the data to set
      */
-    public void setMessage(String message) {
-        this.message = message;
+    public void setData(Object data) {
+        this.data = data;
     }
 
     /**
      * @return the code
      */
-    public String getCode() {
-        return code;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param code the code to set
+     * @param status the status to set
      */
-    public void setCode(String code) {
-        this.code = code;
+    public void setCode(String status) {
+        this.status = status;
     }
 
     /**
@@ -63,5 +64,14 @@ public class HttpResponse {
      */
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+    
+    /**
+     * Return JSON string representation of the object.
+     * @return string representation of the object.
+     */
+    @Override
+    public String toString(){
+        return new DataMapper().getObjectAsJson(this);
     }
 }
