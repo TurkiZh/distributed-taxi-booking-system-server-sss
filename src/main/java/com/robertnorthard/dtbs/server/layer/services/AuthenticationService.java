@@ -22,11 +22,10 @@ public interface AuthenticationService {
      */
     public boolean checkPassword(String password, String hash); 
     
-    
     /**
-     * Return username and password from base64 encoded string.
+     * Return base54 decoded string.
      * @param base64Encoding base64 encoding
-     * @return base64 decoded username and password.
+     * @return base64 decoded string.
      */
     public String base64Decode(final String base64Encoding);
     

@@ -85,9 +85,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * Return username and password from base64 encoded string.
+     * Return base64 encoded string.
      * @param base64Encoding base64 encoding
-     * @return base64 decoded username and password.
+     * @return base64 decoded string.
      */
     @Override
     public String base64Decode(String base64Encoding) {
