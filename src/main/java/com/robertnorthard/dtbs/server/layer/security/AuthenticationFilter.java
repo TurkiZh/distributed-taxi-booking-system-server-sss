@@ -7,6 +7,8 @@ import com.robertnorthard.dtbs.server.layer.services.AccountServiceImpl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
@@ -16,6 +18,7 @@ import javax.ws.rs.ext.Provider;
  * @author robertnorthard
  */
 @Provider
+@Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter{
     
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
@@ -36,7 +39,6 @@ public class AuthenticationFilter implements ContainerRequestFilter{
             
             account = this.accountService.authenticate(authHeader);
             requestContext.setSecurityContext(new AccountSecurityContext(account, requestUri));
-            
         } catch (AccountAuthenticationFailed ex) {
             LOGGER.log(Level.INFO, "User not authenticated", "");
         }
