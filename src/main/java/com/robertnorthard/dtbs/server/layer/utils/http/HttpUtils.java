@@ -41,7 +41,12 @@ public class HttpUtils {
             return null;
         }
     }
-     
+    
+     /**
+      * URL encoded the provided value.
+      * @param value the value to URL encode.
+      * @return the URL encoded string.
+      */
     public static String stringEncode(String value){
         return value.replaceAll(" ", "%20");
     }
