@@ -27,6 +27,7 @@ public class MapUtils {
      * Validates provided latitude and longitude.
      * @param latitude
      * @param longitude
+     * @return true if valid else false.
      */
     public boolean validateCoordinates(double latitude, double longitude){
         
