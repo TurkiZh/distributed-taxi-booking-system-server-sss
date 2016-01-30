@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.services;
 
-import com.robertnorthard.dtbs.server.layer.services.AuthenticationService;
-import com.robertnorthard.dtbs.server.layer.services.AuthenticationServiceImpl;
+import com.robertnorthard.dtbs.server.layer.service.AuthenticationFacade;
+import com.robertnorthard.dtbs.server.layer.service.AuthenticationService;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -11,10 +11,10 @@ import static org.junit.Assert.*;
  */
 public class AuthenticationServiceImplTest {
     
-    private final AuthenticationService authenticationService;
+    private final AuthenticationFacade authenticationService;
     
     public AuthenticationServiceImplTest() {
-        this.authenticationService = new AuthenticationServiceImpl();
+        this.authenticationService = new AuthenticationService();
     }
 
     @Test
