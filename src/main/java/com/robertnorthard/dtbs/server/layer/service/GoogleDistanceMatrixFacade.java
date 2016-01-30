@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.codehaus.jettison.json.JSONObject;
  * Service class for Google's distance matrix api.
  * @author robertnorthard
  */
-public interface GoogleDistanceMatrixService {
+public interface GoogleDistanceMatrixFacade {
     
     public void getDistance(String origin, String destination) 
             throws JSONException;

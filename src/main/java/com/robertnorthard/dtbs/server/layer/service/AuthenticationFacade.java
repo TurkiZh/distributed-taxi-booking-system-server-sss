@@ -1,11 +1,12 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.service;
 
 
 /**
- * Authentication Service interface. Manages password hashing and verification.
+ *  * An interface for defining and enforcing operations needed for 
+ * the Authentication Service class.  It provides business logic for authentication.
  * @author robertnorthard
  */
-public interface AuthenticationService {
+public interface AuthenticationFacade {
      
     /**
      * Hash a plaintext value using BCrypt, blowfish block-cipher with a work factor of 12.

@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
@@ -7,10 +7,12 @@ import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 
 /**
- * Account Service interface. Manages user accounts.
+ * An interface for defining and enforcing operations needed for 
+ * the Account Service class.  It provides the scope of possible 
+ * database requests made through the AccountDAO.
  * @author robertnorthard
  */
-public interface AccountService {
+public interface AccountFacade {
     
     /**
      * Register a new account. 
