@@ -2,8 +2,8 @@ package com.robertnorthard.dtbs.server.layer.security;
 
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.layer.model.Account;
-import com.robertnorthard.dtbs.server.layer.services.AccountService;
-import com.robertnorthard.dtbs.server.layer.services.AccountServiceImpl;
+import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
+import com.robertnorthard.dtbs.server.layer.service.AccountService;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
     
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
     
-    AccountService accountService = new AccountServiceImpl();
+    AccountFacade accountService = new AccountService();
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -40,7 +40,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
             account = this.accountService.authenticate(authHeader);
             requestContext.setSecurityContext(new AccountSecurityContext(account, requestUri));
         } catch (AccountAuthenticationFailed ex) {
-            LOGGER.log(Level.INFO, "User not authenticated", "");
+            LOGGER.log(Level.INFO, "User not authenticated");
         }
     } 
 }
