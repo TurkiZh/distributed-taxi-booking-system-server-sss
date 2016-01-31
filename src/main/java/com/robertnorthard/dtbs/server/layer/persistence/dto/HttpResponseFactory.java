@@ -58,6 +58,10 @@ public class HttpResponseFactory {
                 return Response.status(Response.Status.OK)
                     .entity(new HttpResponse(object,"0")
                             .toString()).build();
+            case NOT_FOUND:
+                return Response.status(Response.Status.OK)
+                    .entity(new HttpResponse(object,"4")
+                            .toString()).build();
             default:
                 return null;
         }        
