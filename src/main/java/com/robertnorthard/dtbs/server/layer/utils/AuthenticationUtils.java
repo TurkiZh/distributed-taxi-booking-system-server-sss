@@ -15,6 +15,10 @@ public class AuthenticationUtils {
     
     private static final Logger LOGGER = Logger.getLogger(AuthenticationUtils.class.getName());
     
+    private AuthenticationUtils() {
+        //Empty as utility class.
+    }
+    
     /** 
      * Hash a plaintext value using BCrypt, blowfish block-cipher with a work factor of 12.
      * @param password password to hash.

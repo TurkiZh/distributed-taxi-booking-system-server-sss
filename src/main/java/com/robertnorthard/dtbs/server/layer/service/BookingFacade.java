@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Booking;
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtms.server.common.model.Booking;
 
 /**
  * An interface for defining and enforcing operations needed for 

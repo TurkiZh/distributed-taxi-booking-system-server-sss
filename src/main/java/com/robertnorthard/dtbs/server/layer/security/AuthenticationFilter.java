@@ -1,9 +1,9 @@
 package com.robertnorthard.dtbs.server.layer.security;
 
-import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
 import com.robertnorthard.dtbs.server.layer.service.AccountService;
+import com.robertnorthard.dtms.server.common.model.Account;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

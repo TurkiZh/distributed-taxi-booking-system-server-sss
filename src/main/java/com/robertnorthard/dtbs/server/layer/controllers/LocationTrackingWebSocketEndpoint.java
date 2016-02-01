@@ -43,8 +43,6 @@ public class LocationTrackingWebSocketEndpoint implements Observer{
     @OnOpen
     public void onOpen(Session session) {
         observers.add(session);
-        
-        // send location of all current taxis.
     }
 
     @OnClose
@@ -63,7 +61,9 @@ public class LocationTrackingWebSocketEndpoint implements Observer{
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) throws IOException { }
+    public void onMessage(String message, Session session) throws IOException {
+         // Empty - communication one way. Server to client.
+    }
 
     @OnError
     public void onError(Throwable t) {

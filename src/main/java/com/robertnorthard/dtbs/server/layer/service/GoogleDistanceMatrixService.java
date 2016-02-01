@@ -1,9 +1,9 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.configuration.ConfigService;
-import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.utils.geocoding.PolyLineUtils;
 import com.robertnorthard.dtbs.server.layer.utils.http.HttpUtils;
+import com.robertnorthard.dtms.server.common.model.Location;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -80,7 +80,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
         LOGGER.log(Level.INFO, "getGeocode - {0}", json);
         
-        if (!json.getString("status").equals("ZERO_RESULTS")) {
+        if (!"ZERO_RESULTS".equals(json.getString("status"))) {
             JSONArray results = json.getJSONArray("results");
             JSONObject object = results.getJSONObject(0);
 
@@ -108,7 +108,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
         JSONObject json = HttpUtils.getUrl(query);
 
-        if (!json.getString("status").equals("ZERO_RESULTS")) {
+        if (!"ZERO_RESULTS".equals(json.getString("status"))) {
             JSONArray results = json.getJSONArray("results");
             JSONObject object = results.getJSONObject(0);
 

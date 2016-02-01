@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtms.server.common.model.Taxi;
 
 
 /**

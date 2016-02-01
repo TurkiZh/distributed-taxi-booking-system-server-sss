@@ -6,6 +6,10 @@ package com.robertnorthard.dtbs.server.layer.utils.geocoding;
  */
 public class MapUtils {
     
+    private MapUtils(){
+        // Empty as utility class.
+    }
+    
     /**
      * Validates provided latitude and longitude.
      * @param latitude

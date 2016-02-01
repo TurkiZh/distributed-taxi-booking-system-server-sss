@@ -1,12 +1,12 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
-import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponseFactory;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
 import com.robertnorthard.dtbs.server.layer.service.TaxiFacade;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
+import com.robertnorthard.dtms.server.common.model.Location;
+import com.robertnorthard.dtms.server.common.model.Taxi;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;

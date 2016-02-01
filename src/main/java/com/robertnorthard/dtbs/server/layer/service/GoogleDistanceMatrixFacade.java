@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtms.server.common.model.Location;
 import java.util.List;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;

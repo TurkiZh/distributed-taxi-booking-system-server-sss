@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 
 /**
  * An interface for defining and enforcing operations needed for 
@@ -19,6 +19,6 @@ public interface LocationTrackingFacade{
      * @throws EntityNotFoundException taxi not found.
      */
     public void updateLocation(Long id, double latitude, double longitude, long timestamp) 
-            throws EntityNotFoundException, IllegalArgumentException;
+            throws EntityNotFoundException;
     
 }

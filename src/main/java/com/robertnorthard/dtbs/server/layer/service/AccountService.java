@@ -1,15 +1,15 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
-import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
-import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
-import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsException;
+import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
+import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
+import com.robertnorthard.dtms.server.common.model.Account;
 import java.util.List;
 import javax.inject.Inject;
 import org.joda.time.DateTime;
@@ -24,7 +24,9 @@ public class AccountService implements AccountFacade{
     @Inject private PasswordResetEventDao passwordResetEventDao;
     @Inject private MailStrategy mailStrategy;
     
-    public AccountService(){}
+    public AccountService(){
+        // Empty for dependency injection.
+    }
     
     /**
      * AccountService constructor.

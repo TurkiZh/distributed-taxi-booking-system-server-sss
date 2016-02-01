@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.model.events;
 
-import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtms.server.common.model.Location;
+import com.robertnorthard.dtms.server.common.model.Taxi;
 import java.io.Serializable;
 
 /**
@@ -14,6 +14,7 @@ public class LocationEvent extends Event implements Serializable{
     private Taxi taxi;
 
     public LocationEvent() {
+        // Empty constructor required by JPA.
     }
     
     public LocationEvent(Taxi taxi, Location location){

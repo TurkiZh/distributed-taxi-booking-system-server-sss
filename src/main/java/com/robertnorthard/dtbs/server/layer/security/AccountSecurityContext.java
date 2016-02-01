@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.security;
 
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtms.server.common.model.Account;
 import java.security.Principal;
 import javax.ws.rs.core.SecurityContext;
 

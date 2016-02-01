@@ -1,12 +1,12 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.events.LocationEvent;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.LocationDao;
 import com.robertnorthard.dtbs.server.layer.utils.Subject;
 import com.robertnorthard.dtbs.server.layer.utils.geocoding.MapUtils;
+import com.robertnorthard.dtms.server.common.model.Location;
+import com.robertnorthard.dtms.server.common.model.Taxi;
 
 /**
  * Location tracking service facade implementation. 
@@ -57,7 +57,7 @@ public class LocationTrackingService extends Subject implements LocationTracking
      */
     @Override
     public synchronized void updateLocation(Long id, double latitude, double longitude, long timestamp)
-            throws EntityNotFoundException, IllegalArgumentException {
+            throws EntityNotFoundException {
 
         if(!MapUtils.validateCoordinates(latitude, longitude)){
             throw new IllegalArgumentException("Invalid latitude or longitude");

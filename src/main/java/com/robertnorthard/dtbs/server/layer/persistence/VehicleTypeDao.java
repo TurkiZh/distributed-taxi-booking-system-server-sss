@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.VehicleType;
+import com.robertnorthard.dtms.server.common.model.VehicleType;
 
 
 /**

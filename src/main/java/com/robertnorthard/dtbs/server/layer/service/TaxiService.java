@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
+import com.robertnorthard.dtms.server.common.model.Taxi;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
