@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,13 +15,19 @@ import javax.persistence.Table;
  * @author robertnorthard
  */
 @Entity
-@Table(name="Account")  
+@Table(name="Account")
 public class Account implements Serializable {
   
-    @Id
-    private String username;
+    @Id @Column(name="USERNAME")
+    private String username; 
+    
+    @Column(name="PASSWORD")
     private String password;
+    
+    @Column(name="EMAIL")
     private String email;
+    
+    @Column(name="ROLES")
     private List<String> roles;
 
     public Account() {
@@ -120,7 +127,30 @@ public class Account implements Serializable {
      * Set user's email.
      * @param email the email to set
      */
+    @JsonProperty("email")
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    @Override
+    public int hashCode() {
+        return (username != null ? username.hashCode() : 0);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Account)) {
+            return false;
+        }
+        
+        Account other = (Account) object;
+        
+        if ((this.username == null && other.username != null) 
+                || (this.username != null 
+                && !this.username.equals(other.username))) {
+            return false;
+        }
+        return true;
+    }
+
 }

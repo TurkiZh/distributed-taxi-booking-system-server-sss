@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.Account;
-import javax.persistence.EntityManager;
+import com.robertnorthard.dtbs.server.layer.model.Location;
 
 /**
  * A account Data Access Object (DAO) class for handling and managing event related data
@@ -10,4 +9,4 @@ import javax.persistence.EntityManager;
  * 
  * @author robertnorthard
  */
-public class AccountDao extends JpaEntityDaoImpl<String,Account> {}
+public class LocationDao extends JpaEntityDaoImpl<Long,Location> {}

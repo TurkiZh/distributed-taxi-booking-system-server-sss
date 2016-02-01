@@ -23,7 +23,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
     
     private static final Logger LOGGER = Logger.getLogger(AuthenticationFilter.class.getName());
     
-    AccountFacade accountService = new AccountService();
+    private final AccountFacade accountService = new AccountService();
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {

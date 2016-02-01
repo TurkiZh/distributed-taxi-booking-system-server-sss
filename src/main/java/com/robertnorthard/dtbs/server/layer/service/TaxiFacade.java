@@ -16,4 +16,10 @@ public interface TaxiFacade{
      * @return taxi or null if not found.
      */
     public Taxi findTaxi(Long id);
+    
+    /**
+     * Update taxi.
+     * @param taxi taxi to update.
+     */
+    public void updateTaxi(Taxi taxi);
 }

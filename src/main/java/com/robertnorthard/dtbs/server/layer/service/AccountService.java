@@ -1,37 +1,41 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
-import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
+import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
-import com.robertnorthard.dtbs.server.layer.model.PasswordResetEvent;
+import com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
+import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
-import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
 import java.util.List;
+import javax.inject.Inject;
 import org.joda.time.DateTime;
 
 /**
  * Account Service interface implementation.
  * @author robertnorthard
  */
-public class AccountServiceImpl implements AccountService{
+public class AccountService implements AccountFacade{
 
-    private final AccountDao dao;
-    private final PasswordResetEventDao passwordResetDao;
-    private final AuthenticationService authService;
-    private final MailStrategy mailStrategy;
+    @Inject private AccountDao accountDao;
+    @Inject private PasswordResetEventDao passwordResetEventDao;
+    @Inject private MailStrategy mailStrategy;
+    
+    public AccountService(){}
     
     /**
-     * Default Constructor
+     * AccountService constructor.
+     * @param accountDao Account data access object.
+     * @param passwordResetEventDao Password reset data access object.
+     * @param mailStrategy Mail strategy object. 
      */
-    public AccountServiceImpl(){
-        this.dao = new AccountDao();
-        this.passwordResetDao = new PasswordResetEventDao();
-        this.authService = new AuthenticationServiceImpl();
-        this.mailStrategy = new SmtpMailStrategy();
+    public AccountService(AccountDao accountDao, PasswordResetEventDao passwordResetEventDao, MailStrategy mailStrategy){
+        this.accountDao = accountDao;
+        this.passwordResetEventDao = passwordResetEventDao;
+        this.mailStrategy = mailStrategy;
     }
     
     /**
@@ -48,7 +52,7 @@ public class AccountServiceImpl implements AccountService{
             throws AccountAlreadyExistsException, AccountInvalidException{
         
         // check if acount with username already exists
-        if(this.dao.findEntityById(acct.getUsername()) == null){
+        if(this.accountDao.findEntityById(acct.getUsername()) == null){
             
             //check if valid email
             if(!this.mailStrategy.isValidEmail(
@@ -57,14 +61,14 @@ public class AccountServiceImpl implements AccountService{
             }
             
             // generate password hash
-            String passwordHash = this.authService.hashPassword(
+            String passwordHash = AuthenticationUtils.hashPassword(
                     acct.getPassword());
             
             // store password hash
             acct.setPassword(passwordHash);
             
             // persist entity
-            this.dao.persistEntity(acct);
+            this.accountDao.persistEntity(acct);
             
             // email account registration confirmation.
             this.mailStrategy.sendMail("DTBS - Registration Confirmation", 
@@ -85,7 +89,7 @@ public class AccountServiceImpl implements AccountService{
      */
     @Override
     public Account findAccount(final String username) {
-        return this.dao.findEntityById(username);       
+        return this.accountDao.findEntityById(username);       
     }
 
     /**
@@ -104,7 +108,7 @@ public class AccountServiceImpl implements AccountService{
             throw new AccountAuthenticationFailed();
         }
         
-        if(!this.authService.
+        if(!AuthenticationUtils.
                 checkPassword(password,account.getPassword())){
              throw new AccountAuthenticationFailed();
         }
@@ -118,20 +122,20 @@ public class AccountServiceImpl implements AccountService{
      * 2 - Create reset event.
      * 3 - Send email to use with temporary access code.
      * @param username username of account to reset.
-     * @throws AccountNotFoundException account not found.
+     * @throws EntityNotFoundException account not found.
      */
     @Override
     public void resetPassword(final String username) 
-            throws AccountNotFoundException {
+            throws EntityNotFoundException {
         
         Account account = this.findAccount(username);
         
         if(account == null){
-            throw new AccountNotFoundException();
+            throw new EntityNotFoundException();
         }
         
         // generate temporary reset code
-        String resetCode = this.authService.generateCode(4);
+        String resetCode = AuthenticationUtils.generateCode(4);
         
         // calculate reset expiry
         DateTime expireDate = new DateTime().plusDays(1);
@@ -144,7 +148,7 @@ public class AccountServiceImpl implements AccountService{
         this.deactivePasswordResets(username);
         
         // save password reset event
-        this.passwordResetDao.persistEntity(event);
+        this.passwordResetEventDao.persistEntity(event);
         
         // send email with temporary code
         this.mailStrategy.sendMail("DTBS - Reset Password", 
@@ -160,11 +164,11 @@ public class AccountServiceImpl implements AccountService{
      * @param username username to authenticate with.
      * @param newPassword new password for user.
      * @throws AccountAuthenticationFailed if username and code do not match a valid, active password reset event.
-     * @throws AccountNotFoundException account not found but password resets exist. Indicates data integrity issues. 
+     * @throws EntityNotFoundException account not found but password resets exist. Indicates data integrity issues. 
      */
     @Override
     public void resetPassword(final String code, final String username, final String newPassword) 
-            throws AccountAuthenticationFailed, AccountNotFoundException{
+            throws AccountAuthenticationFailed, EntityNotFoundException{
         
         if(authenticateTemporaryCredentials(username, code)){
             
@@ -173,18 +177,18 @@ public class AccountServiceImpl implements AccountService{
             if(account != null){
                 
                 // create hash of new password
-                String passwordHash = this.authService.hashPassword(newPassword);
+                String passwordHash = AuthenticationUtils.hashPassword(newPassword);
                 
                 // store password hash
                 account.setPassword(passwordHash);
                 
                 //update account
-                this.dao.update(account);
+                this.accountDao.update(account);
 
                 // on success deactive all password resets for account
                 this.deactivePasswordResets(username);
             }else{
-                throw new AccountNotFoundException();
+                throw new EntityNotFoundException();
             }
         }else{
             throw new AccountAuthenticationFailed();
@@ -193,7 +197,7 @@ public class AccountServiceImpl implements AccountService{
     
     private boolean authenticateTemporaryCredentials(final String username, final String code){
         // authenticate code.
-        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
+        List<PasswordResetEvent> events = this.passwordResetEventDao.findActivePasswordResetByUsername(username);
         
         for(PasswordResetEvent event: events){
             if(event.validateCode(code)){
@@ -209,11 +213,11 @@ public class AccountServiceImpl implements AccountService{
      * @param username username to search by.
      */
     private void deactivePasswordResets(String username){
-        List<PasswordResetEvent> events = this.passwordResetDao.findActivePasswordResetByUsername(username);
+        List<PasswordResetEvent> events = this.passwordResetEventDao.findActivePasswordResetByUsername(username);
         
         for(PasswordResetEvent e: events){
             e.setInactive();
-            this.passwordResetDao.update(e);
+            this.passwordResetEventDao.update(e);
         }
     }
 
@@ -233,7 +237,7 @@ public class AccountServiceImpl implements AccountService{
             // Remove HTTP bearer e.g. Authorization: Basic base64EncodedUsernameAndPassword
             String filteredBase64HttpCredentials = base64HttpCredentials.replaceFirst("[Bb]asic ", "");
             
-            String base64Decode = this.authService.base64Decode(filteredBase64HttpCredentials);
+            String base64Decode = AuthenticationUtils.base64Decode(filteredBase64HttpCredentials);
             credentials = base64Decode.split(":");
             
             if(credentials.length != 2){
@@ -244,9 +248,7 @@ public class AccountServiceImpl implements AccountService{
             // password - credentials[1]
             authAccount = this.authenticate(credentials[0], credentials[1]);
             
-        } catch (IllegalArgumentException ex) {
-            throw ex;
-        } catch(AccountAuthenticationFailed ex){
+        } catch (IllegalArgumentException | AccountAuthenticationFailed ex) {
             throw ex;
         }
         

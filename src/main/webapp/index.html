@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xml:lang="en">
     <head>
         <title>A Distributed Taxi Booking System</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <script type="text/javascript">
+    
+        var connection = new WebSocket('ws://localhost:8080/ws/taxi/all/location');
+        
+        connection.onopen = function(){
+            console.log("Connected to socket.");
+        };
+        
+        connection.onclose = function(){
+            console.log('Socket connection closed.');
+            connection.close();
+        }
+
+        connection.onerror = function(error){
+            console.log('Error detected: ' + error);
+        }
+        
+        connection.onmessage = function(e){
+            console.log(e.data);
+            var div = document.getElementById('location_events');
+            var obj = JSON.parse(e.data);
+            div.innerHTML = div.innerHTML + "<p>" + obj['id'] + " " + obj['taxi']['id'] + " " + new Date(obj['timestamp']) + " " + obj['location']['latitude'] + " " + obj['location']['longitude']  +"</p>";
+        };
+    
+        </script>
     </head>
     <body>
         <h1>A Distributed Taxi Booking System</h1>
+        
+        <h2>Events Console</h2>
+        
+        <div id="location_events">
+            
+        </div>
     </body>
 </html>

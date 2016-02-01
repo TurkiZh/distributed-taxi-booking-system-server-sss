@@ -4,12 +4,13 @@ import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponseFactory;
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
-import com.robertnorthard.dtbs.server.layer.service.AccountServiceImpl;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -22,16 +23,16 @@ import javax.ws.rs.core.Response;
  * @author robertnorthard
  */
 @Path("/auth")
-public class LoginController {
+@RequestScoped
+public class AuthenticationController {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthenticationController.class.getName());
 
-    private final AccountFacade accountService;
+    @Inject private AccountFacade accountService;
     private final DataMapper mapper;
     private final HttpResponseFactory responseFactory;
 
-    public LoginController() {
-        this.accountService = new AccountServiceImpl();
+    public AuthenticationController() {
         this.mapper = DataMapper.getInstance();
         this.responseFactory = HttpResponseFactory.getInstance();
     }

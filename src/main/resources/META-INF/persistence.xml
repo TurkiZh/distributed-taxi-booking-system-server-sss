@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="com.robertnorthard.dtms.server_DTMSServer_war_1.0-SNAPSHOTPU" transaction-type="JTA">
+  <persistence-unit name="com.robertnorthard.dtms.server" transaction-type="JTA">
     <jta-data-source>sample</jta-data-source>
     <class>com.robertnorthard.dtbs.server.layer.model.Account</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.PasswordResetEvent</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.Location</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.Taxi</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.Vehicle</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.VehicleType</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.Booking</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.Route</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.events.LocationEvent</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

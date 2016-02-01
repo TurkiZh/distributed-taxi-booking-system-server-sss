@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.utils;
 
 import java.util.Base64;
 import java.util.Random;
@@ -7,20 +7,20 @@ import java.util.logging.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Authentication Service provide functions for managing user credentials.
+ * Authentication utility class provide functions for managing base64 encoding/decoding
+ * and hashing of user passwords. 
  * @author robertnorthard
  */
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationUtils {
     
-    private static final Logger LOGGER = Logger.getLogger(AuthenticationService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthenticationUtils.class.getName());
     
     /** 
      * Hash a plaintext value using BCrypt, blowfish block-cipher with a work factor of 12.
      * @param password password to hash.
      * @return a string representation of the salted password.
      */
-    @Override
-    public String hashPassword(String password){
+    public static String hashPassword(String password){
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
     
@@ -30,8 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param hash hashed password
      * @return true if plaintext password and hash match, else false.
      */
-    @Override
-    public boolean checkPassword(String password, String hash) {
+    public static boolean checkPassword(String password, String hash) {
         
         if(password == null || hash==null){
             IllegalArgumentException e = new IllegalArgumentException(
@@ -49,8 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param length length of code to generate. Length of password must be more than 0.
      * @return a random code with the specified length
      */
-    @Override
-    public String generateCode(String validCodeCharacters, int length){
+    public static String generateCode(String validCodeCharacters, int length){
         
         if(length== 0 || validCodeCharacters.length() == 0){
              IllegalArgumentException e = new IllegalArgumentException(
@@ -78,9 +76,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param length length of code to generate
      * @return a random code with with the specified length
      */
-    @Override
-    public String generateCode(int length) {
-        return this.generateCode(
+    public static String generateCode(int length) {
+        return AuthenticationUtils.generateCode(
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567", length);
     }
 
@@ -89,8 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param base64Encoding base64 encoding
      * @return base64 decoded string.
      */
-    @Override
-    public String base64Decode(String base64Encoding) {
+    public static String base64Decode(String base64Encoding) {
         
         if(base64Encoding==null){
             throw new IllegalArgumentException();

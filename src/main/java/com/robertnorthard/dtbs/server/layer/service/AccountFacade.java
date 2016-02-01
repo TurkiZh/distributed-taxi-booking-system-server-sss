@@ -3,7 +3,7 @@ package com.robertnorthard.dtbs.server.layer.service;
 import com.robertnorthard.dtbs.server.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.exceptions.AccountInvalidException;
-import com.robertnorthard.dtbs.server.exceptions.AccountNotFoundException;
+import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 
 /**
@@ -56,10 +56,10 @@ public interface AccountFacade {
     /**
      * Reset account password.
      * @param username username of account to reset.
-     * @throws AccountNotFoundException account not found
+     * @throws EntityNotFoundException account not found
      */
     public void resetPassword(final String username)
-            throws AccountNotFoundException;
+            throws EntityNotFoundException;
     
     /**
      * 
@@ -67,8 +67,8 @@ public interface AccountFacade {
      * @param username username to authenticate with.
      * @param newPassword new password for user.
      * @throws AccountAuthenticationFailed if username and code do not match a valid, active password reset event.
-     * @throws AccountNotFoundException account not found but password resets exist. Indicates data integrity issues.
+     * @throws EntityNotFoundException account not found but password resets exist. Indicates data integrity issues.
      */
     public void resetPassword(final String code, final String username, final String newPassword) 
-            throws AccountAuthenticationFailed, AccountNotFoundException;
+            throws AccountAuthenticationFailed, EntityNotFoundException;
 }

@@ -1,10 +1,7 @@
-package com.robertnorthard.dtbs.server.layer.model;
+package com.robertnorthard.dtbs.server.layer.model.events;
 
-import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import org.joda.time.DateTime;
 
@@ -13,29 +10,28 @@ import org.joda.time.DateTime;
  * @author robertnorthard
  */
 @Entity
-@Table(name="PasswordResetEvent") 
-public class PasswordResetEvent implements Serializable { 
+@Table(name="PASSWORD_RESET_EVENT")
+public class PasswordResetEvent extends Event { 
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
+    @Column(name="USERNAME")
     private String username;
+    
+    @Column(name="CODE")
     private String code;
+    
+    @Column(name="ACTIVE")
     private boolean active;
-    private DateTime createdAt;
+    
+    @Column(name="EXPIRY")
     private DateTime expiry;
-
-    /**
-     * Needed by JPA
-     */
+    
     public PasswordResetEvent() {
     }
     
-    public PasswordResetEvent(String username,String code,DateTime expiry){
+    public PasswordResetEvent(String username,String code, DateTime expiry){
         this.username = username;
         this.code = code;
         this.expiry = expiry;
-        
-        this.createdAt = new DateTime();
         this.active = true;
     }
 
@@ -59,14 +55,7 @@ public class PasswordResetEvent implements Serializable {
     public DateTime getExpiry() {
         return expiry;
     }
-    
-    /**
-     * @return the event creation time
-     */
-    public DateTime getCreatedAt(){
-        return this.createdAt;
-    }
-    
+
     /**
      * Set reset code to used. 
      */
@@ -80,21 +69,7 @@ public class PasswordResetEvent implements Serializable {
     public boolean isActive(){
         return this.active;
     }
-
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
+    
     /**
      * @param username the username to set
      */
@@ -117,13 +92,6 @@ public class PasswordResetEvent implements Serializable {
     }
 
     /**
-     * @param createdAt the createdAt to set
-     */
-    public void setCreatedAt(DateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    /**
      * @param expiry the expiry to set
      */
     public void setExpiry(DateTime expiry) {
@@ -136,7 +104,6 @@ public class PasswordResetEvent implements Serializable {
      * @return true if code is valid, has not expired and is active, else false.
      */
     public boolean validateCode(String code) {
-        
         return this.code.equals(code) 
                 && this.isActive()
                 && new DateTime().isBefore(this.expiry);

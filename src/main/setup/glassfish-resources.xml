@@ -1,25 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_sample1_samplePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="sample1"/>
-        <property name="User" value="sample"/>
-        <property name="Password" value="sample"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/sample1"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ample1" object-type="user" pool-name="derby_net_sample1_samplePool"/>
-    <jdbc-resource enabled="true" jndi-name="sample1" object-type="user" pool-name="derby_net_sample1_samplePool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_sample3_samplePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="sample3"/>
-        <property name="User" value="sample"/>
-        <property name="Password" value="sample"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/sample3"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="sample3" object-type="user" pool-name="derby_net_sample3_samplePool"/>
+  <admin-object-resource enabled="true" jndi-name="jms/dtbsQueue" object-type="user" res-adapter="jmsra" res-type="javax.jms.Topic">
+    <description/>
+    <property name="Name" value="dtbsQueue"/>
+  </admin-object-resource>
+  <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_sample1_samplePool" non-transactional-connections="false" ping="false" pool-resize-quantity="2" pooling="true" res-type="javax.sql.DataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="1527"/>
+    <property name="databaseName" value="sample1"/>
+    <property name="User" value="sample"/>
+    <property name="Password" value="sample"/>
+    <property name="URL" value="jdbc:derby://localhost:1527/sample1"/>
+    <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+  </jdbc-connection-pool>
+  <jdbc-resource enabled="true" jndi-name="ample1" object-type="user" pool-name="derby_net_sample1_samplePool"/>
+  <jdbc-resource enabled="true" jndi-name="sample1" object-type="user" pool-name="derby_net_sample1_samplePool"/>
+  <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_sample3_samplePool" non-transactional-connections="false" ping="false" pool-resize-quantity="2" pooling="true" res-type="javax.sql.DataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="1527"/>
+    <property name="databaseName" value="sample3"/>
+    <property name="User" value="sample"/>
+    <property name="Password" value="sample"/>
+    <property name="URL" value="jdbc:derby://localhost:1527/sample3"/>
+    <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+  </jdbc-connection-pool>
+  <jdbc-resource enabled="true" jndi-name="sample3" object-type="user" pool-name="derby_net_sample3_samplePool"/>
+  <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_example_examplePool" non-transactional-connections="false" ping="false" pool-resize-quantity="2" pooling="true" res-type="javax.sql.DataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="1527"/>
+    <property name="databaseName" value="example"/>
+    <property name="User" value="example"/>
+    <property name="Password" value="example"/>
+    <property name="URL" value="jdbc:derby://localhost:1527/example"/>
+    <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+  </jdbc-connection-pool>
+  <jdbc-resource enabled="true" jndi-name="example" object-type="user" pool-name="derby_net_example_examplePool"/>
+  <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_test_testPool" non-transactional-connections="false" ping="false" pool-resize-quantity="2" pooling="true" res-type="javax.sql.DataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="1527"/>
+    <property name="databaseName" value="test"/>
+    <property name="User" value="test"/>
+    <property name="Password" value="test"/>
+    <property name="URL" value="jdbc:derby://localhost:1527/test"/>
+    <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+  </jdbc-connection-pool>
+  <jdbc-resource enabled="true" jndi-name="jdbc/test" object-type="user" pool-name="derby_net_test_testPool"/>
+  <jdbc-resource enabled="true" jndi-name="hehe" object-type="user" pool-name="derby_net_test_testPool"/>
+  <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_dtbs_dtbsPool" non-transactional-connections="false" ping="false" pool-resize-quantity="2" pooling="true" res-type="javax.sql.DataSource" statement-cache-size="0" statement-leak-reclaim="false" statement-leak-timeout-in-seconds="0" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="1527"/>
+    <property name="databaseName" value="dtbs"/>
+    <property name="User" value="dtbs"/>
+    <property name="Password" value="dtbs"/>
+    <property name="URL" value="jdbc:derby://localhost:1527/dtbs"/>
+    <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
+  </jdbc-connection-pool>
+  <jdbc-resource enabled="true" jndi-name="dtbs" object-type="user" pool-name="derby_net_dtbs_dtbsPool"/>
 </resources>

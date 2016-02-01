@@ -1,7 +1,10 @@
 package com.robertnorthard.dtbs.server;
 
 import com.robertnorthard.dtbs.server.layer.controllers.AccountController;
-import com.robertnorthard.dtbs.server.layer.controllers.LoginController;
+import com.robertnorthard.dtbs.server.layer.controllers.AuthenticationController;
+import com.robertnorthard.dtbs.server.layer.controllers.BookingController;
+import com.robertnorthard.dtbs.server.layer.controllers.DistanceMatrixController;
+import com.robertnorthard.dtbs.server.layer.controllers.TaxiController;
 import com.robertnorthard.dtbs.server.layer.security.AuthenticationFilter;
 import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -17,7 +20,10 @@ public class ApplicationConfig extends ResourceConfig {
         
         // RESTful Controllers
         register(AccountController.class);
-        register(LoginController.class);
+        register(AuthenticationController.class);
+        register(DistanceMatrixController.class);
+        register(BookingController.class); 
+        register(TaxiController.class);
         
         // Filters        
         /* 
@@ -27,5 +33,6 @@ public class ApplicationConfig extends ResourceConfig {
         */
         register(RolesAllowedDynamicFeature.class);
         register(AuthenticationFilter.class);
+      
     }
 }

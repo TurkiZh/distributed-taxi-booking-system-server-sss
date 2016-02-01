@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Subject class implementation for the observer pattern.
@@ -9,10 +9,10 @@ import java.util.List;
  */
 public abstract class Subject {
     
-    private List<Observer> observers;
+    private Set<Observer> observers;
     
     public Subject(){
-        this.observers = new ArrayList<>();
+        this.observers = new HashSet<>();
     }
     
     /**

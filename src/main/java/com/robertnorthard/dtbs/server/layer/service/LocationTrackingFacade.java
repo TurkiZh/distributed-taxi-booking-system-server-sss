@@ -1,5 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
+import com.robertnorthard.dtbs.server.exceptions.EntityNotFoundException;
+
 /**
  * An interface for defining and enforcing operations needed for 
  * the Taxi Service class. It provides the scope of possible 
@@ -14,7 +16,9 @@ public interface LocationTrackingFacade{
      * @param latitude Taxi's current latitude.
      * @param longitude Taxi's current longitude.
      * @param timestamp timestamp of event.
+     * @throws EntityNotFoundException taxi not found.
      */
-    public void updateLocation(Long id, double latitude, double longitude, long timestamp);
+    public void updateLocation(Long id, double latitude, double longitude, long timestamp) 
+            throws EntityNotFoundException, IllegalArgumentException;
     
 }

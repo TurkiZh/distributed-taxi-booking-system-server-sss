@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.utils;
+package com.robertnorthard.dtbs.server.layer.utils.mail;
 
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
