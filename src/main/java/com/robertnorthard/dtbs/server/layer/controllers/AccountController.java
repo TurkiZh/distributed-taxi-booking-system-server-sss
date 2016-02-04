@@ -7,7 +7,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponseFactory;
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +30,7 @@ import org.codehaus.jettison.json.JSONObject;
  *
  * @author robertnorthard
  */
-@Path("/account")
+@Path("/v1/account")
 @RequestScoped
 public class AccountController {
 
@@ -62,6 +62,7 @@ public class AccountController {
     public Response registerAccount(String account) {
         try {
             Account ac = this.mapper.readValue(account, Account.class);
+
             this.accountService.registerAccount(ac);
 
             return this.responseFactory.getResponse(
@@ -91,8 +92,7 @@ public class AccountController {
     @Path("/{username}/reset")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
-    public Response resetAccount(@PathParam("username") String username)
-            throws EntityNotFoundException {
+    public Response resetAccount(@PathParam("username") String username) {
 
         try {
             this.accountService.resetPassword(username);
@@ -108,6 +108,15 @@ public class AccountController {
         }
     }
 
+    /**
+     * Reset an account's password using temporary access code.
+     * 
+     * @param username username of account to reset.
+     * @param code temporary code.
+     * @param message JSON message with new password.
+     * @return AccountAuthenticationException if code in 
+     * invalid and EntityNotFoundException if unable to find account.
+     */
     @POST
     @Path("/{username}/reset/{code}")
     @Produces(MediaType.APPLICATION_JSON)

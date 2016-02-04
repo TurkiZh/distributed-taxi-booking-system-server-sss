@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.utils.datamapper;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.logging.Level;
@@ -22,6 +23,7 @@ public class DataMapper extends ObjectMapper {
         if(DataMapper.dataMapper == null){
             synchronized(DataMapper.class){
                 DataMapper.dataMapper = new DataMapper();
+                DataMapper.dataMapper.setSerializationInclusion(Include.NON_NULL);
             }
         }
         

@@ -6,14 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
- * A password reset event Data Access Object (DAO) class for handling and managing event related data
- * requested, updated, and processed in the application and maintained in the
- * database.
+ * A password reset event Data Access Object (DAO) class for handling and
+ * managing event related data requested, updated, and processed in the
+ * application and maintained in the database.
  *
  * @author robertnorthard
  */
 public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetEvent> {
-    
+
     /**
      * Find password reset code using username, code with status of active.
      * Return list as there is a possibility user reset their account multiple
@@ -26,15 +26,11 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
     public List<PasswordResetEvent> findPasswordResetByUsernameAndCode(String username, String code) {
 
         EntityManager em = this.getEntityManager();
-        try {
-            Query query = em.createNativeQuery("SELECT * FROM PASSWORD_RESET_EVENT WHERE USERNAME = ? AND CODE = ? AND ACTIVE=1", PasswordResetEvent.class);
-            query.setParameter(1, username);
-            return query.getResultList();
-        } finally {
-            if (em != null) {
-              //  em.close();
-            }
-        }
+        Query query = em.createNamedQuery("PasswordResetEvent.findPasswordResetByUsernameAndCode", PasswordResetEvent.class);
+        query.setParameter("username", username);
+        query.setParameter("code", code);
+        
+        return query.getResultList();
     }
 
     /**
@@ -44,15 +40,11 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
      * @return a collection of all active password resets for a given user.
      */
     public List<PasswordResetEvent> findActivePasswordResetByUsername(String username) {
+        
         EntityManager em = this.getEntityManager();
-        try {
-            Query query = em.createNativeQuery("SELECT * FROM PASSWORD_RESET_EVENT WHERE USERNAME = ?", PasswordResetEvent.class);
-            query.setParameter(1, username);
-            return query.getResultList();
-        } finally {
-            if (em != null) {
-              //  em.close();
-            }
-        }
+        Query query = em.createNamedQuery("PasswordResetEvent.findActivePasswordResetByUsername", PasswordResetEvent.class);
+        query.setParameter("username", username);
+        
+        return query.getResultList();
     }
 }

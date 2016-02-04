@@ -9,23 +9,24 @@ import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.util.List;
 import javax.inject.Inject;
 import org.joda.time.DateTime;
 
 /**
  * Account Service interface implementation.
+ * 
  * @author robertnorthard
  */
 public class AccountService implements AccountFacade{
 
-    @Inject private AccountDao accountDao;
+    private AccountDao accountDao;
     @Inject private PasswordResetEventDao passwordResetEventDao;
     @Inject private MailStrategy mailStrategy;
     
     public AccountService(){
-        // Empty for dependency injection.
+        this.accountDao = new AccountDao();
     }
     
     /**

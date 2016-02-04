@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.security;
 
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.security.Principal;
 import javax.ws.rs.core.SecurityContext;
 
@@ -44,10 +44,11 @@ public class AccountSecurityContext implements SecurityContext {
      * Returns a boolean indicating whether the authenticated user is included in the specified logical "role".
      * @param role role to confirm.
      * @return a boolean indicating whether the authenticated user is included in the specified logical "role".
+     * @throws IllegalArgumentException if role invalid.
      */
     @Override
     public boolean isUserInRole(String role) {
-        return this.account.hasRole(role);
+        return this.account.hasRole(role); 
     }
 
     /**

@@ -4,7 +4,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFai
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponseFactory;
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,10 +19,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * A controller class for receiving and handling all authentication related transactions. 
+ * A controller class for receiving and handling all authentication related transactions.
+ * 
  * @author robertnorthard
  */
-@Path("/auth")
+@Path("/v1/auth")
 @RequestScoped
 public class AuthenticationController {
 

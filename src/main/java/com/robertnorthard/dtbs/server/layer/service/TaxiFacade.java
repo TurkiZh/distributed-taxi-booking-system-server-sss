@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtms.server.common.model.Taxi;
-
+import com.robertnorthard.dtbs.server.layer.model.Taxi;
 
 /**
  * An interface for defining and enforcing operations needed for 

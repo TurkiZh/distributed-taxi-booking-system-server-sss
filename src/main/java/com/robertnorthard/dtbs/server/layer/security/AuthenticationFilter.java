@@ -3,7 +3,7 @@ package com.robertnorthard.dtbs.server.layer.security;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
 import com.robertnorthard.dtbs.server.layer.service.AccountService;
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +15,7 @@ import javax.ws.rs.ext.Provider;
 
 /**
  * Authenticate a user using roles.
+ * 
  * @author robertnorthard
  */
 @Provider
@@ -40,7 +41,7 @@ public class AuthenticationFilter implements ContainerRequestFilter{
             account = this.accountService.authenticate(authHeader);
             requestContext.setSecurityContext(new AccountSecurityContext(account, requestUri));
         } catch (AccountAuthenticationFailed ex) {
-            LOGGER.log(Level.INFO, "User not authenticated");
+            LOGGER.log(Level.FINEST, "User not authenticated");
         }
     } 
 }

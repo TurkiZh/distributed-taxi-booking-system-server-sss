@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.model.events;
 
-import com.robertnorthard.dtms.server.common.model.Location;
-import com.robertnorthard.dtms.server.common.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import java.io.Serializable;
 
 /**

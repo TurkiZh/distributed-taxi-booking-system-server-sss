@@ -34,7 +34,6 @@ public class SmtpMailStrategy implements MailStrategy {
 
     /**
      * Secondary constructor to allow mail properties to be set.
-     *
      * @param mailProperties mail properties.
      */
     public SmtpMailStrategy(Properties mailProperties) {

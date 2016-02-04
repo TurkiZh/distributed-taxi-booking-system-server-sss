@@ -1,49 +1,24 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.model.events.LocationEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.LocationDao;
 import com.robertnorthard.dtbs.server.layer.utils.Subject;
-import com.robertnorthard.dtbs.server.layer.utils.geocoding.MapUtils;
-import com.robertnorthard.dtms.server.common.model.Location;
-import com.robertnorthard.dtms.server.common.model.Taxi;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Location tracking service facade implementation. 
  * @author robertnorthard
  */
+@Singleton
 public class LocationTrackingService extends Subject implements LocationTrackingFacade {
 
-    private static LocationTrackingService locationTrackingService;
-    private final TaxiFacade taxiService;
-    private final LocationDao locationDao;
+    @Inject private TaxiFacade taxiService;
+    @Inject private LocationDao locationDao;
     
-    /** 
-     * Singleton - private constructor.
-     */
-    private LocationTrackingService() {
-        this.taxiService = new TaxiService();
-        this.locationDao = new LocationDao();
-    }
-
-    /**
-     * Return a shared instance of the TaxiServiceImpl. If null create a new
-     * instance.
-     *
-     * @return a shared instance of the TaxiFacade.
-     */
-    public static LocationTrackingService getInstance() {
-
-        if (LocationTrackingService.locationTrackingService == null) {
-            //dead-locking approach to synchronisation.
-            synchronized (LocationTrackingService.class) {
-                LocationTrackingService.locationTrackingService = new LocationTrackingService();
-            }
-        }
-
-        return LocationTrackingService.locationTrackingService;
-    }
-
     /**
      * Update taxi location by id.
      * Find taxi by id and set new location and broadcast update taxi location.
@@ -59,8 +34,12 @@ public class LocationTrackingService extends Subject implements LocationTracking
     public synchronized void updateLocation(Long id, double latitude, double longitude, long timestamp)
             throws EntityNotFoundException {
 
-        if(!MapUtils.validateCoordinates(latitude, longitude)){
-            throw new IllegalArgumentException("Invalid latitude or longitude");
+        Location lastKnownLocation;
+        
+        try{
+            lastKnownLocation = new Location(latitude, longitude);
+        }catch(IllegalArgumentException ex){
+            throw ex;
         }
         
         Taxi taxi = this.taxiService.findTaxi(id);
@@ -69,7 +48,6 @@ public class LocationTrackingService extends Subject implements LocationTracking
             throw new EntityNotFoundException();
         }
 
-        Location lastKnownLocation = new Location(latitude, longitude);
         Location previousLocation = taxi.getLocation(); 
         taxi.updateLocation(lastKnownLocation);
         

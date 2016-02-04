@@ -20,7 +20,7 @@ public class HttpUtils {
      * Return a JSONObject representing the URL response.
      * @param url url to query. 
      * @return a JSON object containing the URL response.
-     * @throws JSONException unable to parse JSON.
+     * @throws JSONException json invalid.
      */
      public static JSONObject getUrl(String url) throws JSONException {
         try {

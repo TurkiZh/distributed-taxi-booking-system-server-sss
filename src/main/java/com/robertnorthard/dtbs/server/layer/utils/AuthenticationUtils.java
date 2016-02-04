@@ -89,6 +89,7 @@ public class AuthenticationUtils {
      * Return base64 encoded string.
      * @param base64Encoding base64 encoding
      * @return base64 decoded string.
+     * @throws IllegalArgumentException base64Encoding string is null.
      */
     public static String base64Decode(String base64Encoding) {
         

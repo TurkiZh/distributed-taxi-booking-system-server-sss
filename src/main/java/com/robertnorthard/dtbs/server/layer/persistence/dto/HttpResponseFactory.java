@@ -42,25 +42,25 @@ public class HttpResponseFactory {
         switch(status){
             case UNAUTHORIZED:
                 return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new HttpResponse(object,"1")
+                    .entity(new HttpObjectResponse(object,"1")
                             .toString()).build();
             case CONFLICT:
                 return Response.status(Response.Status.CONFLICT)
-                    .entity(new HttpResponse(object,"2")
+                    .entity(new HttpObjectResponse(object,"2")
                             .toString()).build();
                 
             case BAD_REQUEST:
                 return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new HttpResponse(object,"3")
+                    .entity(new HttpObjectResponse(object,"3")
                             .toString()).build();
                 
             case OK:
                 return Response.status(Response.Status.OK)
-                    .entity(new HttpResponse(object,"0")
+                    .entity(new HttpObjectResponse(object,"0")
                             .toString()).build();
             case NOT_FOUND:
                 return Response.status(Response.Status.OK)
-                    .entity(new HttpResponse(object,"4")
+                    .entity(new HttpObjectResponse(object,"4")
                             .toString()).build();
             default:
                 return null;

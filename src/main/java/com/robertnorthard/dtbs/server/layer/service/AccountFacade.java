@@ -4,7 +4,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsExce
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtms.server.common.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Account;
 
 /**
  * An interface for defining and enforcing operations needed for 

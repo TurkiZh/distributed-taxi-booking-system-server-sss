@@ -1,6 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
+
+import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
-import com.robertnorthard.dtms.server.common.model.Taxi;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,13 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TaxiService implements TaxiFacade {
     
     private Map<Integer, Taxi> allTaxisCache = new ConcurrentHashMap<>();
-    private final TaxiDao taxiDao;
+    private TaxiDao taxiDao = new TaxiDao();
     
-    /**
-     * Default constructor.
-     */
-    public TaxiService() {
-        this.taxiDao = new TaxiDao();
+    public TaxiService(){
+        // left blank. 
     }
     
     /**

@@ -9,33 +9,16 @@ import java.util.Date;
  */
 public class HttpResponse {
     
-    private Object data;
     private String status;
     private Date timestamp;
     
     /**
      * 
-     * @param data data to send.
      * @param status status code for response.
      */
-    public HttpResponse(Object data, String status){
-        this.data = data;
+    public HttpResponse(String status){
         this.status = status;
         this.timestamp = new Date();
-    }
-
-    /**
-     * @return the message
-     */
-    public Object getData() {
-        return data;
-    }
-
-    /**
-     * @param data the data to set
-     */
-    public void setData(Object data) {
-        this.data = data;
     }
 
     /**
