@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Taxi Service class implementation.
+ * 
  * @author robertnorthard
  */
 public class TaxiService implements TaxiFacade {

@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.websocket.OnClose;
@@ -27,16 +29,20 @@ import javax.websocket.server.ServerEndpoint;
  * @author robertnorthard
  */
 @Singleton
-@ServerEndpoint(value = "/ws/taxi/all/locations")
+@ServerEndpoint(value = "/ws/v1/locations/taxi/all")
 public class LocationTrackingWebSocketEndpoint implements Observer{
     
     private static final Logger LOGGER = Logger.getLogger(
             LocationTrackingWebSocketEndpoint.class.getName());
     
-    @Inject private LocationTrackingService locationTrackingService;
     private static final Set<Session> observers = Collections.synchronizedSet(new HashSet<Session>());
     
-    public LocationTrackingWebSocketEndpoint(){
+    @Inject private LocationTrackingService locationTrackingService;
+    
+    public LocationTrackingWebSocketEndpoint(){ }
+    
+    @PostConstruct
+    void init(){
         this.locationTrackingService.registerObserver(this);
     }
     

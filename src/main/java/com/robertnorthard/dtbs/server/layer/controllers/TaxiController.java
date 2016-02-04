@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -58,7 +57,7 @@ public class TaxiController {
     @Path("/{id}/location")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
+    @RolesAllowed("driver")
     public Response updateTaxiLocation(@PathParam("id") Long id, String message) {
          try { 
              
