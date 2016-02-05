@@ -108,6 +108,5 @@ public class AccountTest {
         Account instance = new Account();
         instance.setEmail(email);
         assertEquals(email, instance.getEmail());
-    }
-    
+    }    
 }

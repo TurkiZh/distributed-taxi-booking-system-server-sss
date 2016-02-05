@@ -27,8 +27,9 @@ public class AuthenticationServiceImplTest {
     }
     
     @Test
-    public void generatePassword(){
+    public void generateCode(){
         assertTrue(AuthenticationUtils.generateCode(10).length() == 10);
         assertTrue(AuthenticationUtils.generateCode("1", 4).equals("1111"));
+        assertTrue(AuthenticationUtils.generateCode(4).length() == 4);
     }
 }

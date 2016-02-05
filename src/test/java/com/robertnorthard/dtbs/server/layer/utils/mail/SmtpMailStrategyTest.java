@@ -1,7 +1,5 @@
 package com.robertnorthard.dtbs.server.layer.utils.mail;
 
-import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
-import com.robertnorthard.dtbs.server.layer.utils.mail.SmtpMailStrategy;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,12 +21,6 @@ public class SmtpMailStrategyTest {
                 new File("src/main/webapp/WEB-INF/classes/application.properties")));
         
         mailStrategy = new SmtpMailStrategy(p);
-    }
-
-    @Test
-    public void mailSmtpStrategyTest(){
-        assertTrue(mailStrategy.sendMail("Test Mail", "Test Body", 
-                "robertnorthard@googlemail.com"));
     }
     
     @Test
