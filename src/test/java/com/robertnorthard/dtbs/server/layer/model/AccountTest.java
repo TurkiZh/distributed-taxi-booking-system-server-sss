@@ -1,8 +1,8 @@
 package com.robertnorthard.dtbs.server.layer.model;
 
-import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  * Unit tests for Account class.
@@ -10,38 +10,20 @@ import static org.junit.Assert.*;
  */
 public class AccountTest {
 
+    
+    private Account account;
+    
+    @Before
+    public void setUp(){
+        account = new Account("johndoe","John Doe", "simple_password", "john_doe@example.com", "07888888826");
+        account.setRole(AccountRole.PASSENGER);
+    }
     /**
      * Test of checkPassword method, of class Account.
      */
     @Test
     public void testCheckPassword() {
-        String password = "testpassword";
-        Account instance = new Account("testuser",password,"test@test.com");
-        boolean expResult = true;
-        boolean result = instance.checkPassword(password);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getUsername method, of class Account.
-     */
-    @Test
-    public void testGetUsername() {
-        String expResult = "username";
-        Account instance = new Account(expResult,"testpassword","test@test.com");
-        String result = instance.getUsername();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of addRole method, of class Account.
-     */
-    @Test
-    public void testAddRole() {
-        String type = "DRIVER";
-        Account instance = new Account();
-        instance.addRole(type);
-        assertTrue(instance.getRoles().contains(type));
+        assertTrue(account.checkPassword("simple_password"));
     }
 
     /**
@@ -49,64 +31,6 @@ public class AccountTest {
      */
     @Test
     public void testHasRole() {
-        String role = "ADMIN";
-        Account instance = new Account();
-        boolean expResult = false;
-        boolean result = instance.hasRole(role);
-        assertEquals(expResult, result);
+        assertFalse(account.hasRole("ADMIN"));
     }
-
-    /**
-     * Test of getRoles method, of class Account.
-     */
-    @Test
-    public void testGetRoles() {
-        Account instance = new Account();
-        List<String> result = instance.getRoles();
-        assertTrue(result != null);
-    }
-
-    /**
-     * Test of getPassword method, of class Account.
-     */
-    @Test
-    public void testGetPassword() {
-        String expResult = "testpassword";
-        Account instance = new Account(expResult,"testpassword","test@test.com");
-        String result = instance.getPassword();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setPassword method, of class Account.
-     */
-    @Test
-    public void testSetPassword() {
-        String password = "password";
-        Account instance = new Account();
-        instance.setPassword(password);
-        assertEquals(password, instance.getPassword());
-    }
-
-    /**
-     * Test of getEmail method, of class Account.
-     */
-    @Test
-    public void testGetEmail() {
-        String expResult = "test@test.com";
-        Account instance = new Account(expResult,"testpassword","test@test.com");
-        String result = instance.getEmail();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setEmail method, of class Account.
-     */
-    @Test
-    public void testSetEmail() {
-        String email = "test@email.com";
-        Account instance = new Account();
-        instance.setEmail(email);
-        assertEquals(email, instance.getEmail());
-    }    
 }

@@ -3,12 +3,13 @@ package com.robertnorthard.dtbs.server.layer.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Entity class for a user.
@@ -21,17 +22,32 @@ public class Account implements Serializable {
     @Id @Column(name="USERNAME")
     private String username; 
     
+    @NotNull
+    @Column(name="NAME")
+    private String name;
+    
+    @NotNull
     @Column(name="PASSWORD")
     private String password;
     
+    @NotNull
     @Column(name="EMAIL")
     private String email;
     
-    @Column(name="ROLES")
-    private List<String> roles;
+    @NotNull
+    @Column(name="PHONE_NUMBER")
+    private String phoneNumber;
+    
+    @Column(name="ROLE")
+    @Enumerated(EnumType.STRING)
+    private AccountRole role;
 
+    @Column(name="ACTIVE")
+    @Enumerated(EnumType.STRING)
+    private AccountStatus active;
+    
     public Account() {
-        this.roles = new ArrayList<>();
+        // Empty as per JPA 2.0 specification.
     }
      
     /** 
@@ -40,12 +56,12 @@ public class Account implements Serializable {
      * @param password user's password hash
      * @param email user's email
      */
-    public Account(String username, String password, String email){
+    public Account(String username, String name, String password, String phoneNumber, String email){    
         this.username = username;
+        this.name = name;
         this.password = password;
         this.email = email;
-
-        this.roles = new ArrayList<>();
+        this.phoneNumber = phoneNumber;
     }
     
     /**
@@ -64,21 +80,6 @@ public class Account implements Serializable {
         return this.username;
     }
     
-    /**
-     * Add an additional role to the user.
-     * @param role role to add
-     */
-    public synchronized void addRole(String role){
-        this.roles.add(role);
-    }
-    
-    /**
-     * Remove a role from.
-     * @param role role to remove
-     */
-    public synchronized void removeRole(String role){
-        this.roles.remove(role);
-    }
     
     /**
      * Check if a user has a specified role.
@@ -86,25 +87,13 @@ public class Account implements Serializable {
      * @return true if user has role else false.
      */
     public boolean hasRole(String role){
-        return this.roles.contains(role);
+        try{
+            return AccountRole.getRole(role).toString().equals(role);
+        }catch(IllegalArgumentException ex){
+            return false;
+        }
     }
-    
-    /**
-     * Return collection of the user's roles.
-     * @return a collection of the user's roles.
-     */
-    public List<String> getRoles(){
-        return this.roles;
-    }
-    
-    /**
-     * Set account roles.
-     * @param roles the set of roles assigned to the user.
-     */
-    public void setRoles(List<String> roles){
-        this.roles = roles;
-    }
-    
+
     /**
      * Return user password;
      * @return user password;
@@ -140,6 +129,73 @@ public class Account implements Serializable {
         this.email = email;
     }
     
+    /**
+     * @return the role
+     */
+    public AccountRole getRole() {
+        return role;
+    }
+    
+   /**
+     * @return the phoneNumber
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * @param phoneNumber the phoneNumber to set
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(AccountRole role) {
+        if(role == null){
+            throw new IllegalArgumentException("Role cannot be null.");
+        }
+        
+        this.role = role;
+    }
+    
+    /**
+     * @return Return true if active, else false.
+     */
+    public boolean isActive(){
+        return this.active.ACTIVE == AccountStatus.ACTIVE;
+    }
+    
+    /**
+     * Set account inactive.
+     */
+    public void setInActive(){
+        this.active = AccountStatus.ACTIVE;
+    }
+    
+    /**
+     * Set account active.
+     */
+    public void setActive(){
+        this.active = AccountStatus.ACTIVE;
+    }
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @Override
     public int hashCode() {
         return username != null ? username.hashCode() : 0;
@@ -157,5 +213,19 @@ public class Account implements Serializable {
                 || (this.username != null
                 && !this.username.equals(other.username)));
     }
-
+    
+  /**
+     * Return true if username is regex (([A-Z]|[a-z])*[0-9]) matches else false.
+     * 
+     * @param username username to match.
+     * @return true if username is regex (([A-Z]|[a-z])*[0-9]) matches else false.
+     */
+    public static boolean isValidUsername(String username){
+        
+        if(username == null){
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+        
+        return java.util.regex.Pattern.matches("([A-Z]|[a-z])*[0-9]*.{5}", username);
+    }
 }

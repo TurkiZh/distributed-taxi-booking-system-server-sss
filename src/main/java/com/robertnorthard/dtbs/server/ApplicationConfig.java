@@ -36,6 +36,5 @@ public class ApplicationConfig extends ResourceConfig {
          */
         register(RolesAllowedDynamicFeature.class);
         register(AuthenticationFilter.class);
-
     }
 }

@@ -15,6 +15,10 @@ public class DataMapper extends ObjectMapper {
     
     private static DataMapper dataMapper;
     
+    private DataMapper() {
+        // private as singleton
+    }
+    
     /**
      * Return an instance of data mapper. 
      * If it is null create a new instance.

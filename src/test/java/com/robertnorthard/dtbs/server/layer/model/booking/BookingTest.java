@@ -2,6 +2,7 @@
 package com.robertnorthard.dtbs.server.layer.model.booking;
 
 import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.AccountRole;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.model.Vehicle;
@@ -28,14 +29,20 @@ public class BookingTest {
     
     @Before
     public void setUp(){
+        passenger = new Account("timsmith","Tim","password", "tim_smith@example.com", "07526888826");
+        passenger.setRole(AccountRole.PASSENGER);
+        
+        driver = new Account("johndoe","John Doe", "simple_password", "john_doe@example.com", "07888888826");
+        driver.setRole(AccountRole.DRIVER);
+        
+        
         type = new VehicleType("Taxi","Ford","Focus",0.3);
         vehicle = new Vehicle("AS10 AJ", 3, type);
-        passenger = new Account("robert","password","example@example.com");
+        taxi = new Taxi(vehicle, driver);
+        
         route = new Route();
         route.setDistance(10);
-        driver = new Account("driver","password","example@example.com");
-        vehicle = new Vehicle("AS10 AJ", 3, type);
-        taxi = new Taxi(vehicle, driver);
+        
         booking = new Booking(passenger,route, 2);
     }
     /**
@@ -49,7 +56,7 @@ public class BookingTest {
         assertTrue(booking.getState() instanceof TaxiDispatchedBookingState);
         booking.pickupPassenger(new Date(date.getTime()+100));
         assertTrue(booking.getState() instanceof PassengerPickedUpBookingState);
-        booking.dropOffPassenger(new Date(date.getTime()+200));    
+        booking.dropOffPassenger(new Date(date.getTime()+200000));    
         assertTrue(booking.getState() instanceof CompletedBookingState);
     }
     

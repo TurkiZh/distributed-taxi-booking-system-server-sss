@@ -11,7 +11,13 @@ import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
+import javax.faces.validator.Validator;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 import org.joda.time.DateTime;
 
 /**
@@ -61,6 +67,11 @@ public class AccountService implements AccountFacade{
             if(!this.mailStrategy.isValidEmail(
                     acct.getEmail())){
                 throw new AccountInvalidException("Invalid email.");
+            }
+            
+            if(!Account.isValidUsername(acct.getUsername())){
+                throw new AccountInvalidException(
+                        "Username invalid must be at least 5 characters, start with a letter and only contain letters and numbers.");
             }
             
             // generate password hash
