@@ -81,6 +81,9 @@ public class AccountService implements AccountFacade{
             // store password hash
             acct.setPassword(passwordHash);
             
+            // activate account
+            acct.setActive();
+            
             // persist entity
             this.accountDao.persistEntity(acct);
             
