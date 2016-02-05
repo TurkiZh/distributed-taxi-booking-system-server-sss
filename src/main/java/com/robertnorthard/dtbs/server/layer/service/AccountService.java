@@ -104,7 +104,8 @@ public class AccountService implements AccountFacade{
     }
 
     /**
-     * Authenticate a user.
+     * Authenticate a user if password matches and account is active.
+     * 
      * @param username username of account
      * @param password password of account
      * @return account object if authentication successful else null.
@@ -120,7 +121,7 @@ public class AccountService implements AccountFacade{
         }
         
         if(!AuthenticationUtils.
-                checkPassword(password,account.getPassword())){
+                checkPassword(password,account.getPassword()) || !account.isActive()){
              throw new AccountAuthenticationFailed();
         }
         
