@@ -52,9 +52,11 @@ public class Account implements Serializable {
      
     /** 
      * Constructor for account.
-     * @param username user's username
-     * @param password user's password hash
-     * @param email user's email
+     * @param username username.
+     * @param name name.
+     * @param password password hash.
+     * @param phoneNumber phone number.
+     * @param email email.
      */
     public Account(String username, String name, String password, String phoneNumber, String email){    
         this.username = username;

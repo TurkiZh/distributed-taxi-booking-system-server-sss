@@ -11,13 +11,7 @@ import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-import javax.faces.validator.Validator;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
 import org.joda.time.DateTime;
 
 /**
@@ -27,7 +21,7 @@ import org.joda.time.DateTime;
  */
 public class AccountService implements AccountFacade{
 
-    private AccountDao accountDao;
+    private final AccountDao accountDao;
     @Inject private PasswordResetEventDao passwordResetEventDao;
     @Inject private MailStrategy mailStrategy;
     
