@@ -140,7 +140,7 @@ public class Taxi extends Observable implements Serializable{
             this.location.setLatitude(location.getLatitude());
             this.location.setLongitude(location.getLongitude());
         }else{
-            throw new IllegalArgumentException("Location can not be null");
+            throw new IllegalArgumentException("Location can not be null.");
         }
     }
 
