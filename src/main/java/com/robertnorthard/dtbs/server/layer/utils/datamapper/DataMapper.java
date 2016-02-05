@@ -3,6 +3,7 @@ package com.robertnorthard.dtbs.server.layer.utils.datamapper;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,8 @@ public class DataMapper extends ObjectMapper {
             synchronized(DataMapper.class){
                 DataMapper.dataMapper = new DataMapper();
                 DataMapper.dataMapper.setSerializationInclusion(Include.NON_NULL);
+                DataMapper.dataMapper.setPropertyNamingStrategy(
+                        PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
             }
         }
         
