@@ -27,6 +27,10 @@ public class AwaitingTaxiBookingState extends BookingState {
         booking.setState(
                 Booking.getTaxiDispatchedBookingState());
 
+        if(taxi.checkseatAvailability(booking.getNumberPassengers())){
+            throw new IllegalStateException("The taxi does not have enough seats.");
+        }
+        
         booking.setTaxi(taxi);
     }
 
