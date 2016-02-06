@@ -32,4 +32,15 @@ public class AuthenticationServiceImplTest {
         assertTrue(AuthenticationUtils.generateCode("1", 4).equals("1111"));
         assertTrue(AuthenticationUtils.generateCode(4).length() == 4);
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void generateZeroLengthCode(){
+        AuthenticationUtils.generateCode(0);
+    }
+    
+    @Test
+    public void base64Decode(){
+        assertTrue(AuthenticationUtils.base64Decode(
+                "dXNlcm5hbWU6cGFzc3dvcmQ=").equals("username:password"));
+    }
 }
