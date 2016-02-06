@@ -96,13 +96,4 @@ public class Vehicle implements Serializable
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
     }
-    
-    /**
-     * 
-     * @param numberSeats number of seats required.
-     * @return true if vehicle has enough free seats.
-     */
-    public boolean checkseatAvailability(int numberSeats){
-        return this.numberSeats - 1 - numberSeats > 0;
-    }
 }

@@ -132,6 +132,15 @@ public class Taxi extends Observable implements Serializable{
     }
     
     /**
+     * Return true if taxi has enough seats else false.
+     * @param numberSeats number of seats required.
+     * @return true if vehicle has enough free seats.
+     */
+    public boolean checkseatAvailability(int numberSeats){
+        return this.vehicle.getNumberSeats() - 1 - numberSeats > 0;
+    }
+    
+    /**
      * Update taxi's current location.
      * @param location new location.
      */
