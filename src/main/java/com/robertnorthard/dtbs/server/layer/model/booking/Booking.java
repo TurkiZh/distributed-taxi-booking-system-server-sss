@@ -114,6 +114,7 @@ public class Booking implements Serializable {
         this.numberPassengers = numberPassengers;
         this.timestamp = new Date();
         this.state = Booking.getAwaitingTaxiBookingState();
+        this.cost = this.estimateCost(0.3);
     }
     
    /**
@@ -128,10 +129,10 @@ public class Booking implements Serializable {
         this.passenger = passenger;
         this.route = route;
         this.numberPassengers = numberPassengers;
-        this.cost = this.calculateCost();
         this.timestamp = new Date();
         this.taxi = taxi;
         this.state = Booking.getTaxiDispatchedBookingState();
+        this.cost = this.calculateCost();
     }
 
     public void cancelBooking() {
@@ -155,12 +156,21 @@ public class Booking implements Serializable {
     }
     
     /**
-     * Calculate cost of taxi.
+     * Calculate cost of taxi using taxi cost per mile.
      *
      * @return cost of taxi booking.
      */
     public final double calculateCost() {
-        return this.taxi.getCostPerMile() * this.getRoute().getDistance() + 5;
+        return this.estimateCost(this.taxi.getCostPerMile());
+    }
+    
+    /**
+     * Estimate cost for taxi using set 
+     * @param scalar cost per mile. 
+     * @return estimate of taxi cost using a fixed cost per mile.
+     */
+    public final double estimateCost(double scalar){
+        return scalar * this.route.getDistanceInMiles() * this.route.getTimeInMinutes();
     }
 
     /**

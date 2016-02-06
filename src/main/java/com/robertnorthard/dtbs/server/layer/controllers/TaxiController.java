@@ -63,6 +63,8 @@ public class TaxiController {
              
             Location location = this.mapper.readValue(message, Location.class);
             
+            // drivers should only be able to update there own taxi.
+            
             this.locationTrackingService.updateLocation(
                     id, location.getLatitude(), location.getLongitude(), new Date().getTime());
             

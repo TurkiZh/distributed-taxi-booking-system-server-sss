@@ -35,13 +35,13 @@ public class BookingTest {
         driver = new Account("johndoe","John Doe", "simple_password", "john_doe@example.com", "07888888826");
         driver.setRole(AccountRole.DRIVER);
         
-        
         type = new VehicleType("Taxi","Ford","Focus",0.3);
         vehicle = new Vehicle("AS10 AJ", 3, type);
         taxi = new Taxi(vehicle, driver);
         
         route = new Route();
         route.setDistance(10);
+        route.setEstimateTravelTime(4198);
         
         booking = new Booking(passenger,route, 2);
     }
@@ -50,13 +50,13 @@ public class BookingTest {
      */
     @Test
     public void bookingSunnyDayTest(){
-        Date date = new Date();
         assertTrue(booking.getState() instanceof AwaitingTaxiBookingState);
         booking.dispatchTaxi(taxi); 
+        Date date = new Date();
         assertTrue(booking.getState() instanceof TaxiDispatchedBookingState);
-        booking.pickupPassenger(new Date(date.getTime()+100));
+        booking.pickupPassenger(new Date(date.getTime()+1000000));
         assertTrue(booking.getState() instanceof PassengerPickedUpBookingState);
-        booking.dropOffPassenger(new Date(date.getTime()+200000));    
+        booking.dropOffPassenger(new Date(date.getTime()+20000000));    
         assertTrue(booking.getState() instanceof CompletedBookingState);
     }
     

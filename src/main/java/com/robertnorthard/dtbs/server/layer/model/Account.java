@@ -64,6 +64,8 @@ public class Account implements Serializable {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        
+        this.setActive();
     }
     
     /**

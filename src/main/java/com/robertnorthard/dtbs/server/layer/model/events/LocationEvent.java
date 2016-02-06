@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model.events;
 
 import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import java.io.Serializable;
 
 /**
@@ -11,16 +10,16 @@ import java.io.Serializable;
 public class LocationEvent extends Event implements Serializable{
 
     private Location location;
-    private Taxi taxi;
+    private long taxiId;
 
     public LocationEvent() {
         // Empty constructor required by JPA.
     }
     
-    public LocationEvent(Taxi taxi, Location location){
+    public LocationEvent(long taxiId, Location location){
         super();
         this.location = location;
-        this.taxi = taxi;
+        this.taxiId = taxiId;
     }
 
     /**
@@ -40,14 +39,14 @@ public class LocationEvent extends Event implements Serializable{
     /**
      * @return the taxi
      */
-    public Taxi getTaxi() {
-        return taxi;
+    public long getTaxiId() {
+        return taxiId;
     }
 
     /**
      * @param taxi the taxi to set
      */
-    public void setTaxi(Taxi taxi) {
-        this.taxi = taxi;
+    public void setTaxiId(long taxiId) {
+        this.taxiId = taxiId;
     }
 }

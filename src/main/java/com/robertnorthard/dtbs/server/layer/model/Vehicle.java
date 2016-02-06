@@ -27,7 +27,7 @@ public class Vehicle implements Serializable
     private int numberSeats;
     
     @JoinColumn(name="VEHICLE_TYPE_ID")
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private VehicleType vehicleType;
     
     public Vehicle() {

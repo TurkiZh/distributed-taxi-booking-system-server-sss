@@ -58,7 +58,7 @@ public class LocationTrackingService extends Subject implements LocationTracking
         this.taxiService.updateTaxi(taxi);
         
         // create taxi location event.
-        LocationEvent event = new LocationEvent(taxi, lastKnownLocation);  
+        LocationEvent event = new LocationEvent(id, lastKnownLocation);  
         
         //notify all taxi subscribers of updated taxi location
         this.notifyObservers(event);

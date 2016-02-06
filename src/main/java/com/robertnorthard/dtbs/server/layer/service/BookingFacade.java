@@ -1,11 +1,13 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
+import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidLocationException;
 import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
 import java.util.List;
 
@@ -77,4 +79,40 @@ public interface BookingFacade{
      * @return booking history.
      */
     public List<Booking> findBookingHistory(String username);
+    
+    /**
+     * Accept a taxi booking.
+     * 
+     * @param username of taxi driver.
+     * @param bookingId booking id.
+     * @throws TaxiNotFoundException taxi not found.
+     * @throws BookingNotFoundException booking not found.
+     * @throws IllegalStateException if booking is in an invalid state.
+     */
+    public void acceptBooking(String username, long bookingId)
+             throws TaxiNotFoundException,BookingNotFoundException;
+
+   /**
+     * Drop of passenger.
+     * 
+     * @param username username of the taxi driver.
+     * @param bookingId id of booking to update.
+     * @param timestamp timestamp of update.
+     * @throws BookingNotFoundException booking not found.
+     * @throws TaxiNotFoundException username for taxi not found.
+     */
+    public void pickUpPassenger(String username, long bookingId, long timestamp) 
+            throws BookingNotFoundException, TaxiNotFoundException ;
+    
+   /**
+     * Pink up passenger.
+     * 
+     * @param username of taxi driver.
+     * @param bookingId id of booking to update.
+     * @param timestamp timestamp of update.
+     * @throws BookingNotFoundException booking not found.
+     * @throws TaxiNotFoundException username for taxi not found.
+     */
+    public void dropOffPassenger(String username, long bookingId, long timestamp) 
+            throws BookingNotFoundException, TaxiNotFoundException;
 }

@@ -25,7 +25,7 @@
             console.log(e.data);
             var div = document.getElementById('location_events');
             var obj = JSON.parse(e.data);
-            div.innerHTML = div.innerHTML + "<p>" + obj['id'] + " " + obj['taxi']['id'] + " " + new Date(obj['timestamp']) + " " + obj['location']['latitude'] + " " + obj['location']['longitude']  +"</p>";
+            div.innerHTML = div.innerHTML + "<p>" + obj['taxiId'] + " " + new Date(obj['timestamp']) + " " + obj['location']['latitude'] + " " + obj['location']['longitude']  +"</p>";
         };
     
         </script>

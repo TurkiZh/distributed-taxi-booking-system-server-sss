@@ -5,6 +5,7 @@ import com.robertnorthard.dtbs.server.layer.controllers.AuthenticationController
 import com.robertnorthard.dtbs.server.layer.controllers.BookingController;
 import com.robertnorthard.dtbs.server.layer.controllers.GeocodeController;
 import com.robertnorthard.dtbs.server.layer.controllers.TaxiController;
+import com.robertnorthard.dtbs.server.layer.controllers.TestController;
 import com.robertnorthard.dtbs.server.layer.security.AuthenticationFilter;
 import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -27,6 +28,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(GeocodeController.class);
         register(BookingController.class);
         register(TaxiController.class);
+        register(TestController.class);
 
         // Filters        
         /* 

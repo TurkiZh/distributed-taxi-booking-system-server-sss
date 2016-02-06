@@ -1,16 +1,21 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
+import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
 import com.robertnorthard.dtbs.server.layer.persistence.BookingDao;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.Route;
+import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.RouteDao;
+import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -25,6 +30,7 @@ public class BookingService implements BookingFacade {
     @Inject private BookingDao bookingDao;
     @Inject private AccountFacade accountService;
     @Inject private RouteDao routeDao;
+    @Inject private TaxiDao taxiDao;
     @Inject private GoogleDistanceMatrixFacade googleDistanceMatrixFacade ;
 
     public BookingService(){}
@@ -170,5 +176,101 @@ public class BookingService implements BookingFacade {
         }
 
         return bookingHistory;
+    }
+    
+    /**
+     * Accept a taxi booking.
+     * 
+     * @param username username of taxi driver.
+     * @param bookingId booking id.
+     * @throws TaxiNotFoundException taxi not found.
+     * @throws BookingNotFoundException booking not found.
+     * @throws IllegalStateException if booking is in an invalid state.
+     */
+    @Override
+    public synchronized void acceptBooking(String username, long bookingId) 
+            throws TaxiNotFoundException,BookingNotFoundException {
+        
+        Taxi taxi = this.taxiDao.findTaxiForDriver(username);
+        Booking booking = this.findBooking(bookingId);
+        
+        if(taxi == null){
+            throw new TaxiNotFoundException();
+        }
+        
+        if(booking == null){
+            throw new BookingNotFoundException();
+        }
+        
+        try{        
+            booking.dispatchTaxi(taxi);
+            this.bookingDao.update(booking);
+        }catch(IllegalStateException ex){
+            throw ex;
+        }
+    }
+    
+   /**
+     * Pink up passenger.
+     * 
+     * @param username username or driver accepting the booking
+     * @param bookingId id of booking to update.
+     * @param timestamp timestamp of update.
+     * @throws BookingNotFoundException booking not found.
+     * @throws TaxiNotFoundException taxi for user not found.
+     */
+    @Override
+    public void pickUpPassenger(String username, long bookingId, long timestamp) 
+            throws BookingNotFoundException, TaxiNotFoundException {
+        
+        Booking booking = this.findBooking(bookingId);
+        Taxi taxi = this.taxiDao.findTaxiForDriver(username);
+        
+        if(taxi == null){
+            throw new TaxiNotFoundException();
+        }
+        
+        if(booking == null){
+            throw new BookingNotFoundException();
+        }
+         
+        try{        
+            booking.pickupPassenger(new Date(timestamp));
+            this.bookingDao.update(booking);
+        }catch(IllegalStateException ex){
+            throw ex;
+        }
+    }
+
+   /**
+     * Drop of passenger.
+     * 
+     * @param bookingId id of booking to update.
+     * @param timestamp timestamp of update.
+     * @throws BookingNotFoundException booking not found.
+     * @throws TaxiNotFoundException taxi for user not found.
+     */
+    @Override
+    public void dropOffPassenger(String username, long bookingId, long timestamp) 
+            throws BookingNotFoundException,TaxiNotFoundException{
+        
+        Booking booking = this.findBooking(bookingId);
+        
+        Taxi taxi = this.taxiDao.findTaxiForDriver(username);
+        
+        if(taxi == null){
+            throw new TaxiNotFoundException();
+        }
+        
+        if(booking == null){
+            throw new BookingNotFoundException();
+        }
+         
+        try{        
+            booking.dropOffPassenger(new Date(timestamp));
+            this.bookingDao.update(booking);
+        }catch(IllegalStateException ex){
+            throw ex;
+        }
     }
 }

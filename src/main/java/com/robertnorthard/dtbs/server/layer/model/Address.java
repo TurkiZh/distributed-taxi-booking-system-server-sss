@@ -24,7 +24,7 @@ public class Address implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="LOCATION_ID")
     private Location location;
     

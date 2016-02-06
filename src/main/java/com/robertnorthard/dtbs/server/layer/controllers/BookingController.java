@@ -1,11 +1,13 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
+import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidLocationException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpListResponse;
@@ -92,13 +94,13 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-        } catch (InvalidLocationException ex) {
+        } catch (InvalidLocationException|InvalidBookingException|RouteNotFoundException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);
 
-        } catch (IOException | RouteNotFoundException | IllegalArgumentException | InvalidBookingException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -187,6 +189,43 @@ public class BookingController {
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (EntityNotFoundException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.NOT_FOUND);
+        }
+    }
+    
+    /**
+     * Accept a taxi booking,
+     *
+     * @param securityContext user's security context injected by container.
+     * @param bookingId of booking to accept.
+     * @return the booking object. If the user is authenticated to view the
+     * booking.
+     */
+    @POST
+    @Path("/{id}/accept")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("driver")
+    public Response acceptBooking(@Context SecurityContext securityContext, @PathParam("id") long bookingId) {
+
+        try {
+            if (securityContext != null) {
+                
+                this.bookingService.acceptBooking(
+                        securityContext.getUserPrincipal().getName(), bookingId);
+                        
+                return this.responseFactory.getResponse("Booking updated.", Response.Status.OK);
+
+            } else {
+                throw new AccountAuthenticationFailed();
+            }
+
+        } catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        } catch (TaxiNotFoundException|BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);

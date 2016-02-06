@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -133,5 +134,23 @@ public class Route implements Serializable{
      */
     public void setEstimateTravelTime(double estimateTravelTime) {
         this.estimateTravelTime = estimateTravelTime;
+    }
+    
+    /**
+     * Return distance in miles.
+     * @return distance in miles.
+     */
+    @JsonIgnore
+    public double getDistanceInMiles(){
+        return this.distance/1609;
+    }
+    
+    /**
+     * Return time in minutes.
+     * @return time in minutes.
+     */
+    @JsonIgnore
+    public double getTimeInMinutes(){
+        return this.estimateTravelTime/60;
     }
 }

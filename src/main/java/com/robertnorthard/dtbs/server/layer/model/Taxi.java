@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -20,6 +22,12 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="TAXI")
+@NamedQueries({
+    @NamedQuery(
+        name="Taxi.findTaxiForDriver",
+        query="SELECT t FROM Taxi t WHERE t.account.username = :username"
+    )
+})
 public class Taxi extends Observable implements Serializable{
     
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
@@ -55,7 +63,7 @@ public class Taxi extends Observable implements Serializable{
         this.vehicle = vehicle;
         this.account = account;
         
-        this.location = new Location();
+        this.location = null;
     }
     
     /**
@@ -146,6 +154,8 @@ public class Taxi extends Observable implements Serializable{
      */
     public void updateLocation(Location location){
         if(location != null){
+            // location can be null.
+            this.location= new Location();
             this.location.setLatitude(location.getLatitude());
             this.location.setLongitude(location.getLongitude());
         }else{
