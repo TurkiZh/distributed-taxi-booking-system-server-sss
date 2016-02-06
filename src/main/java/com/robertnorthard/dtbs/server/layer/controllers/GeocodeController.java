@@ -103,7 +103,7 @@ public class GeocodeController {
             double longitude = Double.parseDouble(query.getFirst("longitude"));
 
             if (!Location.validateCoordinates(latitude, longitude)) {
-                throw new IllegalArgumentException("Latitude or longitude are invalid..");
+                throw new IllegalArgumentException("Latitude or longitude are invalid.");
             }
 
             LOGGER.log(Level.INFO, "addressReverseLookup - LatLng {0},{1}",
