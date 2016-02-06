@@ -33,4 +33,18 @@ public class AccountTest {
     public void testHasRole() {
         assertFalse(account.hasRole("ADMIN"));
     }
+    
+    /**
+     * Test valid account username.
+     */
+    @Test
+    public void validAccountName(){
+        assertTrue(Account.isValidUsername("robert"));
+        assertTrue(Account.isValidUsername("robert123"));
+        assertFalse(Account.isValidUsername("123robert"));
+        assertTrue(Account.isValidUsername("john_doe"));
+        assertTrue(Account.isValidUsername("john.doe"));
+        assertFalse(Account.isValidUsername("' ; SELECT * FROM ACCOUNT"));
+        assertFalse(Account.isValidUsername("|#|_~"));
+    }
 }

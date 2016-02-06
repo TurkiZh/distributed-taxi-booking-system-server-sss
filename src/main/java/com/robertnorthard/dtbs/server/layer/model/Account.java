@@ -228,6 +228,6 @@ public class Account implements Serializable {
             throw new IllegalArgumentException("Username cannot be null.");
         }
         
-        return java.util.regex.Pattern.matches("([A-Z]|[a-z])*[0-9]*.{5}", username);
+        return java.util.regex.Pattern.matches("^[a-zA-Z].{5,16}$", username);
     }
 }
