@@ -12,9 +12,9 @@ import java.io.Serializable;
  * @author robertnorthard
  */
 public enum AccountType implements Serializable {
-    PASSENGER("PASSENGER"),
-    DRIVER("DRIVER"),
-    ADMIN("ADMIN");
+    PASSENGER("passenger"),
+    DRIVER("driver"),
+    ADMIN("admin");
     
     String roleName;
     
@@ -43,6 +43,5 @@ public enum AccountType implements Serializable {
     @Override
     public String toString(){
         return this.roleName;
-    }
-    
+    }    
 }

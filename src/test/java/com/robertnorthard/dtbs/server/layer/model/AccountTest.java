@@ -28,10 +28,14 @@ public class AccountTest {
 
     /**
      * Test of hasRole method, of class Account.
+     * Intent: to test if enum comparison works as expected, due to previous defects.
      */
     @Test
     public void testHasRole() {
         assertFalse(account.hasRole("ADMIN"));
+        assertTrue(account.hasRole("PASSENGER"));
+        assertTrue(account.hasRole("passenger"));
+        assertFalse(account.hasRole("unknown"));
     }
     
     /**

@@ -70,7 +70,7 @@ public class BookingController {
         try {
             if (securityContext != null) {
                 String username = securityContext.getUserPrincipal().getName();
-
+                
                 bookingDto = this.mapper.readValue(message, BookingDto.class);
                 
                 if (username != null) {
@@ -163,7 +163,7 @@ public class BookingController {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("passenger")
-    public Response makeBooking(@Context SecurityContext securityContext, @PathParam("id") long id) {
+    public Response findBooking(@Context SecurityContext securityContext, @PathParam("id") long id) {
 
         try {
             if (securityContext != null) {

@@ -85,12 +85,13 @@ public class Account implements Serializable {
     
     /**
      * Check if a user has a specified role.
-     * @param role role to check.
+     * 
+     * @param role role to check. Role can be provided in upper or lowercase. 
      * @return true if user has role else false.
      */
     public boolean hasRole(String role){
         try{
-            return AccountRole.getRole(role).toString().equals(role);
+            return this.role == AccountRole.valueOf(role.toUpperCase());
         }catch(IllegalArgumentException ex){
             return false;
         }
