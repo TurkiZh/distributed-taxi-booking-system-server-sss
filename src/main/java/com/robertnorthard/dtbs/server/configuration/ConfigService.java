@@ -58,8 +58,8 @@ public class ConfigService {
             throw new IllegalArgumentException();
         }
 
-        for(String key : tokens.keySet()){
-            property = property.replace("{" + key.trim() + "}", tokens.get(key));
+        for(Map.Entry<String, String> key : tokens.entrySet()){
+            property = property.replace("{" + key.getKey().trim() + "}", key.getValue());
         }
 
         return property;
