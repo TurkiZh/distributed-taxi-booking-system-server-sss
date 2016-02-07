@@ -183,7 +183,7 @@ public class Account implements Serializable {
     /**
      * Set account active.
      */
-    public void setActive(){
+    public final void setActive(){
         this.active = AccountStatus.ACTIVE;
     }
     
