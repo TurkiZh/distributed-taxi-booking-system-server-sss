@@ -122,7 +122,7 @@ public class BookingService implements BookingFacade {
      * @return true if incomplete bookings for user else false
      */
     private boolean incompleteBookings(String username){
-        return this.bookingDao.findInCompletedBookingsForUser(username).size() >= 1;
+        return !this.bookingDao.findInCompletedBookingsForUser(username).isEmpty();
     }
 
     /**
