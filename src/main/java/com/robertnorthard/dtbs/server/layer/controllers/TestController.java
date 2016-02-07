@@ -53,12 +53,8 @@ public class TestController {
         Taxi taxi = new Taxi(vehicle, driver);
         
         Location startLocation = new Location(51.763366,-0.22309);
-        Address startAddress = new Address(
-                "13 Example Ln, Hatfield, Hertfordshire AL10 8AG",startLocation);
         
         Location endLocation = new Location(51.7535889,-0.2446257);
-        Address endAddress = new Address(
-            "Cherry Way, AL10", endLocation);
         
         GoogleDistanceMatrixService service = new GoogleDistanceMatrixService();
         

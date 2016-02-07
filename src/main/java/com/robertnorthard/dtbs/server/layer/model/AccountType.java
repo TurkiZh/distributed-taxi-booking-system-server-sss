@@ -31,13 +31,13 @@ public enum AccountType implements Serializable {
      * @return true if valid role else false.
      */
     public static boolean isValidRole(String role){
-        AccountType type;
+
         try{
-            type  = AccountType.valueOf(role);
+            AccountType.valueOf(role);
+            return true;
         } catch (IllegalArgumentException ex) {  
             return false;
         }
-        return true;
     }
 
     @Override
