@@ -144,7 +144,7 @@ public class BookingController {
      * @return a collection of bookings in awaiting taxi dispatch state.
      */
     @GET
-    @Path("/orders")
+    @Path("/awaiting")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("driver")
     public Response findBookingsAwaitingTaxiDispatch(){

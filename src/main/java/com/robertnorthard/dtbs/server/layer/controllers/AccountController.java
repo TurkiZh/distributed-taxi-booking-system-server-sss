@@ -97,10 +97,12 @@ public class AccountController {
         try {
             this.accountService.resetPassword(username);
 
+            LOGGER.log(Level.INFO, "resettAccount - resetting password " + username);
+            
             return this.responseFactory.getResponse(
                     "Password reset sent", Response.Status.OK);
 
-        } catch (EntityNotFoundException ex) {
+        } catch (AccountInvalidException ex) {
             
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(

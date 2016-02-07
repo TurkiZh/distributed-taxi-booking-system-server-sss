@@ -56,10 +56,10 @@ public interface AccountFacade {
     /**
      * Reset account password.
      * @param username username of account to reset.
-     * @throws EntityNotFoundException account not found
+     * @throws AccountInvalidException account not found
      */
     public void resetPassword(final String username)
-            throws EntityNotFoundException;
+            throws AccountInvalidException;
     
     /**
      * 

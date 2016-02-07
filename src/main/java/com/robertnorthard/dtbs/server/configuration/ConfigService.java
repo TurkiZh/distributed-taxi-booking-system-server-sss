@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.configuration;
 
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,12 @@ public class ConfigService {
 
     private ConfigService() {}
 
+    /**
+     * Load specified configuration.
+     * 
+     * @param conf file to load configuration from.
+     * @return properties loaded from the specified configuration file else null.
+     */
     public static Properties getConfig(String conf) {
         try {
             for (ConfigLoaderStrategy configLoader : LOADERS) {
@@ -35,5 +42,26 @@ public class ConfigService {
         }
 
         return null;
+    }
+    
+   /**
+     * Tokenise a property token with a provided value.
+     * e.g. api.endpoint=http://127.0.0.1/api/{id} becomes http://127.0.0.1/api/10
+     *
+     * @param property property value to parse.
+     * @param tokens tokens to value map.
+     * @return property with values replaced by tokens.
+     */
+    public static String parseProperty(String property, Map<String,String> tokens) {
+
+        if(property == null || tokens == null || tokens.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
+        for(String key : tokens.keySet()){
+            property = property.replace("{" + key.trim() + "}", tokens.get(key));
+        }
+
+        return property;
     }
 }

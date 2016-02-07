@@ -1,6 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
+import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import java.util.List;
@@ -17,10 +18,11 @@ public interface GoogleDistanceMatrixFacade {
      * 
      * @param origin route origin address.
      * @param destination route destination address.
+     * @return distance between origin and destination.
      * @throws InvalidGoogleApiResponseException
      */
-    public void getDistance(String origin, String destination) 
-            throws InvalidGoogleApiResponseException;
+    public double getDistance(String origin, String destination) 
+            throws InvalidGoogleApiResponseException, RouteNotFoundException;
     
     /**
      * Return a collection of routes from Google directions API response.
@@ -60,5 +62,17 @@ public interface GoogleDistanceMatrixFacade {
      * @throws IllegalArgumentException invalid location object.
      */
     public Route getRouteInfo(Location startLocation, Location endLocation) throws InvalidGoogleApiResponseException;
-        
+       
+    
+   /**
+     * Estimate travel time between start and end location.
+     * 
+     * @param startLocation start location
+     * @param endLocation end location.
+     * @return route calculated route information. 
+     * @throws InvalidGoogleApiResponseException unable to parse API response. 
+     * @throws IllegalArgumentException invalid location object.
+     */
+    public long estimateTravelTime(Location startLocation, Location endLocation) throws InvalidGoogleApiResponseException;
+     
 }

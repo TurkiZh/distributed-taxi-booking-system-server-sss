@@ -73,7 +73,21 @@
             <artifactId>google-maps-services</artifactId>
             <version>0.1.9</version>
         </dependency>
-  
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.12.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.10.1.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -114,6 +128,9 @@
                         </goals>
                         <phase>integration-test</phase>
                         <configuration>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>src/main/webapp/WEB-INF/classes</additionalClasspathElement>
+                            </additionalClasspathElements>
                             <excludes>
                                 <exclude>none</exclude>
                             </excludes>

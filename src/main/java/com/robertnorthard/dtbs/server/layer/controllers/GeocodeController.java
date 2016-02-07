@@ -40,6 +40,7 @@ public class GeocodeController {
 
     /**
      * Return a route from start and end location latitude and longitude.
+     * 
      * @param url url with start_latitude, start_longitude, end_latitude and end_longitude query
      *      parameters.
      * @return a route from start to end location using provided a latitudes and longitudes.
@@ -53,8 +54,8 @@ public class GeocodeController {
         MultivaluedMap<String, String> query = url.getQueryParameters();
 
         try {
-            if (!(query.containsKey("start_latitude")
-                    && query.containsKey("start_longitude"))) {
+            if (!(query.containsKey("start_latitude") && query.containsKey("end_latitude")
+                    && query.containsKey("end_longitude") && query.containsKey("start_longitude"))) {
                 throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
             }
 
@@ -121,6 +122,50 @@ public class GeocodeController {
             }
 
             return this.responseFactory.getResponse(address, Response.Status.OK);
+
+        } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+            
+        }catch (InvalidGoogleApiResponseException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    
+    /**
+     * Return estimate travel time between start and end location in seconds.
+     * 
+     * @param url url with start_latitude, start_loroute
+     * ngitude, end_latitude and end_longitude query
+     *      parameters.
+     * @return a route from start to end location using provided a latitudes and longitudes.
+     */
+    @GET
+    @Path("/route/estimate/time")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"driver","passenger"})
+    public Response estimateTravelTime(@Context UriInfo url) {
+
+        MultivaluedMap<String, String> query = url.getQueryParameters();
+
+        try {
+            if (!(query.containsKey("start_latitude") && query.containsKey("end_latitude")
+                    && query.containsKey("end_longitude") && query.containsKey("start_longitude"))) {
+                throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
+            }
+
+            double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
+            double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
+            double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
+            double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
+
+            double time = this.googleDistanceMatrixService.estimateTravelTime(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
+
+            return this.responseFactory.getResponse(time, Response.Status.OK);
 
         } catch (IllegalArgumentException ex) {
             LOGGER.log(Level.INFO, null, ex);

@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.services;
+package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import org.junit.Test;

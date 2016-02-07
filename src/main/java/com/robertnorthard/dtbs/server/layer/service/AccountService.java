@@ -134,16 +134,16 @@ public class AccountService implements AccountFacade{
      * 2 - Create reset event.
      * 3 - Send email to use with temporary access code.
      * @param username username of account to reset.
-     * @throws EntityNotFoundException account not found.
+     * @throws AccountInvalidException account not found.
      */
     @Override
     public void resetPassword(final String username) 
-            throws EntityNotFoundException {
+            throws AccountInvalidException {
         
         Account account = this.findAccount(username);
         
         if(account == null){
-            throw new EntityNotFoundException();
+            throw new AccountInvalidException("Invalid account.");
         }
         
         // generate temporary reset code
@@ -166,11 +166,12 @@ public class AccountService implements AccountFacade{
         this.mailStrategy.sendMail("DTBS - Reset Password", 
                 "Your temporary code to reset your password is " 
                         + resetCode + " and expires on " 
-                        + expireDate.toString("DD-MM-YYYY hh:mm:ss"),
+                        + expireDate.toString("dd-MM-YYYY hh:mm:ss"),
                 account.getEmail());
     }
     
     /**
+     * Reset password for username using temporary access code. 
      * 
      * @param code temporary authentication code.
      * @param username username to authenticate with.
