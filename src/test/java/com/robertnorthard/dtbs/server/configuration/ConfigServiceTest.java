@@ -32,4 +32,11 @@ public class ConfigServiceTest {
         assertTrue(ConfigService.parseProperty(property, tokens).equals(expectedTokenisedProperty));
     }
     
+   /**
+     * Test of parseProperty method with invalid tokens.
+     */
+    @Test (expected = IllegalArgumentException.class)
+    public void testParsePropertyNullArguments(){
+        ConfigService.parseProperty(null, null);
+    }
 }
