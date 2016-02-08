@@ -8,8 +8,7 @@ import com.robertnorthard.dtbs.server.layer.model.Account;
 
 /**
  * An interface for defining and enforcing operations needed for the Account
- * Service class. It provides the scope of possible database requests made
- * through the AccountDAO.
+ * Service class.
  *
  * @author robertnorthard
  */

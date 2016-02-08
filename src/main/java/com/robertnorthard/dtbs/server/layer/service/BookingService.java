@@ -20,8 +20,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * A class implementing the booking facade. It provides the scope of possible
- * database requests made through the booking dao.
+ * A service class implementing the booking facade.
  *
  * @author robertnorthard
  */

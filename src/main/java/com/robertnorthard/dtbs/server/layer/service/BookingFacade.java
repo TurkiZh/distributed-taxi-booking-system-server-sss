@@ -13,8 +13,7 @@ import java.util.List;
 
 /**
  * An interface for defining and enforcing operations needed for the Booking
- * Service class. It provides the scope of possible database requests made
- * through the TaxiDAO.
+ * Service class.
  *
  * @author robertnorthard
  */

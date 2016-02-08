@@ -3,9 +3,8 @@ package com.robertnorthard.dtbs.server.layer.service;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 
 /**
- * An interface for defining and enforcing operations needed for the Taxi
- * Service class. It provides the scope of possible database requests made
- * through the TaxiDAO.
+ * An interface for defining and enforcing operations needed for the 
+ * location tracking of taxis.
  *
  * @author robertnorthard
  */
@@ -22,5 +21,4 @@ public interface LocationTrackingFacade {
      */
     public void updateLocation(Long id, double latitude, double longitude, long timestamp)
             throws EntityNotFoundException;
-
 }

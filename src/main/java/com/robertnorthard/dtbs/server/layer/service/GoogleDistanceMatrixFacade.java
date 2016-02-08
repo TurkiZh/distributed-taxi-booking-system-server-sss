@@ -8,7 +8,8 @@ import java.util.List;
 import org.codehaus.jettison.json.JSONObject;
 
 /**
- * Service class for Google's distance matrix and geocode API.
+ * An interface for defining and enforcing operations needed for interfacing
+ * with Google distance matrix and geocode services.
  *
  * @author robertnorthard
  */
