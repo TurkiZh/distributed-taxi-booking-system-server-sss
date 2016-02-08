@@ -91,6 +91,8 @@ public class GoogleDistanceMatrixServiceIT {
                 this.roundToTwoDecimalPlaces(location.getLatitude()),
                 this.roundToTwoDecimalPlaces(location.getLongitude())));
     }
+  
+    
     
     /** 
      * Round to two decimal places.

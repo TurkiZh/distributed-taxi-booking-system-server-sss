@@ -51,11 +51,17 @@ public class AccountService implements AccountFacade {
      *
      * @param acct account to create.
      * @throws AccountAlreadyExistsException if account already exists.
-     * @throws AccountInvalidException invalid email address
+     * @throws AccountInvalidException invalid email address.
+     * @throws IllegalArgumentException if account null.
+     *
      */
     @Override
     public void registerAccount(final Account acct)
             throws AccountAlreadyExistsException, AccountInvalidException {
+
+        if (acct == null) {
+            throw new IllegalArgumentException("Account cannot be null");
+        }
 
         // check if acount with username already exists
         if (this.accountDao.findEntityById(acct.getUsername()) == null) {
@@ -66,28 +72,31 @@ public class AccountService implements AccountFacade {
                 throw new AccountInvalidException("Invalid email.");
             }
 
-            if (!Account.isValidUsername(acct.getUsername())) {
+            if (Account.isValidUsername(acct.getUsername())) {
+
+                // generate password hash
+                String passwordHash = AuthenticationUtils.hashPassword(
+                        acct.getPassword());
+
+                // store password hash
+                acct.setPassword(passwordHash);
+
+                // activate account
+                acct.setActive();
+
+                // persist entity
+                this.accountDao.persistEntity(acct);
+
+                // email account registration confirmation.
+                this.mailStrategy.sendMail("DTBS - Registration Confirmation",
+                        "Your account, with username " + acct.getUsername()
+                        + " has been activated.", acct.getEmail());
+
+            } else {
                 throw new AccountInvalidException(
                         "Username invalid must be at least 5 characters, start with a letter and only contain letters and numbers.");
             }
 
-            // generate password hash
-            String passwordHash = AuthenticationUtils.hashPassword(
-                    acct.getPassword());
-
-            // store password hash
-            acct.setPassword(passwordHash);
-
-            // activate account
-            acct.setActive();
-
-            // persist entity
-            this.accountDao.persistEntity(acct);
-
-            // email account registration confirmation.
-            this.mailStrategy.sendMail("DTBS - Registration Confirmation",
-                    "Your account, with username " + acct.getUsername()
-                    + " has been activated.", acct.getEmail());
         } else {
             throw new AccountAlreadyExistsException(
                     String.format("Account with username - [%s] already exists.", acct.getUsername()));
@@ -103,6 +112,9 @@ public class AccountService implements AccountFacade {
      */
     @Override
     public Account findAccount(final String username) {
+        if(username == null){
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
         return this.accountDao.findEntityById(username);
     }
 
