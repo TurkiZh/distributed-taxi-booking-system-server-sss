@@ -34,6 +34,4 @@ public class AccountSecurityContextTest {
         assertFalse(this.accountSecurityContext.isUserInRole("PASSENGER"));
         assertFalse(this.accountSecurityContext.isUserInRole("unknown"));
     }
-
-    
 }
