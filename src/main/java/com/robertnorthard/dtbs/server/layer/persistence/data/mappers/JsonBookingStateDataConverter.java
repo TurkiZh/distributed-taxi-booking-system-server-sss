@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  * JSON serializer for Booking state class.
- * 
+ *
  * @author robertnorthard
  */
 public class JsonBookingStateDataConverter extends JsonSerializer<BookingState> {
@@ -17,5 +17,5 @@ public class JsonBookingStateDataConverter extends JsonSerializer<BookingState> 
     public void serialize(BookingState t, JsonGenerator jg, SerializerProvider sp) throws IOException {
         jg.writeString(new JpaBookingStateDataConverter().convertToDatabaseColumn(t));
     }
-    
+
 }

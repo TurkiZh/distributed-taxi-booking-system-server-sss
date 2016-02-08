@@ -10,44 +10,48 @@ import org.codehaus.jettison.json.JSONObject;
 
 /**
  * Utility class for HTTP.
+ *
  * @author robertnorthard
  */
 public class HttpUtils {
-    
-    private HttpUtils() {}
-    
+
+    private HttpUtils() {
+    }
+
     /**
      * Return a JSONObject representing the URL response.
-     * @param url url to query. 
+     *
+     * @param url url to query.
      * @return a JSON object containing the URL response.
      * @throws JSONException json invalid.
      */
-     public static JSONObject getUrl(String url) throws JSONException {
+    public static JSONObject getUrl(String url) throws JSONException {
         try {
             InputStream is = new URL(url).openStream();
 
             String data = "";
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
                 String inputLine = "";
-                
+
                 while ((inputLine = reader.readLine()) != null) {
                     data += inputLine;
                 }
             }
-            
+
             return new JSONObject(data);
 
         } catch (IOException ex) {
             return null;
         }
     }
-    
-     /**
-      * URL encoded the provided value.
-      * @param value the value to URL encode.
-      * @return the URL encoded string.
-      */
-    public static String stringEncode(String value){
+
+    /**
+     * URL encoded the provided value.
+     *
+     * @param value the value to URL encode.
+     * @return the URL encoded string.
+     */
+    public static String stringEncode(String value) {
         return value.replaceAll(" ", "%20");
     }
 }

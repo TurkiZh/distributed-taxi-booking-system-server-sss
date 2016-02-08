@@ -10,34 +10,36 @@ import javax.persistence.Table;
 
 /**
  * Represent a vehicle type.
+ *
  * @author robertnorthard
  */
 @Entity
-@Table(name="VEHICLE_TYPE")
-public class VehicleType implements Serializable{
-    
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+@Table(name = "VEHICLE_TYPE")
+public class VehicleType implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name="NAME")
+
+    @Column(name = "NAME")
     private String name;
-    
-    @Column(name="MANUFACTURER")
+
+    @Column(name = "MANUFACTURER")
     private String manufacturer;
-    
-    @Column(name="model")
+
+    @Column(name = "model")
     private String model;
-    
-    @Column(name="COST")
+
+    @Column(name = "COST")
     private double cost;
-    
-    public VehicleType () {
+
+    public VehicleType() {
         // Empty constructor required by JPA.
     }
-    
-    public VehicleType(String name, String manufacturer, String model, double cost){
+
+    public VehicleType(String name, String manufacturer, String model, double cost) {
         this.name = name;
-        this.cost = cost; 
+        this.cost = cost;
         this.manufacturer = manufacturer;
         this.model = model;
     }
@@ -48,7 +50,7 @@ public class VehicleType implements Serializable{
     public String getName() {
         return name;
     }
- 
+
     /**
      * @param name the name to set
      */

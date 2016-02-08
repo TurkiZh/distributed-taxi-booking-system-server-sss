@@ -7,28 +7,30 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Taxi Service class implementation.
- * 
+ *
  * @author robertnorthard
  */
 public class TaxiService implements TaxiFacade {
-    
+
     private Map<Integer, Taxi> allTaxisCache = new ConcurrentHashMap<>();
     private TaxiDao taxiDao = new TaxiDao();
-    
-    public TaxiService(){
+
+    public TaxiService() {
         // left blank. 
     }
-    
+
     /**
      * Constructor - used for dependency injection.
+     *
      * @param taxoDao taxi dao.
      */
-    public TaxiService(TaxiDao taxoDao){
+    public TaxiService(TaxiDao taxoDao) {
         this.taxiDao = taxoDao;
     }
 
     /**
      * Find taxi by id.
+     *
      * @param id id of taxi.
      * @return taxi or null if not found.
      */
@@ -37,8 +39,9 @@ public class TaxiService implements TaxiFacade {
         return this.taxiDao.findEntityById(id);
     }
 
-   /**
+    /**
      * Update taxi.
+     *
      * @param taxi taxi to update.
      */
     @Override

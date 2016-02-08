@@ -5,29 +5,35 @@ import java.security.Principal;
 import javax.ws.rs.core.SecurityContext;
 
 /**
- * Security context wrapper class account.
- * Inspiration from: https://simplapi.wordpress.com/2015/09/19/jersey-jax-rs-securitycontext-in-action/
+ * Security context wrapper class account. Inspiration from:
+ * https://simplapi.wordpress.com/2015/09/19/jersey-jax-rs-securitycontext-in-action/
+ *
  * @author robertnorthard
  */
 public class AccountSecurityContext implements SecurityContext {
 
     private final Account account;
     private final String requireUri;
-    
+
     /**
      * Constructor for class UserSecurityContext.
+     *
      * @param account account to encapsulate in security context.
      * @param requireUri access url.
      */
-    public AccountSecurityContext(Account account, String requireUri){
+    public AccountSecurityContext(Account account, String requireUri) {
         this.account = account;
         this.requireUri = requireUri;
     }
+
     /**
-     * Returns a java.security.Principal object containing the name of the current 
-     * authenticated user. If the user has not been authenticated, the method returns null.
-     * @return a java.security.Principal object containing the name of the current 
-     * authenticated user. If the user has not been authenticated, the method returns null.
+     * Returns a java.security.Principal object containing the name of the
+     * current authenticated user. If the user has not been authenticated, the
+     * method returns null.
+     *
+     * @return a java.security.Principal object containing the name of the
+     * current authenticated user. If the user has not been authenticated, the
+     * method returns null.
      */
     @Override
     public Principal getUserPrincipal() {
@@ -40,33 +46,41 @@ public class AccountSecurityContext implements SecurityContext {
         };
     }
 
-     /**
-     * Returns a boolean indicating whether the authenticated user is included in the specified logical "role".
+    /**
+     * Returns a boolean indicating whether the authenticated user is included
+     * in the specified logical "role".
+     *
      * @param role role to confirm.
-     * @return a boolean indicating whether the authenticated user is included in the specified logical "role".
+     * @return a boolean indicating whether the authenticated user is included
+     * in the specified logical "role".
      * @throws IllegalArgumentException if role invalid.
      */
     @Override
     public boolean isUserInRole(String role) {
-        return this.account.hasRole(role); 
+        return this.account.hasRole(role);
     }
 
     /**
-     * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
-     * @return a boolean indicating whether this request was made using a secure channel, such as HTTPS.
+     * Returns a boolean indicating whether this request was made using a secure
+     * channel, such as HTTPS.
+     *
+     * @return a boolean indicating whether this request was made using a secure
+     * channel, such as HTTPS.
      */
     @Override
     public boolean isSecure() {
         return this.requireUri.startsWith("https");
     }
 
-
     /**
-     * Returns the string value of the authentication scheme used to protect the resource.
-     * @return the string value of the authentication scheme used to protect the resource.
+     * Returns the string value of the authentication scheme used to protect the
+     * resource.
+     *
+     * @return the string value of the authentication scheme used to protect the
+     * resource.
      */
     @Override
     public String getAuthenticationScheme() {
-      return SecurityContext.BASIC_AUTH;
+        return SecurityContext.BASIC_AUTH;
     }
 }

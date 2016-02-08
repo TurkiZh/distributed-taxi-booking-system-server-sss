@@ -4,8 +4,8 @@ import com.robertnorthard.dtbs.server.layer.model.Taxi;
 import java.util.Date;
 
 /**
- * Taxi dispatched booking state. 
- * 
+ * Taxi dispatched booking state.
+ *
  * @author robertnorthard
  */
 public class TaxiDispatchedBookingState extends BookingState {

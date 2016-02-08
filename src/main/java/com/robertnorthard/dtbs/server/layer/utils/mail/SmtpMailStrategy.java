@@ -34,6 +34,7 @@ public class SmtpMailStrategy implements MailStrategy {
 
     /**
      * Secondary constructor to allow mail properties to be set.
+     *
      * @param mailProperties mail properties.
      */
     public SmtpMailStrategy(Properties mailProperties) {
@@ -41,8 +42,9 @@ public class SmtpMailStrategy implements MailStrategy {
     }
 
     /**
-     * Return shared mail session objects to provide access to mail transport 
-     * services. 
+     * Return shared mail session objects to provide access to mail transport
+     * services.
+     *
      * @return current mail session
      */
     private Session getMailSession() {
@@ -58,8 +60,9 @@ public class SmtpMailStrategy implements MailStrategy {
         );
     }
 
-     /**
-     * Send mail with specified message. 
+    /**
+     * Send mail with specified message.
+     *
      * @param subject subject of message
      * @param message message to send as part of email body.
      * @param recipient recipient to send message to.
@@ -69,7 +72,7 @@ public class SmtpMailStrategy implements MailStrategy {
     public boolean sendMail(String subject, String message, String recipient) {
 
         boolean mailSent = false;
-        
+
         try {
             Message mailMessage = new MimeMessage(
                     this.getMailSession());
@@ -85,18 +88,19 @@ public class SmtpMailStrategy implements MailStrategy {
             mailMessage.setText(message);
 
             Transport.send(mailMessage);
-            
+
             mailSent = true;
-            
+
         } catch (MessagingException ex) {
             LOGGER.log(Level.SEVERE, ex.toString());
         }
-        
+
         return mailSent;
     }
 
     /**
      * Return true if valid email else false.
+     *
      * @param address address to validate.
      * @return true if valid email else false.
      */

@@ -29,7 +29,7 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
         Query query = em.createNamedQuery("PasswordResetEvent.findPasswordResetByUsernameAndCode", PasswordResetEvent.class);
         query.setParameter("username", username);
         query.setParameter("code", code);
-        
+
         return query.getResultList();
     }
 
@@ -40,11 +40,11 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
      * @return a collection of all active password resets for a given user.
      */
     public List<PasswordResetEvent> findActivePasswordResetByUsername(String username) {
-        
+
         EntityManager em = this.getEntityManager();
         Query query = em.createNamedQuery("PasswordResetEvent.findActivePasswordResetByUsername", PasswordResetEvent.class);
         query.setParameter("username", username);
-        
+
         return query.getResultList();
     }
 }

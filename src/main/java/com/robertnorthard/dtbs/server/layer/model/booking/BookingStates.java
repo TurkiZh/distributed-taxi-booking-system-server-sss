@@ -2,7 +2,7 @@ package com.robertnorthard.dtbs.server.layer.model.booking;
 
 /**
  * Represents possible booking states for data mapping.
- * 
+ *
  * @author robertnorthard
  */
 public enum BookingStates {

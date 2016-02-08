@@ -12,22 +12,24 @@ import javax.persistence.TemporalType;
 
 /**
  * Event superclass.
+ *
  * @author robertnorthard
  */
 @MappedSuperclass
 public abstract class Event implements Serializable {
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @Column(name="TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp; 
 
-    public Event(){
+    @Column(name = "TIMESTAMP")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+
+    public Event() {
         this.timestamp = new Date();
     }
-    
+
     /**
      * @return the id
      */

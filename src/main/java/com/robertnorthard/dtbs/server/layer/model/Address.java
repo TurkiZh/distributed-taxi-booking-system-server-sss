@@ -1,4 +1,3 @@
-
 package com.robertnorthard.dtbs.server.layer.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,34 +13,36 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Represent an address. Address has a location and address name. 
+ * Represent an address. Address has a location and address name.
+ *
  * @author robertnorthard
  */
 @Entity
-@Table(name="ADDRESS")
+@Table(name = "ADDRESS")
 public class Address implements Serializable {
-    
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="LOCATION_ID")
+    @JoinColumn(name = "LOCATION_ID")
     private Location location;
-    
-    @Column(name="ADDRESS")
+
+    @Column(name = "ADDRESS")
     private String address;
 
     public Address() {
         // Needed by JPA.
     }
-    
+
     /**
      * Constructor for class address.
-     * 
+     *
      * @param address address e.g. 30 Cheviots, Hatfield, AL10 8JD.
      * @param location latitude and longitude location of address.
      */
-    public Address(String address, Location location){
+    public Address(String address, Location location) {
         this.address = address;
         this.location = location;
     }
@@ -84,7 +85,8 @@ public class Address implements Serializable {
 
     /**
      * Set id.
-     * @param id id. 
+     *
+     * @param id id.
      */
     public void setId(Long id) {
         this.id = id;

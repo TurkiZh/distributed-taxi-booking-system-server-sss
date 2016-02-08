@@ -6,18 +6,20 @@ import java.util.List;
 
 /**
  * Utility class for PolyLines
+ *
  * @author robertnorthard
  */
 public class PolyLineUtils {
 
-    private PolyLineUtils() {}
-    
+    private PolyLineUtils() {
+    }
+
     /**
-     * Google polyline decoder Algorithm modified
-     * Source (Jeffrey Sambells)
+     * Google polyline decoder Algorithm modified Source (Jeffrey Sambells)
      * http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
      * Google decode algorithm:
      * https://developers.google.com/maps/documentation/utilities/polylinealgorithm?csw=1
+     *
      * @param encoded the polyline encoded string.
      * @return a collection of locations representing a polyline path.
      */
@@ -39,7 +41,7 @@ public class PolyLineUtils {
 
             shift = 0;
             result = 0;
-            
+
             do {
                 b = encoded.charAt(index++) - 63;
                 result |= (b & 0x1f) << shift;
@@ -49,7 +51,7 @@ public class PolyLineUtils {
             lng += dlng;
 
             Location p = new Location((((double) lat / 1E5)),
-                        (((double) lng / 1E5)));
+                    (((double) lng / 1E5)));
             poly.add(p);
         }
 

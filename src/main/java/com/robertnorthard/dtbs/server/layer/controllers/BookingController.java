@@ -38,12 +38,13 @@ import javax.ws.rs.core.SecurityContext;
  * @author robertnorthard
  */
 @Path("/v1/booking")
-@RequestScoped 
+@RequestScoped
 public class BookingController {
 
     private static final Logger LOGGER = Logger.getLogger(BookingController.class.getName());
 
-    @Inject private BookingFacade bookingService;
+    @Inject
+    private BookingFacade bookingService;
     private final HttpResponseFactory responseFactory;
     private final DataMapper mapper;
 
@@ -72,14 +73,14 @@ public class BookingController {
         try {
             if (securityContext != null) {
                 String username = securityContext.getUserPrincipal().getName();
-                
+
                 bookingDto = this.mapper.readValue(message, BookingDto.class);
-                
+
                 if (username != null) {
                     /*
-                        Security flow - don't allow people to book taxis for other user's. 
-                        Set username from security context.
-                    */
+                     Security flow - don't allow people to book taxis for other user's. 
+                     Set username from security context.
+                     */
                     bookingDto.setPassengerUsername(username);
                     booking = this.bookingService.makeBooking(bookingDto);
                 }
@@ -94,7 +95,7 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-        } catch (InvalidLocationException|InvalidBookingException|RouteNotFoundException ex) {
+        } catch (InvalidLocationException | InvalidBookingException | RouteNotFoundException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -122,7 +123,7 @@ public class BookingController {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"passenger","driver"})
+    @RolesAllowed({"passenger", "driver"})
     public Response bookingHistory(@Context SecurityContext securityContext) {
 
         if (securityContext != null) {
@@ -137,20 +138,20 @@ public class BookingController {
         return this.responseFactory.getResponse(
                 "User not authenticated", Response.Status.UNAUTHORIZED);
     }
-    
+
     /**
      * Return a collection of bookings in awaiting taxi dispatch state.
-     * 
+     *
      * @return a collection of bookings in awaiting taxi dispatch state.
      */
     @GET
     @Path("/awaiting")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("driver")
-    public Response findBookingsAwaitingTaxiDispatch(){
-           return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new HttpListResponse<>(
-                                    this.bookingService.findBookingsInAwaitingTaxiDispatchState(), "0").toString()).build();   
+    public Response findBookingsAwaitingTaxiDispatch() {
+        return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(new HttpListResponse<>(
+                                this.bookingService.findBookingsInAwaitingTaxiDispatchState(), "0").toString()).build();
     }
 
     /**
@@ -194,7 +195,7 @@ public class BookingController {
                     ex.getMessage(), Response.Status.NOT_FOUND);
         }
     }
-    
+
     /**
      * Accept a taxi booking,
      *
@@ -211,10 +212,10 @@ public class BookingController {
 
         try {
             if (securityContext != null) {
-                
+
                 this.bookingService.acceptBooking(
                         securityContext.getUserPrincipal().getName(), bookingId);
-                        
+
                 return this.responseFactory.getResponse("Booking updated.", Response.Status.OK);
 
             } else {
@@ -225,7 +226,7 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-        } catch (TaxiNotFoundException|BookingNotFoundException ex) {
+        } catch (TaxiNotFoundException | BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);

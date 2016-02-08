@@ -4,19 +4,20 @@ import com.robertnorthard.dtbs.server.layer.model.Location;
 import java.io.Serializable;
 
 /**
- * Booking data transfer object to reduce data coupling on methods.
- * Martin Fowler discussion on data access objects.
+ * Booking data transfer object to reduce data coupling on methods. Martin
+ * Fowler discussion on data access objects.
  * http://martinfowler.com/eaaCatalog/dataTransferObject.html
- * 
+ *
  * @author robertnorthard
  */
 public class BookingDto implements Serializable {
+
     private long id;
     private String passengerUsername;
     private Location startLocation;
     private Location endLocation;
     private int numberPassengers;
-    
+
     /**
      * @return the startLocation
      */

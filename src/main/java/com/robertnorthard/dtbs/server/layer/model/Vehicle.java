@@ -12,49 +12,52 @@ import javax.persistence.Table;
 
 /**
  * Abstract vehicle class
- * @author robertnorthard 
+ *
+ * @author robertnorthard
  */
 @Entity
-@Table(name="VEHICLE")
-public class Vehicle implements Serializable
-{
+@Table(name = "VEHICLE")
+public class Vehicle implements Serializable {
+
     @Id
-    @Column(name="NUMBER_PLATE")
+    @Column(name = "NUMBER_PLATE")
     private String numberplate;
-   
+
     // number of seats including driver
-    @Column(name="NUMBER_SEATS")
+    @Column(name = "NUMBER_SEATS")
     private int numberSeats;
-    
-    @JoinColumn(name="VEHICLE_TYPE_ID")
+
+    @JoinColumn(name = "VEHICLE_TYPE_ID")
     @ManyToOne(cascade = CascadeType.ALL)
     private VehicleType vehicleType;
-    
+
     public Vehicle() {
         // Empty constructor required by JPA.
     }
-    
+
     /**
      * Constructor for class vehicle.
+     *
      * @param numberplate vehicle numberplate.
      * @param numberSeats vehicle seat capacity.
      * @param vehicleType type of vehicle.
      */
-    public Vehicle(String numberplate, int numberSeats, VehicleType vehicleType){
+    public Vehicle(String numberplate, int numberSeats, VehicleType vehicleType) {
         this.numberplate = numberplate;
         this.numberSeats = numberSeats;
         this.vehicleType = vehicleType;
     }
-    
+
     /**
      * Return flat rate cost of vehicle.
+     *
      * @return flat rate cost of vehicle.
      */
     @JsonIgnore
-    public double getCostPerMile(){
+    public double getCostPerMile() {
         return this.vehicleType.getCost();
     }
-    
+
     /**
      * @return the numberplate
      */

@@ -1,23 +1,22 @@
-
 package com.robertnorthard.dtbs.server.layer.persistence.dto;
 
 import java.util.List;
 
 /**
- * Data transfer object 
- * encapsulate a http response that contains a collection of data.
- * 
+ * Data transfer object encapsulate a http response that contains a collection
+ * of data.
+ *
  * @author robertnorthard
  */
-public class HttpListResponse<T> extends HttpResponse{
+public class HttpListResponse<T> extends HttpResponse {
 
     private List<T> data;
 
-    public HttpListResponse(List<T> data, String status){
+    public HttpListResponse(List<T> data, String status) {
         super(status);
         this.data = data;
     }
-    
+
     /**
      * @return the data
      */

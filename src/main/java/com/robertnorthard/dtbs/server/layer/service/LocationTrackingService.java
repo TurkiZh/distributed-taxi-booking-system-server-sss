@@ -10,18 +10,21 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Location tracking service facade implementation. 
+ * Location tracking service facade implementation.
+ *
  * @author robertnorthard
  */
 @Singleton
 public class LocationTrackingService extends Subject implements LocationTrackingFacade {
 
-    @Inject private TaxiFacade taxiService;
-    @Inject private LocationDao locationDao;
-    
+    @Inject
+    private TaxiFacade taxiService;
+    @Inject
+    private LocationDao locationDao;
+
     /**
-     * Update taxi location by id.
-     * Find taxi by id and set new location and broadcast update taxi location.
+     * Update taxi location by id. Find taxi by id and set new location and
+     * broadcast update taxi location.
      *
      * @param id the id of the taxi.
      * @param latitude Taxi's current latitude.
@@ -35,31 +38,31 @@ public class LocationTrackingService extends Subject implements LocationTracking
             throws EntityNotFoundException {
 
         Location lastKnownLocation;
-        
-        try{
+
+        try {
             lastKnownLocation = new Location(latitude, longitude);
-        }catch(IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw ex;
         }
-        
+
         Taxi taxi = this.taxiService.findTaxi(id);
-        
-        if(taxi == null){
+
+        if (taxi == null) {
             throw new EntityNotFoundException();
         }
 
-        Location previousLocation = taxi.getLocation(); 
+        Location previousLocation = taxi.getLocation();
         taxi.updateLocation(lastKnownLocation);
-        
-        if(previousLocation == null){
+
+        if (previousLocation == null) {
             this.locationDao.persistEntity(lastKnownLocation);
         }
-        
+
         this.taxiService.updateTaxi(taxi);
-        
+
         // create taxi location event.
-        LocationEvent event = new LocationEvent(id, lastKnownLocation);  
-        
+        LocationEvent event = new LocationEvent(id, lastKnownLocation);
+
         //notify all taxi subscribers of updated taxi location
         this.notifyObservers(event);
     }

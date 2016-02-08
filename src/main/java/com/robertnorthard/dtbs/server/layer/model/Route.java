@@ -16,55 +16,59 @@ import javax.persistence.Transient;
 
 /**
  * Represent a Taxi route.
+ *
  * @author robertnorthard
  */
 @Entity
 @Table(name = "ROUTE")
-public class Route implements Serializable{
-    
-    @Column(name="ID")
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+public class Route implements Serializable {
+
+    @Column(name = "ID")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @JoinColumn(name="START_LOCATION")
-    @ManyToOne (cascade = CascadeType.ALL)
+
+    @JoinColumn(name = "START_LOCATION")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Address startAddress;
-    
-    @JoinColumn(name="END_LOCATION")
+
+    @JoinColumn(name = "END_LOCATION")
     @ManyToOne(cascade = CascadeType.ALL)
     private Address endAddress;
-    
-    @Column(name="DISTANCE")
+
+    @Column(name = "DISTANCE")
     private double distance;
-    
-    @Column(name="ESTIMATED_TRAVEL_TIME")
+
+    @Column(name = "ESTIMATED_TRAVEL_TIME")
     private double estimateTravelTime;
-    
-    @Transient private List<Location> path;
-    
+
+    @Transient
+    private List<Location> path;
+
     public Route() {
         // Empty constructor required by JPA.
     }
 
     /**
      * Constructor for class Route.
-     * 
+     *
      * @param startAddress start location of route.
      * @param endAddress end location of route.
      * @param distance route distance in meters.
      * @param path recommended travel route.
-     * @param estimateTravelTime estimated travel time between start and end location in seconds.
+     * @param estimateTravelTime estimated travel time between start and end
+     * location in seconds.
      */
-    public Route(Address startAddress, Address endAddress, 
-            double distance, List<Location> path, double estimateTravelTime){
-        
+    public Route(Address startAddress, Address endAddress,
+            double distance, List<Location> path, double estimateTravelTime) {
+
         this.startAddress = startAddress;
         this.endAddress = endAddress;
         this.distance = distance;
         this.estimateTravelTime = estimateTravelTime;
         this.path = path;
     }
-    
+
     /**
      * @return the startAddress
      */
@@ -124,7 +128,6 @@ public class Route implements Serializable{
     /**
      * @return the estimateTravelTime
      */
-    
     public double getEstimateTravelTime() {
         return this.estimateTravelTime;
     }
@@ -135,22 +138,24 @@ public class Route implements Serializable{
     public void setEstimateTravelTime(double estimateTravelTime) {
         this.estimateTravelTime = estimateTravelTime;
     }
-    
+
     /**
      * Return distance in miles.
+     *
      * @return distance in miles.
      */
     @JsonIgnore
-    public double getDistanceInMiles(){
-        return this.distance/1609;
+    public double getDistanceInMiles() {
+        return this.distance / 1609;
     }
-    
+
     /**
      * Return time in minutes.
+     *
      * @return time in minutes.
      */
     @JsonIgnore
-    public double getTimeInMinutes(){
-        return this.estimateTravelTime/60;
+    public double getTimeInMinutes() {
+        return this.estimateTravelTime / 60;
     }
 }

@@ -27,14 +27,20 @@ import javax.inject.Inject;
  */
 public class BookingService implements BookingFacade {
 
-    @Inject private BookingDao bookingDao;
-    @Inject private AccountFacade accountService;
-    @Inject private RouteDao routeDao;
-    @Inject private TaxiDao taxiDao;
-    @Inject private GoogleDistanceMatrixFacade googleDistanceMatrixFacade ;
+    @Inject
+    private BookingDao bookingDao;
+    @Inject
+    private AccountFacade accountService;
+    @Inject
+    private RouteDao routeDao;
+    @Inject
+    private TaxiDao taxiDao;
+    @Inject
+    private GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
 
-    public BookingService(){}
-    
+    public BookingService() {
+    }
+
     @Override
     public Booking findBooking(Long id) {
         return this.bookingDao.findEntityById(id);
@@ -68,15 +74,16 @@ public class BookingService implements BookingFacade {
      * @throws AccountAuthenticationFailed invalid username.
      * @throws RouteNotFoundException route not found.
      * @throws InvalidGoogleApiResponseException invalid response from Google
-     *        (Invalid JSON as there API has changed).
-     * @throws InvalidBookingException invalid booking e.g. user has active bookings.
+     * (Invalid JSON as there API has changed).
+     * @throws InvalidBookingException invalid booking e.g. user has active
+     * bookings.
      */
     @Override
     public Booking makeBooking(final BookingDto bookingDto)
             throws AccountAuthenticationFailed,
             RouteNotFoundException,
             InvalidGoogleApiResponseException,
-            InvalidBookingException{
+            InvalidBookingException {
 
         try {
             if (bookingDto.getPassengerUsername() == null) {
@@ -88,8 +95,8 @@ public class BookingService implements BookingFacade {
             if (passenger == null) {
                 throw new AccountAuthenticationFailed();
             }
-            
-            if(this.incompleteBookings(passenger.getUsername())){
+
+            if (this.incompleteBookings(passenger.getUsername())) {
                 throw new InvalidBookingException("A user can only have one active booking.");
             }
 
@@ -114,14 +121,14 @@ public class BookingService implements BookingFacade {
             throw ex;
         }
     }
-    
+
     /**
      * Return true if incomplete bookings for user else false.
-     * 
+     *
      * @param username username to check.
      * @return true if incomplete bookings for user else false
      */
-    private boolean incompleteBookings(String username){
+    private boolean incompleteBookings(String username) {
         return !this.bookingDao.findInCompletedBookingsForUser(username).isEmpty();
     }
 
@@ -147,7 +154,8 @@ public class BookingService implements BookingFacade {
 
     /**
      * A collections of bookings. If passenger display booking history. If
-     * driver display job history. If passenger has multiple roles combine collections.
+     * driver display job history. If passenger has multiple roles combine
+     * collections.
      *
      * @param username username.
      * @return return booking history.
@@ -156,7 +164,7 @@ public class BookingService implements BookingFacade {
     public List<Booking> findBookingHistory(String username) {
 
         List<Booking> bookingHistory = new ArrayList<>();
-        
+
         if (username == null) {
             throw new IllegalArgumentException("Username cannot be nill.");
         }
@@ -177,10 +185,10 @@ public class BookingService implements BookingFacade {
 
         return bookingHistory;
     }
-    
+
     /**
      * Accept a taxi booking.
-     * 
+     *
      * @param username username of taxi driver.
      * @param bookingId booking id.
      * @throws TaxiNotFoundException taxi not found.
@@ -188,31 +196,31 @@ public class BookingService implements BookingFacade {
      * @throws IllegalStateException if booking is in an invalid state.
      */
     @Override
-    public synchronized void acceptBooking(String username, long bookingId) 
-            throws TaxiNotFoundException,BookingNotFoundException {
-        
+    public synchronized void acceptBooking(String username, long bookingId)
+            throws TaxiNotFoundException, BookingNotFoundException {
+
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
         Booking booking = this.findBooking(bookingId);
-        
-        if(taxi == null){
+
+        if (taxi == null) {
             throw new TaxiNotFoundException();
         }
-        
-        if(booking == null){
+
+        if (booking == null) {
             throw new BookingNotFoundException();
         }
-        
-        try{        
+
+        try {
             booking.dispatchTaxi(taxi);
             this.bookingDao.update(booking);
-        }catch(IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             throw ex;
         }
     }
-    
-   /**
+
+    /**
      * Pink up passenger.
-     * 
+     *
      * @param username username or driver accepting the booking
      * @param bookingId id of booking to update.
      * @param timestamp timestamp of update.
@@ -220,56 +228,56 @@ public class BookingService implements BookingFacade {
      * @throws TaxiNotFoundException taxi for user not found.
      */
     @Override
-    public void pickUpPassenger(String username, long bookingId, long timestamp) 
+    public void pickUpPassenger(String username, long bookingId, long timestamp)
             throws BookingNotFoundException, TaxiNotFoundException {
-        
+
         Booking booking = this.findBooking(bookingId);
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
-        
-        if(taxi == null){
+
+        if (taxi == null) {
             throw new TaxiNotFoundException();
         }
-        
-        if(booking == null){
+
+        if (booking == null) {
             throw new BookingNotFoundException();
         }
-         
-        try{        
+
+        try {
             booking.pickupPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
-        }catch(IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             throw ex;
         }
     }
 
-   /**
+    /**
      * Drop of passenger.
-     * 
+     *
      * @param bookingId id of booking to update.
      * @param timestamp timestamp of update.
      * @throws BookingNotFoundException booking not found.
      * @throws TaxiNotFoundException taxi for user not found.
      */
     @Override
-    public void dropOffPassenger(String username, long bookingId, long timestamp) 
-            throws BookingNotFoundException,TaxiNotFoundException{
-        
+    public void dropOffPassenger(String username, long bookingId, long timestamp)
+            throws BookingNotFoundException, TaxiNotFoundException {
+
         Booking booking = this.findBooking(bookingId);
-        
+
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
-        
-        if(taxi == null){
+
+        if (taxi == null) {
             throw new TaxiNotFoundException();
         }
-        
-        if(booking == null){
+
+        if (booking == null) {
             throw new BookingNotFoundException();
         }
-         
-        try{        
+
+        try {
             booking.dropOffPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
-        }catch(IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             throw ex;
         }
     }

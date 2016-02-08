@@ -34,20 +34,20 @@ import javax.persistence.Transient;
 @Table(name = "BOOKING")
 @NamedQueries({
     @NamedQuery(
-            name="Booking.findBookingsInState",
-            query="SELECT b FROM Booking b WHERE b.state = :state"
+            name = "Booking.findBookingsInState",
+            query = "SELECT b FROM Booking b WHERE b.state = :state"
     ),
     @NamedQuery(
-        name="Booking.findBookingsForPassenger",
-        query="SELECT b FROM Booking b WHERE b.passenger.username = :username"
+            name = "Booking.findBookingsForPassenger",
+            query = "SELECT b FROM Booking b WHERE b.passenger.username = :username"
     ),
     @NamedQuery(
-        name="Booking.findBookingsForDriver",
-        query="SELECT b FROM Booking b WHERE b.taxi.account.username = :username"
+            name = "Booking.findBookingsForDriver",
+            query = "SELECT b FROM Booking b WHERE b.taxi.account.username = :username"
     ),
     @NamedQuery(
-        name="Booking.findBookingsforUserInState",
-        query="SELECT b FROM Booking b WHERE b.passenger.username = :username AND NOT (b.state = :state)"
+            name = "Booking.findBookingsforUserInState",
+            query = "SELECT b FROM Booking b WHERE b.passenger.username = :username AND NOT (b.state = :state)"
     )
 })
 public class Booking implements Serializable {
@@ -85,25 +85,35 @@ public class Booking implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ROUTE_ID")
     private Route route;
-    
+
     @Column(name = "BOOKING_STATE")
     @Convert(converter = JpaBookingStateDataConverter.class)
     private BookingState state;
 
     // booking states
-    @JsonIgnore @Transient private static BookingState awaitingTaxiBookingState = new AwaitingTaxiBookingState();
-    @JsonIgnore @Transient private static BookingState cancelledBookingState = new CancelledBookingState();
-    @JsonIgnore @Transient private static BookingState taxiDispatchedBookingState = new TaxiDispatchedBookingState();
-    @JsonIgnore @Transient private static BookingState passengerPickedUpBookingState = new PassengerPickedUpBookingState();
-    @JsonIgnore @Transient private static BookingState completedTaxiBookingState = new CompletedBookingState();
-    
+    @JsonIgnore
+    @Transient
+    private static BookingState awaitingTaxiBookingState = new AwaitingTaxiBookingState();
+    @JsonIgnore
+    @Transient
+    private static BookingState cancelledBookingState = new CancelledBookingState();
+    @JsonIgnore
+    @Transient
+    private static BookingState taxiDispatchedBookingState = new TaxiDispatchedBookingState();
+    @JsonIgnore
+    @Transient
+    private static BookingState passengerPickedUpBookingState = new PassengerPickedUpBookingState();
+    @JsonIgnore
+    @Transient
+    private static BookingState completedTaxiBookingState = new CompletedBookingState();
+
     public Booking() {
         // Empty constructor required by JPA.
     }
 
     /**
      * Constructor for class booking.
-     * 
+     *
      * @param passenger passenger for order.
      * @param route proposed route for taxi.
      * @param numberPassengers number passengers for booking
@@ -116,10 +126,11 @@ public class Booking implements Serializable {
         this.state = Booking.getAwaitingTaxiBookingState();
         this.cost = this.estimateCost(0.3);
     }
-    
-   /**
-     * Constructor for instantiating a booking class and immediately dispatching a taxi. 
-     * 
+
+    /**
+     * Constructor for instantiating a booking class and immediately dispatching
+     * a taxi.
+     *
      * @param passenger passenger for order.
      * @param route proposed route for taxi.
      * @param numberPassengers number passengers for booking
@@ -144,17 +155,17 @@ public class Booking implements Serializable {
     }
 
     public void dispatchTaxi(Taxi taxi) {
-        this.state.dispatchTaxi(this,taxi);
+        this.state.dispatchTaxi(this, taxi);
     }
 
     public void dropOffPassenger(Date time) {
-        this.state.dropOffPassenger(this,time);
+        this.state.dropOffPassenger(this, time);
     }
-    
+
     public void pickupPassenger(Date time) {
-        this.state.pickupPassenger(this,time);
+        this.state.pickupPassenger(this, time);
     }
-    
+
     /**
      * Calculate cost of taxi using taxi cost per mile.
      *
@@ -163,13 +174,14 @@ public class Booking implements Serializable {
     public final double calculateCost() {
         return this.estimateCost(this.taxi.getCostPerMile());
     }
-    
+
     /**
-     * Estimate cost for taxi using set 
-     * @param scalar cost per mile. 
+     * Estimate cost for taxi using set
+     *
+     * @param scalar cost per mile.
      * @return estimate of taxi cost using a fixed cost per mile.
      */
-    public final double estimateCost(double scalar){
+    public final double estimateCost(double scalar) {
         return scalar * this.route.getDistanceInMiles() * this.route.getTimeInMinutes();
     }
 
@@ -316,24 +328,24 @@ public class Booking implements Serializable {
     public void setState(BookingState state) {
         this.state = state;
     }
-    
-    public static BookingState getCancelledBookingState(){
+
+    public static BookingState getCancelledBookingState() {
         return Booking.cancelledBookingState;
     }
-    
-    public static final BookingState getAwaitingTaxiBookingState(){
+
+    public static final BookingState getAwaitingTaxiBookingState() {
         return Booking.awaitingTaxiBookingState;
     }
-    
-    public static final BookingState getTaxiDispatchedBookingState(){
+
+    public static final BookingState getTaxiDispatchedBookingState() {
         return Booking.taxiDispatchedBookingState;
     }
-    
-    public static BookingState getPassengerPickedUpBookingState(){
+
+    public static BookingState getPassengerPickedUpBookingState() {
         return Booking.passengerPickedUpBookingState;
     }
-    
-    public static BookingState getCompletedTaxiBookingState(){
+
+    public static BookingState getCompletedTaxiBookingState() {
         return Booking.completedTaxiBookingState;
     }
 }

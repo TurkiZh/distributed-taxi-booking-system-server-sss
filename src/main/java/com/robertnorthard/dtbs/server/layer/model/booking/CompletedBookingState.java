@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * Represents completed booking state.
- * 
+ *
  * @author robertnorthard
  */
 public class CompletedBookingState extends BookingState {
@@ -36,9 +36,9 @@ public class CompletedBookingState extends BookingState {
     public void pickupPassenger(Booking booking, Date time) {
         throw e;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Completed booking state.";
     }
 }

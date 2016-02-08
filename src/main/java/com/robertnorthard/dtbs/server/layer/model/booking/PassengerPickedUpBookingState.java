@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * Represents passenger picked up state.
- * 
+ *
  * @author robertnorthard
  */
 public class PassengerPickedUpBookingState extends BookingState {
@@ -27,25 +27,25 @@ public class PassengerPickedUpBookingState extends BookingState {
 
     @Override
     public void dropOffPassenger(Booking booking, Date time) {
-        
-        if(time.after(booking.getStartTime())){
+
+        if (time.after(booking.getStartTime())) {
             booking.setEndTime(time);
-            
+
             booking.setState(
                     Booking.getCompletedTaxiBookingState());
-        }else{
+        } else {
             throw new IllegalArgumentException("Time must be after initial booking creation time.");
         }
-        
+
     }
 
     @Override
     public void pickupPassenger(Booking booking, Date time) {
         throw new IllegalStateException("Passenger already picked up.");
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Passenger picked up state.";
     }
 }

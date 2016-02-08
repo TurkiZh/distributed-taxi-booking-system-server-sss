@@ -36,7 +36,8 @@ public class AccountController {
 
     private static final Logger LOGGER = Logger.getLogger(AccountController.class.getName());
 
-    @Inject private AccountFacade accountService;
+    @Inject
+    private AccountFacade accountService;
     private final DataMapper mapper;
     private final HttpResponseFactory responseFactory;
 
@@ -67,14 +68,14 @@ public class AccountController {
 
             return this.responseFactory.getResponse(
                     ac, Response.Status.OK);
-            
+
         } catch (AccountAlreadyExistsException ex) {
-            
+
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.CONFLICT);
-            
-        } catch (AccountInvalidException|IOException ex) {
+
+        } catch (AccountInvalidException | IOException ex) {
 
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
@@ -98,12 +99,12 @@ public class AccountController {
             this.accountService.resetPassword(username);
 
             LOGGER.log(Level.INFO, "resettAccount - resetting password " + username);
-            
+
             return this.responseFactory.getResponse(
                     "Password reset sent", Response.Status.OK);
 
         } catch (AccountInvalidException ex) {
-            
+
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);
@@ -112,12 +113,12 @@ public class AccountController {
 
     /**
      * Reset an account's password using temporary access code.
-     * 
+     *
      * @param username username of account to reset.
      * @param code temporary code.
      * @param message JSON message with new password.
-     * @return AccountAuthenticationException if code in 
-     * invalid and EntityNotFoundException if unable to find account.
+     * @return AccountAuthenticationException if code in invalid and
+     * EntityNotFoundException if unable to find account.
      */
     @POST
     @Path("/{username}/reset/{code}")
@@ -134,19 +135,19 @@ public class AccountController {
                     "Password change successful", Response.Status.OK);
 
         } catch (JSONException ex) {
-            
+
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
-            
+
         } catch (AccountAuthenticationFailed ex) {
-            
+
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-            
+
         } catch (EntityNotFoundException ex) {
-            
+
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);

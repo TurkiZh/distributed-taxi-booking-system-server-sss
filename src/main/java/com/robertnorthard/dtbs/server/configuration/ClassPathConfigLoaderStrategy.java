@@ -7,16 +7,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class facilitates reading properties from files from the Java classspath.
+ * This class facilitates reading properties from files from the Java
+ * classspath.
+ *
  * @author robertnorthard
  */
 public class ClassPathConfigLoaderStrategy implements ConfigLoaderStrategy {
 
-      private static final Logger LOGGER = Logger.getLogger(
+    private static final Logger LOGGER = Logger.getLogger(
             ClassPathConfigLoaderStrategy.class.getName());
-    
+
     /**
      * Return properties from file on the class path.
+     *
      * @param file file to read properties from.
      */
     @Override
@@ -31,7 +34,7 @@ public class ClassPathConfigLoaderStrategy implements ConfigLoaderStrategy {
                 return properties;
             }
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, null,e);
+            LOGGER.log(Level.SEVERE, null, e);
             return null;
         }
     }

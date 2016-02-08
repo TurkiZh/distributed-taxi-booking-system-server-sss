@@ -9,35 +9,36 @@ import java.util.logging.Logger;
 
 /**
  * Class represents a DataMapper singleton.
+ *
  * @author robertnorthard
  */
 public class DataMapper extends ObjectMapper {
-    
+
     private static DataMapper dataMapper;
-    
+
     private DataMapper() {
         // private as singleton
     }
-    
+
     /**
-     * Return an instance of data mapper. 
-     * If it is null create a new instance.
+     * Return an instance of data mapper. If it is null create a new instance.
+     *
      * @return a instance of data mapper.
      */
-    public static DataMapper getInstance(){
-        if(DataMapper.dataMapper == null){
-            synchronized(DataMapper.class){
+    public static DataMapper getInstance() {
+        if (DataMapper.dataMapper == null) {
+            synchronized (DataMapper.class) {
                 DataMapper.dataMapper = new DataMapper();
                 DataMapper.dataMapper.setSerializationInclusion(Include.NON_NULL);
                 DataMapper.dataMapper.setPropertyNamingStrategy(
                         PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
             }
         }
-        
+
         return DataMapper.dataMapper;
     }
-    
-    public String getObjectAsJson(Object obj){
+
+    public String getObjectAsJson(Object obj) {
         try {
             return this.writeValueAsString(obj);
         } catch (JsonProcessingException ex) {

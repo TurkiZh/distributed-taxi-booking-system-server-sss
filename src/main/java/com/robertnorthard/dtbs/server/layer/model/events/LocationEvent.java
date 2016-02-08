@@ -5,9 +5,10 @@ import java.io.Serializable;
 
 /**
  * Represents a taxi location change event.
+ *
  * @author robertnorthard
  */
-public class LocationEvent extends Event implements Serializable{
+public class LocationEvent extends Event implements Serializable {
 
     private Location location;
     private long taxiId;
@@ -15,8 +16,8 @@ public class LocationEvent extends Event implements Serializable{
     public LocationEvent() {
         // Empty constructor required by JPA.
     }
-    
-    public LocationEvent(long taxiId, Location location){
+
+    public LocationEvent(long taxiId, Location location) {
         super();
         this.location = location;
         this.taxiId = taxiId;

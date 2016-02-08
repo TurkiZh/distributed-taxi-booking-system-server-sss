@@ -12,36 +12,38 @@ import java.io.Serializable;
  * @author robertnorthard
  */
 public enum AccountType implements Serializable {
+
     PASSENGER("passenger"),
     DRIVER("driver"),
     ADMIN("admin");
-    
+
     String roleName;
-    
+
     /**
      * @param roleName role name.
      */
-    AccountType(String roleName){
+    AccountType(String roleName) {
         this.roleName = roleName;
     }
-    
+
     /**
      * Return true if valid role else false.
+     *
      * @param role role to check.
      * @return true if valid role else false.
      */
-    public static boolean isValidRole(String role){
+    public static boolean isValidRole(String role) {
 
-        try{
+        try {
             AccountType.valueOf(role);
             return true;
-        } catch (IllegalArgumentException ex) {  
+        } catch (IllegalArgumentException ex) {
             return false;
         }
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.roleName;
-    }    
+    }
 }

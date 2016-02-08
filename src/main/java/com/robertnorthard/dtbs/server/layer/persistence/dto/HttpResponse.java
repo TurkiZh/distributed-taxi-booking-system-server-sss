@@ -5,18 +5,19 @@ import java.util.Date;
 
 /**
  * HTTP error response data transfer object.
+ *
  * @author robertnorthard
  */
 public class HttpResponse {
-    
+
     private String status;
     private Date timestamp;
-    
+
     /**
-     * 
+     *
      * @param status status code for response.
      */
-    public HttpResponse(String status){
+    public HttpResponse(String status) {
         this.status = status;
         this.timestamp = new Date();
     }
@@ -48,13 +49,14 @@ public class HttpResponse {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-    
+
     /**
      * Return JSON string representation of the object.
+     *
      * @return string representation of the object.
      */
     @Override
-    public String toString(){
+    public String toString() {
         return DataMapper.getInstance().getObjectAsJson(this);
     }
 }

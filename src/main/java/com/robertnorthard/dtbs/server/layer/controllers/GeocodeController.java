@@ -20,9 +20,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- *A controller class for receiving and handling all geocoding related
+ * A controller class for receiving and handling all geocoding related
  * transactions.
- * 
+ *
  * @author robertnorthard
  */
 @Path("/v1/geocode")
@@ -32,7 +32,8 @@ public class GeocodeController {
     private static final Logger LOGGER = Logger.getLogger(GeocodeController.class.getName());
 
     private final HttpResponseFactory responseFactory;
-    @Inject private GoogleDistanceMatrixFacade googleDistanceMatrixService;
+    @Inject
+    private GoogleDistanceMatrixFacade googleDistanceMatrixService;
 
     public GeocodeController() {
         this.responseFactory = HttpResponseFactory.getInstance();
@@ -40,15 +41,16 @@ public class GeocodeController {
 
     /**
      * Return a route from start and end location latitude and longitude.
-     * 
-     * @param url url with start_latitude, start_longitude, end_latitude and end_longitude query
-     *      parameters.
-     * @return a route from start to end location using provided a latitudes and longitudes.
+     *
+     * @param url url with start_latitude, start_longitude, end_latitude and
+     * end_longitude query parameters.
+     * @return a route from start to end location using provided a latitudes and
+     * longitudes.
      */
     @GET
     @Path("/route")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"driver","passenger"})
+    @RolesAllowed({"driver", "passenger"})
     public Response getRouteInfo(@Context UriInfo url) {
 
         MultivaluedMap<String, String> query = url.getQueryParameters();
@@ -72,8 +74,8 @@ public class GeocodeController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
-            
-        }catch (InvalidGoogleApiResponseException ex) {
+
+        } catch (InvalidGoogleApiResponseException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
@@ -82,14 +84,14 @@ public class GeocodeController {
 
     /**
      * Return address corresponding to provided latitude and longitude.
-     * 
+     *
      * @param url url with latitude and longitude query parameters.
      * @return address corresponding to provided latitude and longitude.
      */
     @GET
     @Path("/reverse")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"driver","passenger"})
+    @RolesAllowed({"driver", "passenger"})
     public Response addressReverseLookup(@Context UriInfo url) {
 
         MultivaluedMap<String, String> query = url.getQueryParameters();
@@ -127,27 +129,26 @@ public class GeocodeController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
-            
-        }catch (InvalidGoogleApiResponseException ex) {
+
+        } catch (InvalidGoogleApiResponseException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
+
     /**
      * Return estimate travel time between start and end location in seconds.
-     * 
-     * @param url url with start_latitude, start_loroute
-     * ngitude, end_latitude and end_longitude query
-     *      parameters.
-     * @return a route from start to end location using provided a latitudes and longitudes.
+     *
+     * @param url url with start_latitude, start_loroute ngitude, end_latitude
+     * and end_longitude query parameters.
+     * @return a route from start to end location using provided a latitudes and
+     * longitudes.
      */
     @GET
     @Path("/route/estimate/time")
     @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"driver","passenger"})
+    @RolesAllowed({"driver", "passenger"})
     public Response estimateTravelTime(@Context UriInfo url) {
 
         MultivaluedMap<String, String> query = url.getQueryParameters();
@@ -171,8 +172,8 @@ public class GeocodeController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
-            
-        }catch (InvalidGoogleApiResponseException ex) {
+
+        } catch (InvalidGoogleApiResponseException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);

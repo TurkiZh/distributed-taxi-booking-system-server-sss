@@ -18,60 +18,64 @@ import javax.persistence.Transient;
 
 /**
  * Represents a Taxi.
+ *
  * @author robertnorthard
  */
 @Entity
-@Table(name="TAXI")
+@Table(name = "TAXI")
 @NamedQueries({
     @NamedQuery(
-        name="Taxi.findTaxiForDriver",
-        query="SELECT t FROM Taxi t WHERE t.account.username = :username"
+            name = "Taxi.findTaxiForDriver",
+            query = "SELECT t FROM Taxi t WHERE t.account.username = :username"
     )
 })
-public class Taxi extends Observable implements Serializable{
-    
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="ID")
+public class Taxi extends Observable implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
-    
-    @OneToOne(cascade=CascadeType.MERGE)
-    @JoinColumn(name="VEHICLE_ID")
-    private Vehicle vehicle; 
-    
-    @OneToOne(cascade=CascadeType.MERGE)
-    @JoinColumn(name="ACCOUNT_ID")
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "VEHICLE_ID")
+    private Vehicle vehicle;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
     // Last known taxi location.
-    @OneToOne(cascade=CascadeType.MERGE)
-    @JoinColumn(name="TAXI_LOCATION_ID")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "TAXI_LOCATION_ID")
     private Location location;
-    
+
     @Transient
     private TaxiState taxiState;
-    
+
     public Taxi() {
         // Empty constructor required by JPA.
     }
-    
+
     /**
-     * 
+     *
      * @param vehicle the taxis vehicle.
      * @param account the driver of the taxi.
      */
-    public Taxi(Vehicle vehicle, Account account){
+    public Taxi(Vehicle vehicle, Account account) {
         this.vehicle = vehicle;
         this.account = account;
-        
+
         this.location = null;
     }
-    
+
     /**
-     * Return flat rate cost of the taxi, excluding additional costs due to millage.
-     * @return 
+     * Return flat rate cost of the taxi, excluding additional costs due to
+     * millage.
+     *
+     * @return
      */
     @JsonIgnore
-    public double getCostPerMile(){
+    public double getCostPerMile() {
         return this.getVehicle().getCostPerMile();
     }
 
@@ -102,7 +106,6 @@ public class Taxi extends Observable implements Serializable{
     public void setAccount(Account account) {
         this.account = account;
     }
-
 
     /**
      * @return the id
@@ -138,27 +141,29 @@ public class Taxi extends Observable implements Serializable{
     public void setLocation(Location location) {
         this.location = location;
     }
-    
+
     /**
      * Return true if taxi has enough seats else false.
+     *
      * @param numberSeats number of seats required.
      * @return true if vehicle has enough free seats.
      */
-    public boolean checkseatAvailability(int numberSeats){
+    public boolean checkseatAvailability(int numberSeats) {
         return this.vehicle.getNumberSeats() - 1 - numberSeats > 0;
     }
-    
+
     /**
      * Update taxi's current location.
+     *
      * @param location new location.
      */
-    public void updateLocation(Location location){
-        if(location != null){
+    public void updateLocation(Location location) {
+        if (location != null) {
             // location can be null.
-            this.location= new Location();
+            this.location = new Location();
             this.location.setLatitude(location.getLatitude());
             this.location.setLongitude(location.getLongitude());
-        }else{
+        } else {
             throw new IllegalArgumentException("Location can not be null.");
         }
     }
