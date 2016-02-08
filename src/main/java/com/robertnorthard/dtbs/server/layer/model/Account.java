@@ -3,6 +3,7 @@ package com.robertnorthard.dtbs.server.layer.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -214,16 +215,36 @@ public class Account implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Account)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-
-        Account other = (Account) object;
-
-        return !((this.username == null && other.username != null)
-                || (this.username != null
-                && !this.username.equals(other.username)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Account other = (Account) obj;
+        if (!Objects.equals(this.username, other.username)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.phoneNumber, other.phoneNumber)) {
+            return false;
+        }
+        if (this.role != other.role) {
+            return false;
+        }
+        if (this.active != other.active) {
+            return false;
+        }
+        return true;
     }
 
     /**
