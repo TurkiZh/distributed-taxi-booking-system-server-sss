@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.AccountRole;
-import com.robertnorthard.dtbs.server.layer.model.Address;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import com.robertnorthard.dtbs.server.layer.model.Taxi;
@@ -25,7 +19,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 /**
- *
+ * Test controller to initialise the database. 
+ * 
  * @author robertnorthard
  */
 @Path("/v1/test")
