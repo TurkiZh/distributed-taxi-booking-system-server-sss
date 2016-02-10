@@ -98,9 +98,13 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     public String getGeocode(double latitude, double longitude)
             throws InvalidGoogleApiResponseException {
 
+        String query = this.properties.getProperty("google.directions.api.directions.address.lookup");
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("latitude", String.valueOf(latitude));
+        tokens.put("longitude", String.valueOf(longitude));
+        query = ConfigService.parseProperty(query, tokens);
+
         try {
-            String query = this.properties.getProperty("google.geocoding.api.endpoint")
-                    + "/json?latlng=" + latitude + "," + longitude;
 
             LOGGER.log(Level.FINEST, "getGeocode query - {0}", query);
 
@@ -231,7 +235,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
         try {
             return !"ZERO_RESULTS".equals(json.getString("status"));
         } catch (JSONException ex) {
-            Logger.getLogger(GoogleDistanceMatrixService.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
             return false;
         }
     }
