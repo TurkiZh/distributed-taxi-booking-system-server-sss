@@ -3,6 +3,9 @@ package com.robertnorthard.dtbs.server.layer.service;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.model.Route;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -92,6 +95,46 @@ public class GoogleDistanceMatrixServiceIT {
                 this.roundToTwoDecimalPlaces(location.getLongitude())));
     }
   
+   /**
+     * Test of getRouteInfo method, of class GoogleDistanceMatrixService for valid route.
+     */
+    @Test
+    public void testGetRouteInfoValidRoute(){
+        
+        Location startLocation = new Location(51.753306, -0.241096);
+        Location endLocation = new Location(51.761143, -0.248649);
+        Route route = null;
+        
+        try {
+            route = this.googleDistanceMatrixService.getRouteInfo(startLocation, endLocation);
+        } catch (InvalidGoogleApiResponseException ex) {
+            fail();
+        }
+        
+        assertTrue(route.getStartAddress().getAddress().toString().equals("Innovation Centre, Hatfield, Hertfordshire AL10 9PN, UK"));
+        assertTrue(route.getEndAddress().getAddress().toString().equals("Sandridge, Hatfield, Hertfordshire AL10 9BL, UK"));
+        assertTrue(route.getDistance() == 2855);
+    }
+    
+    /**
+     * Test of getRouteInfo method, of class GoogleDistanceMatrixService for no route.
+     */
+    @Test
+    public void testGetRouteInfoNoroute(){
+        
+        Location startLocation = new Location(0, 0);
+        Location endLocation = new Location(0, 0);
+        Route route = null;
+        
+        try {
+            route = this.googleDistanceMatrixService.getRouteInfo(startLocation, endLocation);
+        } catch (InvalidGoogleApiResponseException ex) {
+            fail();
+        }
+        
+        assertTrue(route == null);
+    }
+    
     
     
     /** 

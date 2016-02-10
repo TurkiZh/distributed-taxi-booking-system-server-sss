@@ -27,9 +27,9 @@ import org.codehaus.jettison.json.JSONObject;
  */
 @Stateless
 public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
-    
+
     private static final Logger LOGGER = Logger.getLogger(GoogleDistanceMatrixService.class.getName());
-    
+
     private final Properties properties;
 
     /**
@@ -51,7 +51,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     @Override
     public double getDistance(String origin, String destination)
             throws InvalidGoogleApiResponseException, RouteNotFoundException {
-        
+
         try {
             String query = this.properties.getProperty("google.distancematrix.api.endpoint")
                     + "/json?origins="
@@ -59,13 +59,13 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
                     + "&destinations="
                     + HttpUtils.stringEncode(destination)
                     + "&units=imperial";
-            
+
             LOGGER.log(Level.FINEST, query, "Constructed Query");
-            
+
             JSONObject json = HttpUtils.getUrl(query);
-            
+
             LOGGER.log(Level.FINEST, json.toString(), "Result");
-            
+
             if (!json.toString().contains("NOT_FOUND")) {
                 return json.getJSONArray("rows")
                         .getJSONObject(0)
@@ -76,12 +76,12 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
             } else {
                 throw new RouteNotFoundException();
             }
-            
+
         } catch (JSONException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             throw new InvalidGoogleApiResponseException();
         }
-        
+
     }
 
     /**
@@ -97,25 +97,25 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     @Override
     public String getGeocode(double latitude, double longitude)
             throws InvalidGoogleApiResponseException {
-        
+
         String query = this.properties.getProperty("google.geocoding.api.address.lookup");
         Map<String, String> tokens = new HashMap<>();
         tokens.put("latitude", String.valueOf(latitude));
         tokens.put("longitude", String.valueOf(longitude));
         query = ConfigService.parseProperty(query, tokens);
-        
+
         try {
-            
+
             LOGGER.log(Level.FINEST, "getGeocode query - {0}", query);
-            
+
             JSONObject json = HttpUtils.getUrl(query);
-            
+
             LOGGER.log(Level.FINEST, "getGeocode - {0}", json);
-            
+
             if (!"ZERO_RESULTS".equals(json.getString("status"))) {
                 JSONArray results = json.getJSONArray("results");
                 JSONObject object = results.getJSONObject(0);
-                
+
                 return object.getString("formatted_address");
             } else {
                 return null;
@@ -138,25 +138,25 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
      */
     @Override
     public Location getGeocode(String address) throws InvalidGoogleApiResponseException {
-        
+
         try {
             String query = this.properties.getProperty("google.geocoding.api.address.latlng.lookup");
-            
+
             Map<String, String> tokens = new HashMap<>();
             tokens.put("address", HttpUtils.stringEncode(address));
             query = ConfigService.parseProperty(query, tokens);
-            
+
             JSONObject json = HttpUtils.getUrl(query);
-            
+
             if (this.validateJsonResponse(json)) {
                 JSONArray results = json.getJSONArray("results");
                 JSONObject object = results.getJSONObject(0);
-                
+
                 JSONObject location = object.getJSONObject("geometry").getJSONObject("location");
-                
+
                 double lat = location.getDouble("lat");
                 double lng = location.getDouble("lng");
-                
+
                 return new Location(lat, lng);
             } else {
                 return null;
@@ -179,36 +179,40 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     @Override
     public Route getRouteInfo(Location startLocation, Location endLocation)
             throws InvalidGoogleApiResponseException {
-        
+
+        List<List<Location>> routes;
+        List<Location> path;
+        Address startAddress;
+        Address endAddress;
+        double distance;
+        double estimatedTravelTime;
+        Route route = null;
+
+        String query = this.properties.getProperty("google.directions.api.route.lookup");
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("origin", startLocation.toString());
+        tokens.put("destination", endLocation.toString());
+        query = ConfigService.parseProperty(query, tokens);
+
         try {
-            List<List<Location>> routes;
-            List<Location> path;
-            Address startAddress;
-            Address endAddress;
-            double distance;
-            double estimatedTravelTime;
-            Route route = null;
-            
-            String query = this.properties.getProperty("google.directions.api.endpoint")
-                    + "/json?origin=" + startLocation.toString() + "&destination=" + endLocation.toString();
-            
+
             LOGGER.log(Level.FINEST, "getRouteInfo - {0}", query);
-            
+
             JSONObject json = HttpUtils.getUrl(query);
-            
+
             LOGGER.log(Level.FINEST, "getRouteInfo - {0}", json);
-            
+
             if (this.validateJsonResponse(json)) {
-                
+
                 routes = this.getRoutes(json);
-                
+
                 if (routes != null && !routes.isEmpty()) {
                     path = routes.get(0);
                 } else {
                     // no route.
                     return null;
                 }
-                
+
                 JSONArray legs = json.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
                 startAddress = new Address(legs.getJSONObject(0).getString("start_address"), startLocation);
                 endAddress = new Address(legs.getJSONObject(0).getString("end_address"), endLocation);
@@ -218,7 +222,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
                 //time in seconds
                 estimatedTravelTime = legs.getJSONObject(0).getJSONObject("duration").getDouble("value");
-                
+
                 route = new Route(startAddress, endAddress, distance, path, estimatedTravelTime);
             }
             return route;
@@ -258,27 +262,27 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
      */
     @Override
     public List<List<Location>> getRoutes(JSONObject json) throws InvalidGoogleApiResponseException {
-        
+
         List<List<Location>> routesList = new ArrayList<>();
         JSONArray routes = null;
         JSONArray legs = null;
         JSONArray steps = null;
-        
+
         try {
-            
+
             routes = json.getJSONArray("routes");
-            
+
             for (int i = 0; i < routes.length(); i++) {
                 legs = ((JSONObject) routes.get(i)).getJSONArray("legs");
                 List<Location> path = new ArrayList<>();
-                
+
                 for (int j = 0; j < legs.length(); j++) {
                     steps = ((JSONObject) legs.get(j)).getJSONArray("steps");
-                    
+
                     for (int k = 0; k < steps.length(); k++) {
                         String polyline = (String) ((JSONObject) ((JSONObject) steps.get(k)).get("polyline")).get("points");
                         List<Location> list = PolyLineUtils.decodePoly(polyline);
-                        
+
                         for (Location location : list) {
                             path.add(location);
                         }
@@ -304,29 +308,29 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
      */
     @Override
     public long estimateTravelTime(Location startLocation, Location endLocation) throws InvalidGoogleApiResponseException {
-        
+
         try {
             long estimatedTravelTime = 0;
-            
+
             String query = this.properties.getProperty("google.directions.api.route.lookup");
             Map<String, String> tokens = new HashMap<>();
             tokens.put("origin", startLocation.toString());
             tokens.put("destination", endLocation.toString());
             query = ConfigService.parseProperty(query, tokens);
-            
+
             LOGGER.log(Level.FINEST, "estimateTravelTime - {0}", query);
-            
+
             JSONObject json = HttpUtils.getUrl(query);
-            
+
             LOGGER.log(Level.FINEST, "estimateTravelTime - {0}", json);
-            
+
             if (this.validateJsonResponse(json)) {
                 JSONArray legs = json.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
                 //time in seconds
                 estimatedTravelTime = (long) legs.getJSONObject(0).getJSONObject("duration").getDouble("value");
             }
             return estimatedTravelTime;
-            
+
         } catch (JSONException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             throw new InvalidGoogleApiResponseException();
