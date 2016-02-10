@@ -4,7 +4,7 @@ package com.robertnorthard.dtbs.server.layer.model.booking;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.AccountRole;
 import com.robertnorthard.dtbs.server.layer.model.Route;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.model.Vehicle;
 import com.robertnorthard.dtbs.server.layer.model.VehicleType;
 import java.util.Date;

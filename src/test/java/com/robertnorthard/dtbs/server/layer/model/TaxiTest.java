@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model;
 
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
