@@ -7,10 +7,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * integration tests for class AccountSecurityContextTest
+ * 
  * @author robertnorthard
  */
-public class AccountSecurityContextTest {
+public class AccountSecurityContextIT {
 
     private Account account;
     private AccountSecurityContext accountSecurityContext;
@@ -26,12 +27,36 @@ public class AccountSecurityContextTest {
      * Test of isUserInRole method, of class AccountSecurityContext.
      */
     @Test
-    public void testIsUserInRole() {
+    public void testIsUserInRoleValidRole() {
         assertTrue(this.accountSecurityContext.isUserInRole("passenger"));
-        assertTrue(this.accountSecurityContext.isUserInRole("PASSENGER"));
+
+    }
+    
+    /**
+     * Test if isUserInRole method, of class AccountSecurityContext,
+     * when user has role passenger.
+     */
+    @Test
+    public void testIsUserInRolePassengerRole() {
+        assertTrue(this.accountSecurityContext.isUserInRole("passenger"));
+    }
+    
+    /**
+     * Test if isUserInRole method, of class AccountSecurityContext, 
+     * when user has role passenger.
+     */
+    @Test
+    public void testIsUserHasRolePassengerForDriver() {
         account.setRole(AccountRole.DRIVER);
         assertFalse(this.accountSecurityContext.isUserInRole("passenger"));
-        assertFalse(this.accountSecurityContext.isUserInRole("PASSENGER"));
+    }
+
+    /**
+     * Test of isUserInRole method, of class AccountSecurityContext, 
+     * when user has role passenger and checked role is unknown.
+     */
+    @Test
+    public void testIsUserInRoleUnkownUser() {
         assertFalse(this.accountSecurityContext.isUserInRole("unknown"));
     }
 }
