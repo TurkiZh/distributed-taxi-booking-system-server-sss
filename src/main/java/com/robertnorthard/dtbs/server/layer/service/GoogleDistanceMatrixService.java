@@ -53,20 +53,20 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
             throws InvalidGoogleApiResponseException, RouteNotFoundException {
 
         try {
-            String query = this.properties.getProperty("google.distancematrix.api.endpoint")
-                    + "/json?origins="
-                    + HttpUtils.stringEncode(origin)
-                    + "&destinations="
-                    + HttpUtils.stringEncode(destination)
-                    + "&units=imperial";
+            String query = this.properties.getProperty("google.distancematrix.api.distance.lookup");
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("origins", HttpUtils.stringEncode(origin));
+            tokens.put("destinations", HttpUtils.stringEncode(destination));
+            query = ConfigService.parseProperty(query, tokens);
 
-            LOGGER.log(Level.FINEST, query, "Constructed Query");
+            LOGGER.log(Level.FINEST, query);
 
             JSONObject json = HttpUtils.getUrl(query);
 
-            LOGGER.log(Level.FINEST, json.toString(), "Result");
+            LOGGER.log(Level.FINEST, json.toString());
 
-            if (!json.toString().contains("NOT_FOUND")) {
+            LOGGER.log(Level.INFO,json.toString());
+            if (!(json.toString().contains("ZERO_RESULTS") || json.toString().contains("NOT_FOUND"))) {
                 return json.getJSONArray("rows")
                         .getJSONObject(0)
                         .getJSONArray("elements")
