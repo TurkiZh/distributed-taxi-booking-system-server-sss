@@ -5,13 +5,14 @@
     <class>com.robertnorthard.dtbs.server.layer.model.Account</class>
     <class>com.robertnorthard.dtbs.server.layer.model.Location</class>
     <class>com.robertnorthard.dtbs.server.layer.model.Route</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.Taxi</class>
     <class>com.robertnorthard.dtbs.server.layer.model.Vehicle</class>
     <class>com.robertnorthard.dtbs.server.layer.model.VehicleType</class>
     <class>com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent</class>
     <class>com.robertnorthard.dtbs.server.layer.model.booking.Booking</class>
     <class>com.robertnorthard.dtbs.server.layer.model.Address</class>
-    <class>com.robertnorthard.dtbs.server.layer.persistence.data.mappers.JpaBookingStateDataConverter</class>
+    <class>com.robertnorthard.dtbs.server.layer.model.taxi.Taxi</class>
+    <class>com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking.JpaBookingStateDataConverter</class>
+    <class>com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JpaTaxiStateDataConverter</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

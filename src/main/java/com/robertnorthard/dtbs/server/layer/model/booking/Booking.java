@@ -1,12 +1,12 @@
 package com.robertnorthard.dtbs.server.layer.model.booking;
 
-import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.JpaBookingStateDataConverter;
-import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.JsonBookingStateDataConverter;
+import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking.JpaBookingStateDataConverter;
+import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking.JsonBookingStateDataConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.Route;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;

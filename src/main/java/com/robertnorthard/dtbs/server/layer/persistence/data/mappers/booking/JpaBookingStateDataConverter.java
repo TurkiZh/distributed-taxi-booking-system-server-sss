@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.persistence.data.mappers;
+package com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking;
 
 import com.robertnorthard.dtbs.server.layer.model.booking.AwaitingTaxiBookingState;
 import com.robertnorthard.dtbs.server.layer.model.booking.BookingState;

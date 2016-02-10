@@ -1,10 +1,17 @@
-package com.robertnorthard.dtbs.server.layer.model;
+package com.robertnorthard.dtbs.server.layer.model.taxi;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.model.Vehicle;
+import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JpaTaxiStateDataConverter;
+import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JsonTaxiStateDataConverter;
 import java.io.Serializable;
 import java.util.Observable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +34,10 @@ import javax.persistence.Transient;
     @NamedQuery(
             name = "Taxi.findTaxiForDriver",
             query = "SELECT t FROM Taxi t WHERE t.account.username = :username"
+    ),
+    @NamedQuery(
+            name = "Taxi.findTaxisWithState",
+            query = "SELECT t FROM Taxi t WHERE t.state = :state"
     )
 })
 public class Taxi extends Observable implements Serializable {
@@ -49,9 +60,24 @@ public class Taxi extends Observable implements Serializable {
     @JoinColumn(name = "TAXI_LOCATION_ID")
     private Location location;
 
-    @Transient
-    private TaxiState taxiState;
+    @Column(name = "TAXI_STATE")
+    @Convert(converter = JpaTaxiStateDataConverter.class)
+    private TaxiState state;
 
+    // taxi states
+    @JsonIgnore
+    @Transient
+    private static TaxiState offDutyTaxiState = new OffDutyTaxiState();
+    
+    @JsonIgnore
+    @Transient
+    private static TaxiState acceptedJobTaxiState = new AcceptedJobTaxiState();
+    
+    @JsonIgnore
+    @Transient
+    private static TaxiState onDutyTaxiState = new OnDutyTaxiState();
+    
+    
     public Taxi() {
         // Empty constructor required by JPA.
     }
@@ -66,6 +92,8 @@ public class Taxi extends Observable implements Serializable {
         this.account = account;
 
         this.location = null;
+        
+        this.state = Taxi.getOffDutyTaxiState();
     }
 
     /**
@@ -83,7 +111,7 @@ public class Taxi extends Observable implements Serializable {
      * @return the vehicle
      */
     public Vehicle getVehicle() {
-        return vehicle;
+        return this.vehicle;
     }
 
     /**
@@ -97,7 +125,7 @@ public class Taxi extends Observable implements Serializable {
      * @return the account
      */
     public Account getAccount() {
-        return account;
+        return this.account;
     }
 
     /**
@@ -111,7 +139,7 @@ public class Taxi extends Observable implements Serializable {
      * @return the id
      */
     public long getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -132,7 +160,7 @@ public class Taxi extends Observable implements Serializable {
      * @return the location
      */
     public Location getLocation() {
-        return location;
+        return this.location;
     }
 
     /**
@@ -169,16 +197,52 @@ public class Taxi extends Observable implements Serializable {
     }
 
     /**
-     * @return the taxiState
+     * @return the state
      */
-    public TaxiState getTaxiState() {
-        return taxiState;
+    @JsonSerialize(using = JsonTaxiStateDataConverter.class)
+    public TaxiState getState() {
+        return state;
     }
 
     /**
-     * @param taxiState the taxiState to set
+     * @param state the state to set
      */
-    public void setTaxiState(TaxiState taxiState) {
-        this.taxiState = taxiState;
+    public void setState(TaxiState state) {
+        this.state = state;
+    }
+    
+   public void goOffDuty(){
+       this.state.goOffDuty(this);
+               
+   }
+
+    public void goOnDuty(){
+        this.state.goOnDuty(this);
+              
+    }
+
+    public void acceptJob(){
+        this.state.acceptJob(this);
+    }
+     
+    /**
+     * @return the offDutyTaxiState
+     */
+    public static TaxiState getOffDutyTaxiState() {
+        return Taxi.offDutyTaxiState;
+    }
+
+    /**
+     * @return the acceptedJobTaxiState
+     */
+    public static TaxiState getAcceptedJobTaxiState() {
+        return Taxi.acceptedJobTaxiState;
+    }
+
+    /*
+     * @return the onDutyTaxiState
+     */
+    public static TaxiState getOnDutyTaxiState() {
+        return Taxi.onDutyTaxiState;
     }
 }

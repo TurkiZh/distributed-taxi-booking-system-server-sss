@@ -1,6 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
 import com.robertnorthard.dtbs.server.layer.model.events.LocationEvent;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
 import com.robertnorthard.dtbs.server.layer.utils.Observer;
@@ -82,9 +83,9 @@ public class LocationTrackingWebSocketEndpoint implements Observer {
     public void update(Object obj) {
         for (Session o : LocationTrackingWebSocketEndpoint.observers) {
             if (o.isOpen()) {
-                if (obj instanceof LocationEvent) {
+                if (obj instanceof TaxiLocationEventDto) {
                     try {
-                        LocationEvent e = (LocationEvent) obj;
+                        TaxiLocationEventDto e = (TaxiLocationEventDto) obj;
                         o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
                     } catch (JsonProcessingException ex) {
                         Logger.getLogger(LocationTrackingWebSocketEndpoint.class.getName()).log(Level.SEVERE, null, ex);

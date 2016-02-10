@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Stateless;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -24,6 +25,7 @@ import org.codehaus.jettison.json.JSONObject;
  *
  * @author robertnorthard
  */
+@Stateless
 public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
     private static final Logger LOGGER = Logger.getLogger(GoogleDistanceMatrixService.class.getName());

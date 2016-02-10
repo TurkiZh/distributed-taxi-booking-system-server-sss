@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model.booking;
 
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import java.util.Date;
 
 /**
@@ -8,21 +8,21 @@ import java.util.Date;
  *
  * @author robertnorthard
  */
-public abstract class BookingState {
+public interface BookingState {
 
     /**
      * Cancel booking.
      *
      * @param booking booking callback.
      */
-    public abstract void cancelBooking(Booking booking);
+    public void cancelBooking(Booking booking);
 
     /**
      * Cancel taxi for booking.
      *
      * @param booking booking callback.
      */
-    public abstract void cancelTaxi(Booking booking);
+    public void cancelTaxi(Booking booking);
 
     /**
      * Dispatch taxi.
@@ -30,7 +30,7 @@ public abstract class BookingState {
      * @param booking booking callback.
      * @param taxi taxi taking booking.
      */
-    public abstract void dispatchTaxi(Booking booking, Taxi taxi);
+    public void dispatchTaxi(Booking booking, Taxi taxi);
 
     /**
      * Drop off passenger.
@@ -40,7 +40,7 @@ public abstract class BookingState {
      * @throws IllegalArgumentException Invalid time. Start time cannot be
      * before booking creation timestamp.
      */
-    public abstract void dropOffPassenger(Booking booking, Date time);
+    public void dropOffPassenger(Booking booking, Date time);
 
     /**
      * Pickup passenger.
@@ -50,5 +50,5 @@ public abstract class BookingState {
      * @throws IllegalArgumentException Invalid time. Start time cannot be
      * before booking creation timestamp.
      */
-    public abstract void pickupPassenger(Booking booking, Date time);
+    public void pickupPassenger(Booking booking, Date time);
 }

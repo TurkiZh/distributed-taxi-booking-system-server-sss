@@ -1,4 +1,4 @@
-package com.robertnorthard.dtbs.server.layer.persistence.data.mappers;
+package com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

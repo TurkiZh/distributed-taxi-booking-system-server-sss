@@ -5,6 +5,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFai
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
+import javax.ejb.Local;
 
 /**
  * An interface for defining and enforcing operations needed for the Account
@@ -12,6 +13,7 @@ import com.robertnorthard.dtbs.server.layer.model.Account;
  *
  * @author robertnorthard
  */
+@Local
 public interface AccountFacade {
 
     /**

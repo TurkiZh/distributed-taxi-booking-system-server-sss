@@ -10,6 +10,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * An interface for defining and enforcing operations needed for the Booking
@@ -17,6 +18,7 @@ import java.util.List;
  *
  * @author robertnorthard
  */
+@Local
 public interface BookingFacade {
 
     /**

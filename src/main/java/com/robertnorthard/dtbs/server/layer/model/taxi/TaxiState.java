@@ -1,29 +1,20 @@
-package com.robertnorthard.dtbs.server.layer.model;
-
-import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
+package com.robertnorthard.dtbs.server.layer.model.taxi;
 
 /**
- * Abstract class representing a state taxi can be in and common operations.
+ * Interface representing a state a taxi can be in and common operations.
  * State design pattern. A behavioral pattern that provide a flexible
  * alternative to subclasses and complex difficult to test conditional
  * statements.
  *
  * @author robertnorthard
  */
-public abstract class TaxiState {
+public interface TaxiState {
 
-    private Taxi taxi;
+    public void goOffDuty(Taxi taxi);
 
-    public TaxiState(Taxi taxi) {
-        this.taxi = taxi;
-    }
+    public void goOnDuty(Taxi taxi);
 
-    public abstract void logout();
-
-    public abstract void arriveAtPickPoint();
-
-    public abstract void arrivedAtDestination();
-
-    public abstract void acceptJob(Booking booking);
-
+    public void acceptJob(Taxi taxi);
+    
+    public void completeJob(Taxi taxi);
 }

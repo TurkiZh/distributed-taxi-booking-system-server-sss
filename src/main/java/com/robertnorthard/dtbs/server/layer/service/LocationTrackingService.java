@@ -1,9 +1,10 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.common.dto.LocationDto;
+import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
-import com.robertnorthard.dtbs.server.layer.model.events.LocationEvent;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.LocationDao;
 import com.robertnorthard.dtbs.server.layer.utils.Subject;
 import javax.inject.Inject;
@@ -30,12 +31,12 @@ public class LocationTrackingService extends Subject implements LocationTracking
      * @param latitude Taxi's current latitude.
      * @param longitude Taxi's current longitude.
      * @param timestamp timestamp of event.
-     * @throws EntityNotFoundException taxi not found.
+     * @throws TaxiNotFoundException taxi not found.
      * @IllegalArgumentException invalid latitude or longitude.
      */
     @Override
     public synchronized void updateLocation(Long id, double latitude, double longitude, long timestamp)
-            throws EntityNotFoundException {
+            throws TaxiNotFoundException {
 
         Location lastKnownLocation;
 
@@ -48,7 +49,7 @@ public class LocationTrackingService extends Subject implements LocationTracking
         Taxi taxi = this.taxiService.findTaxi(id);
 
         if (taxi == null) {
-            throw new EntityNotFoundException();
+            throw new TaxiNotFoundException();
         }
 
         Location previousLocation = taxi.getLocation();
@@ -61,7 +62,8 @@ public class LocationTrackingService extends Subject implements LocationTracking
         this.taxiService.updateTaxi(taxi);
 
         // create taxi location event.
-        LocationEvent event = new LocationEvent(id, lastKnownLocation);
+        TaxiLocationEventDto event = new TaxiLocationEventDto(id, taxi.getState().toString(), 
+                new LocationDto(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), timestamp);
 
         //notify all taxi subscribers of updated taxi location
         this.notifyObservers(event);

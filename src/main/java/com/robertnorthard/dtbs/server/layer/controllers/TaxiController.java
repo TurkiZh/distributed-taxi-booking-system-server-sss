@@ -1,12 +1,13 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
-import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpResponseFactory;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
 import com.robertnorthard.dtbs.server.layer.service.TaxiFacade;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
+import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpListResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -67,6 +68,7 @@ public class TaxiController {
             Location location = this.mapper.readValue(message, Location.class);
 
             // drivers should only be able to update there own taxi.
+            // event time is based on current server time.
             this.locationTrackingService.updateLocation(
                     id, location.getLatitude(), location.getLongitude(), new Date().getTime());
 
@@ -76,7 +78,7 @@ public class TaxiController {
             return this.responseFactory.getResponse(
                     "Taxi location updated.", Response.Status.OK);
 
-        } catch (EntityNotFoundException ex) {
+        } catch (TaxiNotFoundException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
 
@@ -89,6 +91,41 @@ public class TaxiController {
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
         }
+    }
+    
+    /**
+     * Return a collection of all taxis on duty and available encapsulated 
+     * in a HTTP response list object.
+     * 
+     * @return a collection of all taxis on duty and available encapsulated 
+     * in a HTTP response list object.
+     */
+    @GET
+    @Path("/onduty")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"driver", "passenger"})
+    public Response findOnDutyAndAvailableTaxis(){
+        return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new HttpListResponse<>(
+                                    this.taxiService.findAllTaxiOnDutyAndAvailable(), "0").toString()).build();
+
+    }
+    
+    /**
+     * Return a collection of all taxis on duty and available encapsulated 
+     * in a HTTP response list object.
+     * 
+     * @return a collection of all taxis on duty and available encapsulated 
+     * in a HTTP response list object.
+     */
+    @GET
+    @Path("/offduty")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"driver", "passenger"})
+    public Response findOffDutytaxis(){
+        return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new HttpListResponse<>(
+                                    this.taxiService.findAllTaxiOffDuty(), "0").toString()).build();
     }
 
     /**

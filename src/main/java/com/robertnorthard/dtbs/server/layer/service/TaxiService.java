@@ -1,15 +1,18 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.ejb.Stateless;
 
 /**
  * Taxi Service class implementation.
  *
  * @author robertnorthard
  */
+@Stateless
 public class TaxiService implements TaxiFacade {
 
     private Map<Integer, Taxi> allTaxisCache = new ConcurrentHashMap<>();
@@ -47,5 +50,25 @@ public class TaxiService implements TaxiFacade {
     @Override
     public void updateTaxi(Taxi taxi) {
         this.taxiDao.update(taxi);
+    }
+
+    /**
+     * Return a collection of taxis on duty and available.
+     * 
+     * @return a collection of taxis on duty and available.
+     */
+    @Override
+    public List<Taxi> findAllTaxiOnDutyAndAvailable() {
+        return this.taxiDao.findAllOnDuty();
+    }
+    
+    /**
+     * Return a collection of taxis on duty and available.
+     * 
+     * @return a collection of taxis on duty and available.
+     */
+    @Override
+    public List<Taxi> findAllTaxiOffDuty() {
+        return this.taxiDao.findAllOffDuty();
     }
 }

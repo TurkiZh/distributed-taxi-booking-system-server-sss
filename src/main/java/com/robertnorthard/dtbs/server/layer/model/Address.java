@@ -29,8 +29,8 @@ public class Address implements Serializable {
     @JoinColumn(name = "LOCATION_ID")
     private Location location;
 
-    @Column(name = "ADDRESS")
-    private String address;
+    @Column(name = "STREET_ADDRESS")
+    private String streetAddress;
 
     public Address() {
         // Needed by JPA.
@@ -39,11 +39,11 @@ public class Address implements Serializable {
     /**
      * Constructor for class address.
      *
-     * @param address address e.g. 30 Cheviots, Hatfield, AL10 8JD.
+     * @param streetAddress address the street address e.g. 30 Cheviots, Hatfield, AL10 8JD.
      * @param location latitude and longitude location of address.
      */
-    public Address(String address, Location location) {
-        this.address = address;
+    public Address(String streetAddress, Location location) {
+        this.streetAddress = streetAddress;
         this.location = location;
     }
 
@@ -62,17 +62,17 @@ public class Address implements Serializable {
     }
 
     /**
-     * @return the address
+     * @return the street address.
      */
     public String getAddress() {
-        return address;
+        return streetAddress;
     }
 
     /**
-     * @param address the address to set
+     * @param streetAddress the address to set
      */
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     /**

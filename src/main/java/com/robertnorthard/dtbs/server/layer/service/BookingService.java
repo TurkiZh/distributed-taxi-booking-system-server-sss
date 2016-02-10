@@ -10,13 +10,14 @@ import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.Route;
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.RouteDao;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
@@ -24,6 +25,7 @@ import javax.inject.Inject;
  *
  * @author robertnorthard
  */
+@Stateless
 public class BookingService implements BookingFacade {
 
     @Inject

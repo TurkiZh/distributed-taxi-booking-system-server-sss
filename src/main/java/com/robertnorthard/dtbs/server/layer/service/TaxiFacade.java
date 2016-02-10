@@ -1,6 +1,8 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
+import java.util.List;
+import javax.ejb.Local;
 
 /**
  * An interface for defining and enforcing operations needed for the Taxi
@@ -9,6 +11,7 @@ import com.robertnorthard.dtbs.server.layer.model.Taxi;
  *
  * @author robertnorthard
  */
+@Local
 public interface TaxiFacade {
 
     /**
@@ -25,4 +28,19 @@ public interface TaxiFacade {
      * @param taxi taxi to update.
      */
     public void updateTaxi(Taxi taxi);
+    
+    /**
+     * Return a collection of taxis on duty and available.
+     * 
+     * @return a collection of taxis on duty and available.
+     */
+    public List<Taxi> findAllTaxiOnDutyAndAvailable();
+    
+    
+    /**
+     * Return a collection of taxis that are off duty.
+     * 
+     * @return a collection of taxis that are off duty.
+     */
+    public List<Taxi> findAllTaxiOffDuty();
 }

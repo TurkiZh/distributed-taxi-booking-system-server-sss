@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model.booking;
 
-import com.robertnorthard.dtbs.server.layer.model.Taxi;
+import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import java.util.Date;
 
 /**
@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * @author robertnorthard
  */
-public class AwaitingTaxiBookingState extends BookingState {
+public class AwaitingTaxiBookingState implements BookingState {
 
     @Override
     public void cancelBooking(Booking booking) {

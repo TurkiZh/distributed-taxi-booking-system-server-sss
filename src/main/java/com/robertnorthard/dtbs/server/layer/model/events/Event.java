@@ -29,6 +29,10 @@ public abstract class Event implements Serializable {
     public Event() {
         this.timestamp = new Date();
     }
+    
+    public Event(long timestamp){
+        this.timestamp = new Date(timestamp);
+    }
 
     /**
      * @return the id

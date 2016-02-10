@@ -5,6 +5,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import java.util.List;
+import javax.ejb.Local;
 import org.codehaus.jettison.json.JSONObject;
 
 /**
@@ -13,6 +14,7 @@ import org.codehaus.jettison.json.JSONObject;
  *
  * @author robertnorthard
  */
+@Local
 public interface GoogleDistanceMatrixFacade {
 
     /**

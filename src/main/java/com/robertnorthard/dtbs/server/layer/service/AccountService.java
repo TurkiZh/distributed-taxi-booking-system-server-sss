@@ -11,6 +11,7 @@ import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import org.joda.time.DateTime;
 
@@ -19,6 +20,7 @@ import org.joda.time.DateTime;
  *
  * @author robertnorthard
  */
+@Stateless
 public class AccountService implements AccountFacade {
 
     private final AccountDao accountDao;

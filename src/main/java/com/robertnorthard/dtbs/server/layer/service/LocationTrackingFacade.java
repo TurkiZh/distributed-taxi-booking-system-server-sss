@@ -1,6 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
+import javax.ejb.Local;
 
 /**
  * An interface for defining and enforcing operations needed for the 
@@ -8,6 +9,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
  *
  * @author robertnorthard
  */
+@Local
 public interface LocationTrackingFacade {
 
     /**
@@ -17,8 +19,8 @@ public interface LocationTrackingFacade {
      * @param latitude Taxi's current latitude.
      * @param longitude Taxi's current longitude.
      * @param timestamp timestamp of event.
-     * @throws EntityNotFoundException taxi not found.
+     * @throws TaxiNotFoundException taxi not found.
      */
     public void updateLocation(Long id, double latitude, double longitude, long timestamp)
-            throws EntityNotFoundException;
+            throws TaxiNotFoundException;
 }
