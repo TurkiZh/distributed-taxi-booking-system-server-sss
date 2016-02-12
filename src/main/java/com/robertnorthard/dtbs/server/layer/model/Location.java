@@ -18,8 +18,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "LOCATION")
 public class Location implements Serializable {
-
-    public static final long serialVersionUID = 0L;
+    
+    @Transient
+    private static final long serialVersionUID = 0L;
     
     @Transient
     private static final double MIN_LATITUDE = -90;

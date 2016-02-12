@@ -23,7 +23,8 @@ import javax.persistence.Transient;
 @Table(name = "ROUTE")
 public class Route implements Serializable {
 
-    public static final long serialVersionUID = 0L;
+    @Transient
+    private static final long serialVersionUID = 0L;
     
     @Column(name = "ID")
     @Id

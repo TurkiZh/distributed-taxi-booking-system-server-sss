@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Abstract vehicle class
@@ -19,7 +20,8 @@ import javax.persistence.Table;
 @Table(name = "VEHICLE")
 public class Vehicle implements Serializable {
 
-    public static final long serialVersionUID = 0L;
+    @Transient
+    private static final long serialVersionUID = 0L;
     
     @Id
     @Column(name = "NUMBER_PLATE")

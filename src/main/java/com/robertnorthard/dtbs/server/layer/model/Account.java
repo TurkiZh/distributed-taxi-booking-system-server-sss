@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "ACCOUNT")
 public class Account implements Serializable {
 
+    private static final long serialVersionUID = 0L;
+    
     @Id
     @Column(name = "USERNAME")
     private String username;

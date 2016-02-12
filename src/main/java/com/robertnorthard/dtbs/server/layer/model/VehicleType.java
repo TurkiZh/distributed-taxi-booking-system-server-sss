@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Represent a vehicle type.
@@ -17,7 +18,8 @@ import javax.persistence.Table;
 @Table(name = "VEHICLE_TYPE")
 public class VehicleType implements Serializable {
 
-    public static final long serialVersionUID = 0L;
+    @Transient
+    private static final long serialVersionUID = 0L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
