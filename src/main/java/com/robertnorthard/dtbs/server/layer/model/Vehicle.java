@@ -19,6 +19,8 @@ import javax.persistence.Table;
 @Table(name = "VEHICLE")
 public class Vehicle implements Serializable {
 
+    public static final long serialVersionUID = 0L;
+    
     @Id
     @Column(name = "NUMBER_PLATE")
     private String numberplate;

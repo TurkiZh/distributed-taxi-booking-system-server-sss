@@ -21,6 +21,8 @@ import javax.persistence.Table;
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
 
+    public static final long serialVersionUID = 0L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.robertnorthard.dtbs.server.layer.model;
 
-import java.io.Serializable;
-
 /**
- *
+ * Enum to represent account types.
+ * 
  * @author robertnorthard
  */
-public enum AccountType implements Serializable {
+public enum AccountType {
 
     PASSENGER("passenger"),
     DRIVER("driver"),
