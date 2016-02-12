@@ -25,12 +25,22 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
      */
     public List<PasswordResetEvent> findPasswordResetByUsernameAndCode(String username, String code) {
 
+        List<PasswordResetEvent> events = null;
         EntityManager em = this.getEntityManager();
-        Query query = em.createNamedQuery("PasswordResetEvent.findPasswordResetByUsernameAndCode", PasswordResetEvent.class);
-        query.setParameter("username", username);
-        query.setParameter("code", code);
 
-        return query.getResultList();
+        try {
+            Query query = em.createNamedQuery(
+                    "PasswordResetEvent.findPasswordResetByUsernameAndCode", PasswordResetEvent.class);
+            query.setParameter("username", username);
+            query.setParameter("code", code);
+            events = query.getResultList();
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+
+        return events;
     }
 
     /**
@@ -41,10 +51,18 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
      */
     public List<PasswordResetEvent> findActivePasswordResetByUsername(String username) {
 
+        List<PasswordResetEvent> events = null;
         EntityManager em = this.getEntityManager();
-        Query query = em.createNamedQuery("PasswordResetEvent.findActivePasswordResetByUsername", PasswordResetEvent.class);
-        query.setParameter("username", username);
 
-        return query.getResultList();
+        try {
+            Query query = em.createNamedQuery(
+                    "PasswordResetEvent.findActivePasswordResetByUsername", PasswordResetEvent.class);
+            query.setParameter("username", username);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        return events;
     }
 }

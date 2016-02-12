@@ -1,10 +1,11 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
+import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.layer.utils.EntityManagerFactoryUtils;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.EntityTransaction;
 
 /**
  * A generic Data Access Object (DAO) class for interfacing with Java
@@ -17,9 +18,6 @@ import javax.persistence.Persistence;
  */
 public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
 
-    private EntityManagerFactory factory;
-    private EntityManager em;
-
     private final Class<V> persistentClass;
 
     /**
@@ -29,25 +27,24 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
         this.persistentClass = (Class<V>) ((ParameterizedType) getClass()
                 .getGenericSuperclass())
                 .getActualTypeArguments()[1];
-
-        this.factory = Persistence.createEntityManagerFactory("com.robertnorthard.dtms.server");
-        this.em = factory.createEntityManager();
     }
 
     /**
-     * Return persistent context entity manager.
+     * Return a persistent context entity manager.
      *
      * @return persistent context entity manager.
      */
     public EntityManager getEntityManager() {
-        return this.em;
+        return EntityManagerFactoryUtils.getEntityManager();
     }
 
     /**
      * Find a return object of type V with primary key K.
+     * If entity with key K is not found return null.
      *
      * @param id primary key.
-     * @return return object of type V with primary key K.
+     * @return return object of type V with primary key K. 
+     *         If entity with key K is not found return null.
      * @throws IllegalArgumentException if id is null.
      */
     @Override
@@ -55,7 +52,18 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null.");
         }
-        return this.getEntityManager().find(persistentClass, id);
+        
+        V foundEntity = null;
+        EntityManager em = this.getEntityManager();
+        
+        try{
+           foundEntity = em.find(persistentClass, id);
+        }finally{
+            if(em.isOpen()){
+                em.close();
+            }
+        }
+        return foundEntity;        
     }
 
     /**
@@ -69,9 +77,21 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null.");
         }
-        this.getEntityManager().getTransaction().begin();
-        this.getEntityManager().persist(entity);
-        this.getEntityManager().getTransaction().commit();
+
+        EntityManager em = this.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            em.persist(entity);
+            em.flush();
+        } finally {
+            if (!tx.getRollbackOnly()) {
+                tx.commit();
+            }else if(em.isOpen()){
+                em.close();
+            }
+        }
     }
 
     /**
@@ -79,20 +99,34 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
      *
      * @param id id of entity
      * @throws IllegalArgumentException if id is null.
+     * @throws EntityNotFoundException exception if entity was not found.
      */
     @Override
-    public void deleteEntityById(K id) {
+    public void deleteEntityById(K id) throws EntityNotFoundException {
 
         if (id == null) {
             throw new IllegalArgumentException("id cannot be null.");
         }
 
-        V entity = this.findEntityById(id);
-        this.getEntityManager().remove(entity);
+        EntityManager em = this.getEntityManager();
+
+        V entity = em.find(persistentClass, id);
+
+        if (!(entity != null)) {
+            try {
+                em.remove(entity);
+            } finally {
+                if (em.isOpen()) {
+                    em.close();
+                }
+            }
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     /**
-     * Update entity in JPA repository.
+     * Update entity in JPA repository by merging attributes.
      *
      * @param entity entity to update.
      * @throws IllegalArgumentException if entity is null.
@@ -103,21 +137,45 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null.");
         }
-        this.getEntityManager().getTransaction().begin();
-        this.getEntityManager().merge(entity);
-        this.getEntityManager().getTransaction().commit();
+
+        EntityManager em = this.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            em.merge(entity);
+            em.flush();
+        } finally {
+            if (!tx.getRollbackOnly()) {
+                tx.commit();
+            } else if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     /**
      * Return all entities for given class.
+     * If no entities found, null is returned.
      *
-     * @return all entities for given class.
+     * @return all entities for given class. 
+     *         If no entities, found null is returned.
      */
     @Override
     public List<V> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(this.persistentClass));
-        return getEntityManager().createQuery(cq).getResultList();
-    }
 
+        List<V> results = null;
+        EntityManager em = this.getEntityManager();
+
+        try {
+            results = em.createQuery(cq).getResultList();
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        return results;
+    }
 }

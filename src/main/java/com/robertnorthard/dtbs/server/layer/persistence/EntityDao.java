@@ -16,13 +16,14 @@ public interface EntityDao<K, V> {
 
     /**
      * Find a return object of type V with primary key K.
+     * If entity with key K is not found return null.
      *
      * @param id primary key.
-     * @return return object of type V with primary key K.
-     * @throws EntityNotFoundException entity not found exception.
+     * @return return object of type V with primary key K. 
+     *         If entity with key K is not found return null.
      * @throws IllegalArgumentException if id is null.
      */
-    public V findEntityById(final K id) throws EntityNotFoundException;
+    public V findEntityById(final K id);
 
     /**
      * Persist an entity to the data layer.
@@ -51,8 +52,10 @@ public interface EntityDao<K, V> {
 
     /**
      * Return all entities for given class.
+     * If no entities found, null is returned.
      *
-     * @return all entities for given class.
+     * @return all entities for given class. 
+     *         If no entities, found null is returned.
      */
     public List<V> findAll();
 }
