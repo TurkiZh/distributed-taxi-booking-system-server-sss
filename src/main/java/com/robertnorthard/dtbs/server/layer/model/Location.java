@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Represent a location by latitude and longitude.
@@ -18,6 +19,15 @@ import javax.persistence.Table;
 @Table(name = "LOCATION")
 public class Location implements Serializable {
 
+    @Transient
+    private static final double MIN_LATITUDE = -90;
+    @Transient
+    private static final double MAX_LATITUDE = 90;
+    @Transient
+    private static final double MIN_LONGITUDE = -180;
+    @Transient
+    private static final double MAX_LONGITUDE = 180;
+    
     @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,7 +78,7 @@ public class Location implements Serializable {
      * @return true if valid else false.
      */
     public static boolean validateLatitude(double latitude) {
-        return !(latitude > 90 || latitude < -90);
+        return !(latitude > Location.MAX_LATITUDE || latitude < Location.MIN_LATITUDE);
     }
 
     /**
@@ -78,7 +88,7 @@ public class Location implements Serializable {
      * @return true if valid else false.
      */
     public static boolean validateLongitude(double longitude) {
-        return !(longitude < -180 || longitude > 180);
+        return !(longitude < Location.MIN_LONGITUDE || longitude > Location.MAX_LONGITUDE);
     }
 
     /**
