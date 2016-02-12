@@ -65,7 +65,7 @@ public class BookingDao extends JpaEntityDaoImpl<Long, Booking> {
      * @return a collection of in complete bookings for the specified user.
      */
     public List<Booking> findInCompletedBookingsForUser(String username) {
-        
+
         List<Booking> bookings = null;
         EntityManager em = this.getEntityManager();
 
