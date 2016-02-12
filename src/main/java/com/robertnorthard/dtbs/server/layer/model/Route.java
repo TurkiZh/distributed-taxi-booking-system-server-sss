@@ -22,9 +22,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "ROUTE")
 public class Route implements Serializable {
-
+    
     @Transient
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = -1765861964246272848L;
     
     @Column(name = "ID")
     @Id

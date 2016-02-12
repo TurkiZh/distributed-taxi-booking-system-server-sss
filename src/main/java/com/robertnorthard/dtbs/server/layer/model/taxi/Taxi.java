@@ -41,6 +41,9 @@ import javax.persistence.Transient;
     )
 })
 public class Taxi extends Observable implements Serializable {
+    
+    @Transient
+    private static final long serialVersionUID = -3300934288127984894L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

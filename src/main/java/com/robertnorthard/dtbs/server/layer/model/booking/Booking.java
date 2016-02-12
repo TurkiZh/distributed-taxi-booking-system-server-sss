@@ -52,6 +52,9 @@ import javax.persistence.Transient;
 })
 public class Booking implements Serializable {
 
+    @Transient
+    private static final long serialVersionUID = -1373406783231928690L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

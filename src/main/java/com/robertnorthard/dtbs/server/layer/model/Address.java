@@ -21,9 +21,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "ADDRESS")
 public class Address implements Serializable {
-
+    
     @Transient
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1833058791696309083L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

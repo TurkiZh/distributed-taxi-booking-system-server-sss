@@ -17,9 +17,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "VEHICLE_TYPE")
 public class VehicleType implements Serializable {
-
+    
     @Transient
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 6556730065381319372L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -19,10 +19,10 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "VEHICLE")
 public class Vehicle implements Serializable {
-
-    @Transient
-    private static final long serialVersionUID = 0L;
     
+    @Transient
+    private static final long serialVersionUID = 7483538230786350749L;
+
     @Id
     @Column(name = "NUMBER_PLATE")
     private String numberplate;

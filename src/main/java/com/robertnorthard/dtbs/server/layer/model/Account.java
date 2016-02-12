@@ -10,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -20,9 +21,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "ACCOUNT")
 public class Account implements Serializable {
-
-    private static final long serialVersionUID = 0L;
     
+    @Transient
+    private static final long serialVersionUID = 1998061924459270142L;
+
     @Id
     @Column(name = "USERNAME")
     private String username;
