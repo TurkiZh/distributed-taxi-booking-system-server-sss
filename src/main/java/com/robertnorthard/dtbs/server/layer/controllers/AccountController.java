@@ -98,10 +98,10 @@ public class AccountController {
         try {
             this.accountService.resetPassword(username);
 
-            LOGGER.log(Level.INFO, "resettAccount - resetting password " + username);
+            LOGGER.log(Level.INFO, "resetAccount - resetting password " + username);
 
             return this.responseFactory.getResponse(
-                    "Password reset sent", Response.Status.OK);
+                    "Password reset sent.", Response.Status.OK);
 
         } catch (AccountInvalidException ex) {
 
@@ -132,7 +132,7 @@ public class AccountController {
             this.accountService.resetPassword(code, username, object.getString("password"));
 
             return this.responseFactory.getResponse(
-                    "Password change successful", Response.Status.OK);
+                    "Password change successful.", Response.Status.OK);
 
         } catch (JSONException ex) {
 

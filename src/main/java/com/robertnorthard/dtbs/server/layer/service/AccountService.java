@@ -172,7 +172,7 @@ public class AccountService implements AccountFacade {
         PasswordResetEvent event = new PasswordResetEvent(
                 username, resetCode, expireDate);
 
-        // Set all current password resets for the user iactive.
+        // Set all current password resets for the user inactive.
         this.deactivePasswordResets(username);
 
         // save password reset event
@@ -247,9 +247,11 @@ public class AccountService implements AccountFacade {
     private void deactivePasswordResets(String username) {
         List<PasswordResetEvent> events = this.passwordResetEventDao.findActivePasswordResetByUsername(username);
 
-        for (PasswordResetEvent e : events) {
-            e.setInactive();
-            this.passwordResetEventDao.update(e);
+        if(events != null){
+            for (PasswordResetEvent e : events) {
+                e.setInactive();
+                this.passwordResetEventDao.update(e);
+            }
         }
     }
 

@@ -58,6 +58,7 @@ public class PasswordResetEventDao extends JpaEntityDaoImpl<Long, PasswordResetE
             Query query = em.createNamedQuery(
                     "PasswordResetEvent.findActivePasswordResetByUsername", PasswordResetEvent.class);
             query.setParameter("username", username);
+            events = query.getResultList();
         } finally {
             if (em.isOpen()) {
                 em.close();

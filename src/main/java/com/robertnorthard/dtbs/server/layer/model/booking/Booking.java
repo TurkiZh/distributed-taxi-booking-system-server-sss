@@ -175,7 +175,7 @@ public class Booking implements Serializable {
      * @return cost of taxi booking.
      */
     public final double calculateCost() {
-        return this.estimateCost(this.taxi.getCostPerMile());
+        return this.roundToTwoDecimalPlaces(this.estimateCost(this.taxi.getCostPerMile()));
     }
 
     /**
@@ -185,7 +185,7 @@ public class Booking implements Serializable {
      * @return estimate of taxi cost using a fixed cost per mile.
      */
     public final double estimateCost(double scalar) {
-        return scalar * this.route.getDistanceInMiles() * this.route.getTimeInMinutes();
+        return this.roundToTwoDecimalPlaces(scalar * this.route.getDistanceInMiles() * this.route.getTimeInMinutes());
     }
 
     /**
@@ -323,6 +323,16 @@ public class Booking implements Serializable {
     @JsonSerialize(using = JsonBookingStateDataConverter.class)
     public BookingState getState() {
         return state;
+    }
+    
+   /**
+     * Round to two decimal places.
+     *
+     * @param value value to round.
+     * @return the rounded value.
+     */
+    private double roundToTwoDecimalPlaces(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
     /**
