@@ -6,6 +6,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.LocationDao;
+import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JpaTaxiStateDataConverter;
 import com.robertnorthard.dtbs.server.layer.utils.Subject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,9 +62,11 @@ public class LocationTrackingService extends Subject implements LocationTracking
 
         this.taxiService.updateTaxi(taxi);
 
-        // create taxi location event.
-        TaxiLocationEventDto event = new TaxiLocationEventDto(id, taxi.getState().toString(), 
-                new LocationDto(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), timestamp);
+        // create taxi location event suitable for data transfer.
+        TaxiLocationEventDto event = new TaxiLocationEventDto(id, 
+                new JpaTaxiStateDataConverter().convertToDatabaseColumn(taxi.getState()), 
+                new LocationDto(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()),
+                timestamp);
 
         //notify all taxi subscribers of updated taxi location
         this.notifyObservers(event);
