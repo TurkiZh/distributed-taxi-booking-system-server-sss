@@ -45,7 +45,7 @@ public class BookingDao extends JpaEntityDaoImpl<Long, Booking> {
      * @return a collections of bookings corresponding to the provided user.
      */
     public List<Booking> findBookingsForPassenger(String username) {
-        return this.findBookingsForAccount(username, "Booking.findBookingsForPassenger");
+        return this.findBookingsForAccount("Booking.findBookingsForPassenger", username);
     }
 
     /**
@@ -55,7 +55,7 @@ public class BookingDao extends JpaEntityDaoImpl<Long, Booking> {
      * @return a collections of bookings corresponding to the provided driver.
      */
     public List<Booking> findBookingsForDriver(String username) {
-        return this.findBookingsForAccount(username, "Booking.findBookingsForDriver");
+        return this.findBookingsForAccount("Booking.findBookingsForDriver", username);
     }
 
     /**
