@@ -1,7 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.model;
 
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
-import java.util.Date;
 import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ public class TaxiTest {
 
     @Before
     public void setUp() {
-        driver = new Account("johndoe", "John", "Doe",Gender.MALE, new Date(), "simple_password", "john_doe@example.com", "07888888826");
+        driver = new Account("johndoe", "John", "Doe", "simple_password", "john_doe@example.com", "07888888826");
         driver.setRole(AccountRole.DRIVER);
 
         type = new VehicleType("Taxi", "Ford", "Focus", 0.3);

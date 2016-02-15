@@ -34,16 +34,24 @@ public class VehicleType implements Serializable {
     @Column(name = "model")
     private String model;
 
-    @Column(name = "COST")
-    private double cost;
+    @Column(name = "COST_PER_MILE")
+    private double costPerMile;
 
     public VehicleType() {
         // Empty constructor required by JPA.
     }
 
-    public VehicleType(String name, String manufacturer, String model, double cost) {
+    /**
+     * Default constructor for vehicle type class.
+     * 
+     * @param name name of vehicle.
+     * @param manufacturer vehicle manufacturer.
+     * @param model vehicle model.
+     * @param costPerMile cost per mile.
+     */
+    public VehicleType(String name, String manufacturer, String model, double costPerMile) {
         this.name = name;
-        this.cost = cost;
+        this.costPerMile = costPerMile;
         this.manufacturer = manufacturer;
         this.model = model;
     }
@@ -63,17 +71,17 @@ public class VehicleType implements Serializable {
     }
 
     /**
-     * @return the cost
+     * @return the cost per mile.
      */
-    public double getCost() {
-        return this.cost;
+    public double getCostPerMile() {
+        return this.costPerMile;
     }
 
     /**
-     * @param cost the cost to set
+     * @param costPerMile the cost to set
      */
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setCostPerMile(int costPerMile) {
+        this.costPerMile = costPerMile;
     }
 
     /**

@@ -45,16 +45,6 @@ public class Account implements Serializable {
     private String password;
 
     @NotNull
-    @Column(name = "GENDER")
-    @Enumerated(EnumType.STRING)
-    private Gender gender; 
-    
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "DATE_OF_BIRTH")
-    private Date dateOfBirth;
-    
-    @NotNull
     @Column(name = "EMAIL")
     private String email;
 
@@ -80,18 +70,14 @@ public class Account implements Serializable {
      * @param username username.
      * @param commonName name.
      * @param familyName familyName;
-     * @param gender user's gender.
-     * @param dateOfBirth user's date of birth.
      * @param password password hash.
      * @param phoneNumber phone number.
      * @param email email.
      */
-    public Account(String username, String commonName, String familyName, Gender gender, Date dateOfBirth, String password, String phoneNumber, String email) {
+    public Account(String username, String commonName, String familyName, String password, String phoneNumber, String email) {
         this.username = username;
         this.commonName = commonName;
         this.familyName = familyName;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -251,22 +237,6 @@ public class Account implements Serializable {
     public void setFamilyName(String familyName) {
         this.familyName = familyName;
     }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
     
     @Override
     public int hashCode() {
@@ -292,12 +262,6 @@ public class Account implements Serializable {
             return false;
         }
         if (!Objects.equals(this.password, other.password)) {
-            return false;
-        }
-        if (this.gender != other.gender) {
-            return false;
-        }
-        if (!Objects.equals(this.dateOfBirth, other.dateOfBirth)) {
             return false;
         }
         if (!Objects.equals(this.email, other.email)) {

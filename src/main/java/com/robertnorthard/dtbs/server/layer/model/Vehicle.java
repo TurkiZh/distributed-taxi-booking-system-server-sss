@@ -59,7 +59,7 @@ public class Vehicle implements Serializable {
      */
     @JsonIgnore
     public double getCostPerMile() {
-        return this.vehicleType.getCost();
+        return this.vehicleType.getCostPerMile();
     }
 
     /**

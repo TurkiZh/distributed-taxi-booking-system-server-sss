@@ -3,7 +3,6 @@ package com.robertnorthard.dtbs.server.layer.model.booking;
 
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.AccountRole;
-import com.robertnorthard.dtbs.server.layer.model.Gender;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.model.Vehicle;
@@ -30,10 +29,10 @@ public class BookingTest {
     
     @Before
     public void setUp(){
-        passenger = new Account("timsmith","Tim", "Smith",Gender.MALE, new Date(), "password", "tim_smith@example.com", "07526888826");
+        passenger = new Account("timsmith","Tim", "Smith", "password", "tim_smith@example.com", "07526888826");
         passenger.setRole(AccountRole.PASSENGER);
         
-        driver = new Account("johndoe","John", "Doe",Gender.MALE, new Date(), "simple_password", "john_doe@example.com", "07888888826");
+        driver = new Account("johndoe","John", "Doe", "simple_password", "john_doe@example.com", "07888888826");
         driver.setRole(AccountRole.DRIVER);
         
         type = new VehicleType("Taxi","Ford","Focus",0.3);
