@@ -140,7 +140,7 @@ public class GoogleDistanceMatrixServiceIT {
             fail();
         }
 
-        assertTrue(route.getStartAddress().getAddress().toString().equals("Innovation Centre, Hatfield, Hertfordshire AL10 9PN, UK"));
+        assertTrue(route.getStartAddress().getAddress().toString().equals("Automotive Centre, Hatfield, Hertfordshire AL10 9PN, UK"));
         assertTrue(route.getEndAddress().getAddress().toString().equals("Sandridge, Hatfield, Hertfordshire AL10 9BL, UK"));
         assertEquals(2855, route.getDistance(), delta);
     }
