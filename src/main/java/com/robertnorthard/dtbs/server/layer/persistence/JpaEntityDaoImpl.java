@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * A generic Data Access Object (DAO) class for interfacing with Java
@@ -163,7 +164,7 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
      */
     @Override
     public List<V> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(this.persistentClass));
 
         List<V> results = null;
