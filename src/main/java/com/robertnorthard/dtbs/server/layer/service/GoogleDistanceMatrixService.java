@@ -194,13 +194,15 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
         tokens.put("destination", endLocation.toString());
         query = ConfigService.parseProperty(query, tokens);
 
+        LOGGER.log(Level.INFO, "getRouteInfo - {0}", query);
+        
         try {
 
-            LOGGER.log(Level.FINEST, "getRouteInfo - {0}", query);
+            LOGGER.log(Level.INFO, "getRouteInfo - {0}", query);
 
             JSONObject json = HttpUtils.getUrl(query);
 
-            LOGGER.log(Level.FINEST, "getRouteInfo - {0}", json);
+            LOGGER.log(Level.INFO, "getRouteInfo - {0}", json);
 
             if (this.validateJsonResponse(json)) {
 

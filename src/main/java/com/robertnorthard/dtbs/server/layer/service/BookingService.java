@@ -40,6 +40,7 @@ public class BookingService implements BookingFacade {
     private GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
 
     public BookingService() {
+        // Intentionally left blank for dependency injection. 
     }
 
     @Override

@@ -4,9 +4,11 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsExce
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.model.Gender;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
+import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -36,7 +38,7 @@ public class AccountServiceTest {
 
         accountService = new AccountService(accountDao, passwordResetEventDao, mailStrategy);
 
-        passenger = new Account("john.doe", "John Doe", "$2a$12$PCE2KE0b26mrJSfbxU8ep.XGxVisAc9BqJbxR6FD9BFLLAYGNipg.",  "07888888826", "john_doe@email.com");
+        passenger = new Account("john.doe", "John","Doe",Gender.MALE, new Date(), "$2a$12$PCE2KE0b26mrJSfbxU8ep.XGxVisAc9BqJbxR6FD9BFLLAYGNipg.",  "07888888826", "john_doe@email.com");
     }
     
     /**

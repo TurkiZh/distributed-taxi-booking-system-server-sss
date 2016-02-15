@@ -3,6 +3,7 @@ package com.robertnorthard.dtbs.server.layer.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -30,19 +33,33 @@ public class Account implements Serializable {
     private String username;
 
     @NotNull
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "COMMON_NAME", length = 128)
+    private String commonName;
+    
+    @NotNull
+    @Column(name = "FAMILY_NAME", length = 128)
+    private String familyName;
 
     @NotNull
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", length = 256)
     private String password;
 
+    @NotNull
+    @Column(name = "GENDER")
+    @Enumerated(EnumType.STRING)
+    private Gender gender; 
+    
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE_OF_BIRTH")
+    private Date dateOfBirth;
+    
     @NotNull
     @Column(name = "EMAIL")
     private String email;
 
     @NotNull
-    @Column(name = "PHONE_NUMBER")
+    @Column(name = "PHONE_NUMBER", length = 15)
     private String phoneNumber;
 
     @Column(name = "ROLE")
@@ -61,14 +78,20 @@ public class Account implements Serializable {
      * Constructor for account.
      *
      * @param username username.
-     * @param name name.
+     * @param commonName name.
+     * @param familyName familyName;
+     * @param gender user's gender.
+     * @param dateOfBirth user's date of birth.
      * @param password password hash.
      * @param phoneNumber phone number.
      * @param email email.
      */
-    public Account(String username, String name, String password, String phoneNumber, String email) {
+    public Account(String username, String commonName, String familyName, Gender gender, Date dateOfBirth, String password, String phoneNumber, String email) {
         this.username = username;
-        this.name = name;
+        this.commonName = commonName;
+        this.familyName = familyName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -202,17 +225,49 @@ public class Account implements Serializable {
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
+    public String getCommonName() {
+        return commonName;
     }
 
     /**
-     * @param name the name to set
+     * @param commonName the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String commonName) {
+        this.commonName = commonName;
     }
 
+    /**
+     * @return family name.
+     */
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    /**
+     * Set family name.
+     * 
+     * @param familyName the family name to set.
+     */
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+    
     @Override
     public int hashCode() {
         return username != null ? username.hashCode() : 0;
@@ -230,10 +285,19 @@ public class Account implements Serializable {
         if (!Objects.equals(this.username, other.username)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.commonName, other.commonName)) {
+            return false;
+        }
+        if (!Objects.equals(this.familyName, other.familyName)) {
             return false;
         }
         if (!Objects.equals(this.password, other.password)) {
+            return false;
+        }
+        if (this.gender != other.gender) {
+            return false;
+        }
+        if (!Objects.equals(this.dateOfBirth, other.dateOfBirth)) {
             return false;
         }
         if (!Objects.equals(this.email, other.email)) {

@@ -30,8 +30,7 @@ public class Location implements Serializable {
     private static final double MIN_LONGITUDE = -180;
     @Transient
     private static final double MAX_LONGITUDE = 180;
-    
-    
+   
     @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

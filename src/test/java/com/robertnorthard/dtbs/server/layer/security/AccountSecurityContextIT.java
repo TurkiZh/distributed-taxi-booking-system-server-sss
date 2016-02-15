@@ -2,6 +2,8 @@ package com.robertnorthard.dtbs.server.layer.security;
 
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.AccountRole;
+import com.robertnorthard.dtbs.server.layer.model.Gender;
+import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -18,7 +20,7 @@ public class AccountSecurityContextIT {
     
     @Before
     public void setUp() {
-        account = new Account("johndoe","John Doe", "simple_password", "john_doe@example.com", "07888888826");
+        account = new Account("johndoe","John", "Doe",Gender.MALE, new Date(), "simple_password", "john_doe@example.com", "07888888826");
         account.setRole(AccountRole.PASSENGER);
         accountSecurityContext = new AccountSecurityContext(account, null);
     }

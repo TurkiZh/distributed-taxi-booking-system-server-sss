@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Represent a Taxi route.
+ * Represents a Taxi route.
  *
  * @author robertnorthard
  */

@@ -52,7 +52,7 @@ public class AccountController {
      * @param account JSON representation of an account.
      * @return account object if successful else an appropriate error message: -
      * IOException - invalid JSON - AccountAlreadyExistsException - account with
-     * username already exists. - AccountInvalidException - invalid account
+     * username already exists. AccountInvalidException - invalid account
      * details.
      */
     @POST

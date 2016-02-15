@@ -3,6 +3,7 @@ package com.robertnorthard.dtbs.server.layer.controllers;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.AccountRole;
+import com.robertnorthard.dtbs.server.layer.model.Gender;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
@@ -15,6 +16,7 @@ import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.persistence.VehicleDao;
 import com.robertnorthard.dtbs.server.layer.service.GoogleDistanceMatrixService;
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
+import java.util.Date;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -32,13 +34,13 @@ public class TestController {
 
         String password = AuthenticationUtils.hashPassword("password");
 
-        Account passenger = new Account("john.doe", "John Doe", password, "0764534654", "john.doe@example.com");
+        Account passenger = new Account("john.doe", "John", "Doe", Gender.MALE, new Date(), password, "0764534654", "john.doe@example.com");
         passenger.setRole(AccountRole.PASSENGER);
 
-        Account passenger2 = new Account("timsmith", "Tim", password, "07526888826", "tim_smith@example.com");
+        Account passenger2 = new Account("timsmith", "Tim", "Smith",Gender.MALE, new Date(), password, "07526888826", "tim_smith@example.com");
         passenger2.setRole(AccountRole.PASSENGER);
 
-        Account driver = new Account("john.smith", "John Smith", password, "0234534654", "john.smith@example.com");
+        Account driver = new Account("john.smith", "John", "Smith",Gender.MALE, new Date(), password, "0234534654", "john.smith@example.com");
         driver.setRole(AccountRole.DRIVER);
 
         VehicleType type = new VehicleType("Cruiser", "Ford", "Focus", 0.3);

@@ -140,7 +140,7 @@ public class GeocodeController {
     /**
      * Return estimate travel time between start and end location in seconds.
      *
-     * @param url url with start_latitude, start_loroute ngitude, end_latitude
+     * @param url url with start_latitude, start_longitude, end_latitude
      * and end_longitude query parameters.
      * @return a route from start to end location using provided a latitudes and
      * longitudes.
