@@ -32,13 +32,13 @@ public class TestController {
 
         String password = AuthenticationUtils.hashPassword("password");
 
-        Account passenger = new Account("john.doe", "John", "Doe", password, "0764534654", "john.doe@example.com");
+        Account passenger = new Account("john.doe", "John", "Doe", password, "07645346541", "john.doe@example.com");
         passenger.setRole(AccountRole.PASSENGER);
 
         Account passenger2 = new Account("timsmith", "Tim", "Smith", password, "07526888826", "tim_smith@example.com");
         passenger2.setRole(AccountRole.PASSENGER);
 
-        Account driver = new Account("john.smith", "John", "Smith", password, "0234534654", "john.smith@example.com");
+        Account driver = new Account("john.smith", "John", "Smith", password, "02345346548", "john.smith@example.com");
         driver.setRole(AccountRole.DRIVER);
 
         VehicleType type = new VehicleType("Cruiser", "Ford", "Focus", 0.3);
