@@ -1,6 +1,5 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
@@ -20,11 +19,10 @@ public interface AccountFacade {
      * Register a new account. Two user's cannot have the same username.
      *
      * @param acct account to create.
-     * @throws AccountAlreadyExistsException if account already exists.
      * @throws AccountInvalidException if email invalid.
      */
     public void registerAccount(Account acct)
-            throws AccountAlreadyExistsException, AccountInvalidException;
+            throws AccountInvalidException;
 
     /**
      * Authenticate a user.

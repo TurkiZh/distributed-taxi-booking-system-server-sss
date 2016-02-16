@@ -3,7 +3,6 @@ package com.robertnorthard.dtbs.server.layer.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -100,6 +97,15 @@ public class Account implements Serializable {
      */
     public String getUsername() {
         return this.username;
+    }
+    
+    /**
+     * Set users username.
+     * 
+     * @param username username to set.
+     */
+    public void setUsername(String username){
+        this.username = username;
     }
 
     /**
@@ -218,7 +224,7 @@ public class Account implements Serializable {
     /**
      * @param commonName the name to set
      */
-    public void setName(String commonName) {
+    public void setCommonName(String commonName) {
         this.commonName = commonName;
     }
 
@@ -277,22 +283,5 @@ public class Account implements Serializable {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Return true if username is regex (([A-Z]|[a-z])*[0-9]) matches else
-     * false.
-     *
-     * @param username username to match.
-     * @return true if username is regex (([A-Z]|[a-z])*[0-9]) matches else
-     * false.
-     */
-    public static boolean isValidUsername(String username) {
-
-        if (username == null) {
-            throw new IllegalArgumentException("Username cannot be null.");
-        }
-
-        return java.util.regex.Pattern.matches("^[a-zA-Z].{5,16}$", username);
     }
 }

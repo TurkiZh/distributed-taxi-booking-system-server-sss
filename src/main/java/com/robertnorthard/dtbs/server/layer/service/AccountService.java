@@ -1,9 +1,9 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.layer.business.rules.validator.AccountValidator;
 import com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
@@ -52,57 +52,48 @@ public class AccountService implements AccountFacade {
      * to user to confirm account creation.
      *
      * @param acct account to create.
-     * @throws AccountAlreadyExistsException if account already exists.
      * @throws AccountInvalidException invalid email address.
      * @throws IllegalArgumentException if account null.
      *
      */
     @Override
     public void registerAccount(final Account acct)
-            throws AccountAlreadyExistsException, AccountInvalidException {
+            throws AccountInvalidException {
 
         if (acct == null) {
             throw new IllegalArgumentException("Account cannot be null");
         }
 
+        AccountValidator validator = new AccountValidator();
+
         // check if acount with username already exists
-        if (this.accountDao.findEntityById(acct.getUsername()) == null) {
+        if (validator.validate(acct)) {
 
-            //check if valid email
-            if (!this.mailStrategy.isValidEmail(
-                    acct.getEmail())) {
-                throw new AccountInvalidException("Invalid email.");
-            }
+            // generate password hash
+            String passwordHash = AuthenticationUtils.hashPassword(
+                    acct.getPassword());
 
-            if (Account.isValidUsername(acct.getUsername())) {
+            // store password hash
+            acct.setPassword(passwordHash);
 
-                // generate password hash
-                String passwordHash = AuthenticationUtils.hashPassword(
-                        acct.getPassword());
+            // activate account
+            acct.setActive();
 
-                // store password hash
-                acct.setPassword(passwordHash);
+            // persist entity
+            this.accountDao.persistEntity(acct);
 
-                // activate account
-                acct.setActive();
-
-                // persist entity
-                this.accountDao.persistEntity(acct);
-
-                // email account registration confirmation.
-                this.mailStrategy.sendMail("DTBS - Registration Confirmation",
-                        "Your account, with username " + acct.getUsername()
-                        + " has been activated.", acct.getEmail());
-
-            } else {
-                throw new AccountInvalidException(
-                        "Username invalid must be at least 5 characters, start with a letter and only contain letters and numbers.");
-            }
+            // email account registration confirmation.
+            this.mailStrategy.sendMail("DTBS - Registration Confirmation",
+                    "Your account, with username " + acct.getUsername()
+                    + " has been activated.", acct.getEmail());
 
         } else {
-            throw new AccountAlreadyExistsException(
-                    String.format("Account with username - [%s] already exists.", acct.getUsername()));
+
+            List<String> errors = validator.getValidatorResult().getErrors();
+
+            throw new AccountInvalidException(errors);
         }
+
     }
 
     /**
@@ -114,7 +105,7 @@ public class AccountService implements AccountFacade {
      */
     @Override
     public Account findAccount(final String username) {
-        if(username == null){
+        if (username == null) {
             throw new IllegalArgumentException("Username cannot be null.");
         }
         return this.accountDao.findEntityById(username);
@@ -247,7 +238,7 @@ public class AccountService implements AccountFacade {
     private void deactivePasswordResets(String username) {
         List<PasswordResetEvent> events = this.passwordResetEventDao.findActivePasswordResetByUsername(username);
 
-        if(events != null){
+        if (events != null) {
             for (PasswordResetEvent e : events) {
                 e.setInactive();
                 this.passwordResetEventDao.update(e);

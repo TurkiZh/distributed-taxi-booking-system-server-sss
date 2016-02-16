@@ -1,6 +1,5 @@
 package com.robertnorthard.dtbs.server.layer.controllers;
 
-import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
@@ -33,14 +32,14 @@ import org.codehaus.jettison.json.JSONObject;
 @Path("/v1/account")
 @RequestScoped
 public class AccountController {
-
+    
     private static final Logger LOGGER = Logger.getLogger(AccountController.class.getName());
-
+    
     @Inject
     private AccountFacade accountService;
     private final DataMapper mapper;
     private final HttpResponseFactory responseFactory;
-
+    
     public AccountController() {
         this.mapper = DataMapper.getInstance();
         this.responseFactory = HttpResponseFactory.getInstance();
@@ -63,23 +62,23 @@ public class AccountController {
     public Response registerAccount(String account) {
         try {
             Account ac = this.mapper.readValue(account, Account.class);
-
+            
             this.accountService.registerAccount(ac);
-
+            
             return this.responseFactory.getResponse(
                     ac, Response.Status.OK);
-
-        } catch (AccountAlreadyExistsException ex) {
-
-            LOGGER.log(Level.WARNING, null, ex);
-            return this.responseFactory.getResponse(
-                    ex.getMessage(), Response.Status.CONFLICT);
-
-        } catch (AccountInvalidException | IOException ex) {
-
-            LOGGER.log(Level.WARNING, null, ex);
+            
+        } catch (IOException ex) {
+            
+            LOGGER.log(Level.WARNING, null, ex.getMessage());
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
+            
+        } catch (AccountInvalidException ex) {
+            LOGGER.log(Level.WARNING, null, ex.getErrors().get(0));
+            return this.responseFactory.getResponse(
+                    ex.getErrors().get(0), Response.Status.BAD_REQUEST);
+            
         }
     }
 
@@ -94,17 +93,17 @@ public class AccountController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response resetAccount(@PathParam("username") String username) {
-
+        
         try {
             this.accountService.resetPassword(username);
-
+            
             LOGGER.log(Level.INFO, "resetAccount - resetting password " + username);
-
+            
             return this.responseFactory.getResponse(
                     "Password reset sent.", Response.Status.OK);
-
+            
         } catch (AccountInvalidException ex) {
-
+            
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);
@@ -125,29 +124,29 @@ public class AccountController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response resetPassword(@PathParam("username") String username, @PathParam("code") String code, String message) {
-
+        
         try {
             JSONObject object = new JSONObject(message);
-
+            
             this.accountService.resetPassword(code, username, object.getString("password"));
-
+            
             return this.responseFactory.getResponse(
                     "Password change successful.", Response.Status.OK);
-
+            
         } catch (JSONException ex) {
-
+            
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
-
+            
         } catch (AccountAuthenticationFailed ex) {
-
+            
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-
+            
         } catch (EntityNotFoundException ex) {
-
+            
             LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);

@@ -1,8 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.common.exceptions.AccountAlreadyExistsException;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
-import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
@@ -38,58 +36,7 @@ public class AccountServiceTest {
 
         passenger = new Account("john.doe", "John","Doe", "$2a$12$PCE2KE0b26mrJSfbxU8ep.XGxVisAc9BqJbxR6FD9BFLLAYGNipg.",  "07888888826", "john_doe@email.com");
     }
-    
-    /**
-     * Test of registerAccount method, of class AccountService. When account
-     * already exists.
-     */
-    @Test(expected = AccountAlreadyExistsException.class)
-    public void testRegisterAccountAccountAlreadyRegistered() throws Exception {
-        when(accountDao.findEntityById("john.doe")).thenReturn(passenger);
-        this.accountService.registerAccount(this.passenger);
-        fail();
-    }
 
-    /**
-     * Test of registerAccount method, of class AccountService. When account is
-     * null.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testRegisterAccountAccountNull() throws Exception {
-        this.accountService.registerAccount(null);
-        fail();
-    }
-
-    /**
-     * Test of registerAccount method, of class AccountService. Invalid email.
-     */
-    @Test(expected = AccountInvalidException.class)
-    public void testRegisterAccountInvalidEmail() throws Exception {
-        when(mailStrategy.isValidEmail("john_doe@email.com")).thenReturn(false);
-        this.accountService.registerAccount(passenger);
-        fail();
-      
-    }
-
-    /**
-     * Test of registerAccount method, of class AccountService. Invalid email.
-     */
-    @Test(expected = AccountInvalidException.class)
-    public void testRegisterAccountInvalidUsername() throws Exception {
-        this.accountService.registerAccount(passenger);
-        fail();
-    }
-
-    /**
-     * Test of registerAccount method, of class AccountService. Successful
-     * registration.
-     */
-    @Test
-    public void testRegisterAccountValidAccount() throws Exception {
-        when(mailStrategy.isValidEmail("john_doe@email.com")).thenReturn(true);
-        this.accountService.registerAccount(passenger);
-    }
-    
    /**
      * Test of findAccount method, of class AccountService,
      * with valid username.
