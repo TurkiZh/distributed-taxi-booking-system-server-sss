@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +23,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "ACCOUNT")
 public class Account implements Serializable {
+    
+    @Transient
+    private static final Logger LOGGER = Logger.getLogger(Account.class.getName());
     
     @Transient
     private static final long serialVersionUID = 1998061924459270142L;
@@ -118,6 +123,7 @@ public class Account implements Serializable {
         try {
             return this.role == AccountRole.valueOf(role.toUpperCase());
         } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.INFO, null, ex);
             return false;
         }
     }

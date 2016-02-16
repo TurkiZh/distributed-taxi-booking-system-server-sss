@@ -2,13 +2,14 @@ package com.robertnorthard.dtbs.server.layer.model.booking;
 
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Interface representing a booking state.
  *
  * @author robertnorthard
  */
-public interface BookingState {
+public interface BookingState extends Serializable {
 
     /**
      * Cancel booking.

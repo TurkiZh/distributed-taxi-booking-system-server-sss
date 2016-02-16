@@ -70,12 +70,12 @@ public class AccountController {
             
         } catch (IOException ex) {
             
-            LOGGER.log(Level.WARNING, null, ex.getMessage());
+            LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
             
         } catch (AccountInvalidException ex) {
-            LOGGER.log(Level.WARNING, null, ex.getErrors().get(0));
+            LOGGER.log(Level.WARNING, null, ex);
             return this.responseFactory.getResponse(
                     ex.getErrors().get(0), Response.Status.BAD_REQUEST);
             
@@ -97,7 +97,7 @@ public class AccountController {
         try {
             this.accountService.resetPassword(username);
             
-            LOGGER.log(Level.INFO, "resetAccount - resetting password " + username);
+            LOGGER.log(Level.INFO, "resetAccount - resetting password {0}", username);
             
             return this.responseFactory.getResponse(
                     "Password reset sent.", Response.Status.OK);

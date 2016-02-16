@@ -2,7 +2,6 @@ package com.robertnorthard.dtbs.server.layer.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
-import com.robertnorthard.dtbs.server.layer.model.events.LocationEvent;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
 import com.robertnorthard.dtbs.server.layer.utils.Observer;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
@@ -40,9 +39,6 @@ public class LocationTrackingWebSocketEndpoint implements Observer {
 
     @Inject
     private LocationTrackingService locationTrackingService;
-
-    public LocationTrackingWebSocketEndpoint() {
-    }
 
     @PostConstruct
     void init() {

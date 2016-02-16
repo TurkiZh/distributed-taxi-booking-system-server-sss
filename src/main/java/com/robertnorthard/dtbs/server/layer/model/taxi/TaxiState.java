@@ -1,5 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.model.taxi;
 
+import java.io.Serializable;
+
 /**
  * Interface representing a state a taxi can be in and common operations.
  * State design pattern. A behavioral pattern that provide a flexible
@@ -8,7 +10,7 @@ package com.robertnorthard.dtbs.server.layer.model.taxi;
  *
  * @author robertnorthard
  */
-public interface TaxiState {
+public interface TaxiState extends Serializable {
 
     public void goOffDuty(Taxi taxi);
 
