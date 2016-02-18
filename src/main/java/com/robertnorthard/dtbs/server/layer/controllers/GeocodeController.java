@@ -136,6 +136,55 @@ public class GeocodeController {
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+   /**
+     * Return location (lat/lng) corresponding to provided address.
+     *
+     * @param url url with address query parameter.
+     * @return address corresponding to provided latitude and longitude.
+     */
+    @GET
+    @Path("/address/lookup")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"driver", "passenger"})
+    public Response addressLookup(@Context UriInfo url) {
+
+        MultivaluedMap<String, String> query = url.getQueryParameters();
+
+        try {
+
+            if (!(query.containsKey("address"))) {
+                throw new IllegalArgumentException("Address must be provided");
+            }
+
+            String address = query.getFirst("address");
+
+            LOGGER.log(Level.INFO, "addressLookup - {0}", address);
+
+            Location location = this.googleDistanceMatrixService.getGeocode(
+                    address);
+
+            if (location == null) {
+                return this.responseFactory.getResponse(
+                        "Address not found.", Response.Status.NOT_FOUND);
+            }
+
+            LOGGER.log(Level.INFO, "addressLookup - LatLng {0},{1}",
+                    new Object[]{location.getLatitude(), location.getLongitude()});
+                
+            return this.responseFactory.getResponse(location, Response.Status.OK);
+
+        } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+
+        } catch (InvalidGoogleApiResponseException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * Return estimate travel time between start and end location in seconds.
