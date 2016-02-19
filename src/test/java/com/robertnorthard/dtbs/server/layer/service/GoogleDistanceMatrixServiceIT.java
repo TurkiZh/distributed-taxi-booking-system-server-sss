@@ -142,7 +142,7 @@ public class GoogleDistanceMatrixServiceIT {
 
         assertTrue(route.getStartAddress().getAddress().toString().equals("Automotive Centre, Hatfield, Hertfordshire AL10 9PN, UK"));
         assertTrue(route.getEndAddress().getAddress().toString().equals("Sandridge, Hatfield, Hertfordshire AL10 9BL, UK"));
-        assertEquals(2855, route.getDistance(), delta);
+        assertEquals(2588, route.getDistance(), delta);
     }
 
     /**
@@ -172,7 +172,7 @@ public class GoogleDistanceMatrixServiceIT {
     @Test
     public void testGetDistanceForValidRoute() {
 
-        double expected = 2855;
+        double expected = 2588;
         // max different between expected and actual - Google may choose different routes.
         float delta = 100;
 
