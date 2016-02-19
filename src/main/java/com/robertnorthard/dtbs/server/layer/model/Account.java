@@ -61,7 +61,10 @@ public class Account implements Serializable {
     @Column(name = "ACTIVE")
     @Enumerated(EnumType.STRING)
     private AccountStatus active;
-
+    
+    @Column(name = "GOOGLE_GCM_REG_ID", nullable = true)
+    private String gcmRegId;
+    
     public Account() {
         // Empty as per JPA 2.0 specification.
     }
@@ -85,7 +88,7 @@ public class Account implements Serializable {
         this.phoneNumber = phoneNumber;
 
         this.setActive();
-    }
+    } 
 
     /**
      * Return true if provided password matches hash else false.
@@ -123,7 +126,7 @@ public class Account implements Serializable {
         try {
             return this.role == AccountRole.valueOf(role.toUpperCase());
         } catch (IllegalArgumentException ex) {
-            LOGGER.log(Level.INFO, null, ex);
+            LOGGER.log(Level.FINEST, null, ex);
             return false;
         }
     }
@@ -239,6 +242,22 @@ public class Account implements Serializable {
      */
     public String getFamilyName() {
         return familyName;
+    }
+    
+    /**
+     * Get Google Cloud messenger registration id.
+     * @return the user's Google cloud messenger registration id.
+     */
+    public String getGcmRegId() {
+        return gcmRegId;
+    }
+
+    /**
+     * Set users Google cloud messenger registration id.
+     * @param gcmRegId Google cloud messenger registration id.
+     */
+    public void setGcmRegId(String gcmRegId) {
+        this.gcmRegId = gcmRegId;
     }
 
     /**
