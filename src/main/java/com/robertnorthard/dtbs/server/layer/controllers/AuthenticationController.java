@@ -48,8 +48,19 @@ public class AuthenticationController {
     public Response login(String credentials) {
         try {
             Account ac = this.mapper.readValue(credentials, Account.class);
-            ac = this.accountService
-                    .authenticate(ac.getUsername(), ac.getPassword());
+
+            // check ig GCM token present and invokes appropriate service.
+            if (ac.getGcmRegId() != null) {
+
+                ac = this.accountService
+                        .authenticate(ac.getUsername(), ac.getPassword(), ac.getGcmRegId());
+
+            } else {
+
+                ac = this.accountService
+                        .authenticate(ac.getUsername(), ac.getPassword());
+
+            }
 
             return this.responseFactory.getResponse(
                     ac, Response.Status.OK);

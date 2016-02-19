@@ -36,6 +36,18 @@ public interface AccountFacade {
             throws AccountAuthenticationFailed;
 
     /**
+     * Authenticate a user and add Google GCM registration id
+     *
+     * @param username username of account
+     * @param password password of account
+     * @param googleGcmRegId Google cloud messenger registration id.
+     * @return account object if authentication successful else null.
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
+    public Account authenticate(String username, String password, String googleGcmRegId)
+            throws AccountAuthenticationFailed;
+    
+    /**
      * Authenticate user from base64 encoded message.
      *
      * @param base64Credentials base64 encoded credentials
