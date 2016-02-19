@@ -135,6 +135,25 @@ public class AccountService implements AccountFacade {
 
         return account;
     }
+    
+   /**
+     * Authenticate a user and add Google GCM registration id.
+     *
+     * @param username username of account
+     * @param password password of account
+     * @param googleGcmRegId Google cloud messenger registration id.
+     * @return account object if authentication successful else null.
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
+    @Override
+    public Account authenticate(String username, String password, String googleGcmRegId)
+            throws AccountAuthenticationFailed {
+        Account account = this.authenticate(username,password);        
+        account.setGcmRegId(googleGcmRegId);
+        this.accountDao.update(account);
+        return account;
+    }
+
 
     /**
      * Reset account password via temporary code. 1 - Generate temporary code 2
