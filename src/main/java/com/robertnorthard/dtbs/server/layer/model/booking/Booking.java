@@ -151,45 +151,78 @@ public class Booking implements Serializable {
 
     /**
      * Cancel booking.
-     * 
+     *
+     * @throws IllegalStateException unable to 
+     * perform state transition due to invalid state.
      */
     public void cancelBooking() {
-        this.state.cancelBooking(this);
+        try {
+            this.state.cancelBooking(this);
+        } catch (IllegalStateException ex) {
+            throw ex;
+        }
     }
 
-    /** 
+    /**
      * Cancel taxi.
-     * 
+     *
+     * @throws IllegalStateException unable to 
+     * perform state transition due to invalid state.
      */
     public void cancelTaxi() {
-        this.state.cancelTaxi(this);
+
+        try {
+            this.state.cancelTaxi(this);
+        } catch (IllegalStateException ex) {
+            throw ex;
+        }
     }
 
     /**
      * Dispatch taxi for booking.
-     * 
+     *
      * @param taxi the taxi to be dispatched.
+     * @throws IllegalStateException unable to 
+     * perform state transition due to invalid state.
      */
     public void dispatchTaxi(Taxi taxi) {
-        this.state.dispatchTaxi(this, taxi);
+
+        try {
+            this.state.dispatchTaxi(this, taxi);
+        } catch (IllegalStateException ex) {
+            throw ex;
+        }
     }
 
     /**
      * Drop of passenger.
-     * 
+     *
      * @param time time passenger dropped off.
+     * @throws IllegalStateException unable to 
+     * perform state transition due to invalid state.
      */
     public void dropOffPassenger(Date time) {
-        this.state.dropOffPassenger(this, time);
+
+        try {
+            this.state.dropOffPassenger(this, time);
+        } catch (IllegalStateException ex) {
+            throw ex;
+        }
     }
 
     /**
      * Pickup passenger.
-     * 
+     *
      * @param time time passenger picked up.
+     * @throws IllegalStateException unable to 
+     * perform state transition due to invalid state.
      */
     public void pickupPassenger(Date time) {
-        this.state.pickupPassenger(this, time);
+        try {
+            this.state.pickupPassenger(this, time);
+        } catch (IllegalStateException ex) {
+            throw ex;
+        }
     }
 
     /**
@@ -347,8 +380,8 @@ public class Booking implements Serializable {
     public BookingState getState() {
         return state;
     }
-    
-   /**
+
+    /**
      * Round to two decimal places.
      *
      * @param value value to round.

@@ -2,6 +2,7 @@ package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.IllegalBookingStateException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidLocationException;
 import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
@@ -92,10 +93,10 @@ public interface BookingFacade {
      * @param bookingId booking id.
      * @throws TaxiNotFoundException taxi not found.
      * @throws BookingNotFoundException booking not found.
-     * @throws IllegalStateException if booking is in an invalid state.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     public void acceptBooking(String username, long bookingId)
-            throws TaxiNotFoundException, BookingNotFoundException;
+            throws TaxiNotFoundException, BookingNotFoundException, IllegalBookingStateException;
 
     /**
      * Drop of passenger.
@@ -105,9 +106,10 @@ public interface BookingFacade {
      * @param timestamp timestamp of update.
      * @throws BookingNotFoundException booking not found.
      * @throws TaxiNotFoundException username for taxi not found.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     public void pickUpPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException;
+            throws BookingNotFoundException, TaxiNotFoundException, IllegalBookingStateException;
 
     /**
      * Pink up passenger.
@@ -117,9 +119,10 @@ public interface BookingFacade {
      * @param timestamp timestamp of update.
      * @throws BookingNotFoundException booking not found.
      * @throws TaxiNotFoundException username for taxi not found.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     public void dropOffPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException;
+            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException;
     
     /**
      * Cancel a booking.
@@ -128,6 +131,8 @@ public interface BookingFacade {
      * @param bookingId booking to cancel.
      * @throws BookingNotFoundException booking not found.
      * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
-    public void cancelBooking(String username, long bookingId) throws BookingNotFoundException, AccountAuthenticationFailed;
+    public void cancelBooking(String username, long bookingId)
+            throws BookingNotFoundException, AccountAuthenticationFailed,IllegalBookingStateException;
 }

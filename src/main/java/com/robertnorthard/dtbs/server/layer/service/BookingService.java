@@ -2,6 +2,7 @@ package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.IllegalBookingStateException;
 import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
 import com.robertnorthard.dtbs.server.layer.persistence.BookingDao;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
@@ -195,11 +196,11 @@ public class BookingService implements BookingFacade {
      * @param bookingId booking id.
      * @throws TaxiNotFoundException taxi not found.
      * @throws BookingNotFoundException booking not found.
-     * @throws IllegalStateException if booking is in an invalid state.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     @Override
     public synchronized void acceptBooking(String username, long bookingId)
-            throws TaxiNotFoundException, BookingNotFoundException {
+            throws TaxiNotFoundException, BookingNotFoundException,IllegalBookingStateException {
 
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
         Booking booking = this.findBooking(bookingId);
@@ -216,7 +217,7 @@ public class BookingService implements BookingFacade {
             booking.dispatchTaxi(taxi);
             this.bookingDao.update(booking);
         } catch (IllegalStateException ex) {
-            throw ex;
+             throw new IllegalBookingStateException(ex.getMessage());
         }
     }
 
@@ -228,10 +229,11 @@ public class BookingService implements BookingFacade {
      * @param timestamp timestamp of update.
      * @throws BookingNotFoundException booking not found.
      * @throws TaxiNotFoundException taxi for user not found.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     @Override
     public void pickUpPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException {
+            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException {
 
         Booking booking = this.findBooking(bookingId);
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
@@ -248,7 +250,7 @@ public class BookingService implements BookingFacade {
             booking.pickupPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
         } catch (IllegalStateException ex) {
-            throw ex;
+             throw new IllegalBookingStateException(ex.getMessage());
         }
     }
 
@@ -259,10 +261,11 @@ public class BookingService implements BookingFacade {
      * @param timestamp timestamp of update.
      * @throws BookingNotFoundException booking not found.
      * @throws TaxiNotFoundException taxi for user not found.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     @Override
     public void dropOffPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException {
+            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException {
 
         Booking booking = this.findBooking(bookingId);
 
@@ -280,7 +283,7 @@ public class BookingService implements BookingFacade {
             booking.dropOffPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
         } catch (IllegalStateException ex) {
-            throw ex;
+             throw new IllegalBookingStateException(ex.getMessage());
         }
     }
     
@@ -291,10 +294,11 @@ public class BookingService implements BookingFacade {
      * @param bookingId booking to cancel.
      * @throws BookingNotFoundException booking not found.
      * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
+     * @throws IllegalBookingStateException if booking in an illegal state.
      */
     @Override
     public void cancelBooking(String username, long bookingId) 
-            throws BookingNotFoundException, AccountAuthenticationFailed{
+            throws BookingNotFoundException, AccountAuthenticationFailed, IllegalBookingStateException{
         
         Booking booking = this.findBooking(bookingId);
         
@@ -307,7 +311,11 @@ public class BookingService implements BookingFacade {
             throw new AccountAuthenticationFailed();
         }
         
-        booking.cancelBooking();
+        try{
+            booking.cancelBooking();     
+        }catch(IllegalStateException ex){
+            throw new IllegalBookingStateException(ex.getMessage());
+        }
         
         this.bookingDao.update(booking);
     }

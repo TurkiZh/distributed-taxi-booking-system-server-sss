@@ -4,6 +4,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFai
 import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidLocationException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
+import com.robertnorthard.dtbs.server.common.exceptions.IllegalBookingStateException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
@@ -205,7 +206,7 @@ public class BookingController {
      * @return the booking object. If the user is authenticated to view the
      * booking.
      */
-    @PUT
+    @POST
     @Path("/{id}/accept")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("driver")
@@ -231,9 +232,13 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);
+        } catch (IllegalBookingStateException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
-    
+
     /**
      * Cancel a taxi booking,
      *
@@ -260,6 +265,10 @@ public class BookingController {
                 throw new AccountAuthenticationFailed();
             }
 
+        } catch (IllegalBookingStateException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
         } catch (AccountAuthenticationFailed ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -268,10 +277,6 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.NOT_FOUND);
-        } catch(IllegalStateException ex){
-            LOGGER.log(Level.INFO, null, ex);
-            return this.responseFactory.getResponse(
-                    ex.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
 }
