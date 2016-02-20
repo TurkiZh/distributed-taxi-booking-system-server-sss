@@ -15,6 +15,8 @@ import java.util.logging.Logger;
  */
 public class GcmClient {
     
+    private static final int GCM_SEND_RETRIES = 10;   
+    
     // Google cloud messenger API key
     private String gcmApiKey;
     
@@ -42,15 +44,17 @@ public class GcmClient {
      * Send messenger to a Google Cloud Messenger connected device.
      * 
      * @param message message to send.
+     * @param eventType event type.
      * @param gcmRegistrationId Google Cloud Messenger registration id of device. 
      */
-    public void sendMessage(String message, String gcmRegistrationId){
+    public void sendMessage(String message, String eventType, String gcmRegistrationId){
         Sender sender = new Sender(this.gcmApiKey);
         Message outboundMessage = new Message.Builder()
-                .addData("data", message)
+                .addData("message", message)
+                .addData("event", eventType)
                 .build();
         try {
-            Result result = sender.send(outboundMessage, gcmRegistrationId, 10);
+            Result result = sender.send(outboundMessage, gcmRegistrationId, GcmClient.GCM_SEND_RETRIES);
         } catch (IOException ex) {
             Logger.getLogger(GcmClient.class.getName()).log(Level.SEVERE, null, ex);
         }
