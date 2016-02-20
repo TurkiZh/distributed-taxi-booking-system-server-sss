@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class CancelledBookingState implements BookingState {
 
-    private IllegalStateException e = new IllegalStateException("Booking canceled.");
+    private IllegalStateException e = new IllegalStateException("Booking already canceled.");
 
     @Override
     public void cancelBooking(Booking booking) {

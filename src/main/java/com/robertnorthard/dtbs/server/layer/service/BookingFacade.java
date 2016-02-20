@@ -120,4 +120,14 @@ public interface BookingFacade {
      */
     public void dropOffPassenger(String username, long bookingId, long timestamp)
             throws BookingNotFoundException, TaxiNotFoundException;
+    
+    /**
+     * Cancel a booking.
+     * 
+     * @param username username of person requesting cancellation of  booking.
+     * @param bookingId booking to cancel.
+     * @throws BookingNotFoundException booking not found.
+     * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
+     */
+    public void cancelBooking(String username, long bookingId) throws BookingNotFoundException, AccountAuthenticationFailed;
 }

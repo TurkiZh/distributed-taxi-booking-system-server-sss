@@ -232,4 +232,45 @@ public class BookingController {
                     ex.getMessage(), Response.Status.NOT_FOUND);
         }
     }
+    
+    /**
+     * Cancel a taxi booking,
+     *
+     * @param securityContext user's security context injected by container.
+     * @param bookingId of booking to accept.
+     * @return the booking object. If the user is authenticated to view the
+     * booking.
+     */
+    @POST
+    @Path("/{id}/cancel")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("passenger")
+    public Response cancelBooking(@Context SecurityContext securityContext, @PathParam("id") long bookingId) {
+
+        try {
+            if (securityContext != null) {
+
+                this.bookingService.cancelBooking(
+                        securityContext.getUserPrincipal().getName(), bookingId);
+
+                return this.responseFactory.getResponse("Booking Cancelled.", Response.Status.OK);
+
+            } else {
+                throw new AccountAuthenticationFailed();
+            }
+
+        } catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        } catch (BookingNotFoundException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.NOT_FOUND);
+        } catch(IllegalStateException ex){
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+        }
+    }
 }

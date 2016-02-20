@@ -283,4 +283,32 @@ public class BookingService implements BookingFacade {
             throw ex;
         }
     }
+    
+    /**
+     * Cancel a booking.
+     * 
+     * @param username username of person requesting cancellation of  booking.
+     * @param bookingId booking to cancel.
+     * @throws BookingNotFoundException booking not found.
+     * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
+     */
+    @Override
+    public void cancelBooking(String username, long bookingId) 
+            throws BookingNotFoundException, AccountAuthenticationFailed{
+        
+        Booking booking = this.findBooking(bookingId);
+        
+        if(booking == null){
+            throw new BookingNotFoundException();
+        }
+        
+        // the passenger can only cancel their own booking.
+        if(!booking.getPassenger().getUsername().equals(username)){
+            throw new AccountAuthenticationFailed();
+        }
+        
+        booking.cancelBooking();
+        
+        this.bookingDao.update(booking);
+    }
 }

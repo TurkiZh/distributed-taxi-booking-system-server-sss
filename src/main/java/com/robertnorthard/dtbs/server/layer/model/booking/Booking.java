@@ -149,22 +149,45 @@ public class Booking implements Serializable {
         this.cost = this.calculateCost();
     }
 
+    /**
+     * Cancel booking.
+     * 
+     */
     public void cancelBooking() {
         this.state.cancelBooking(this);
     }
 
+    /** 
+     * Cancel taxi.
+     * 
+     */
     public void cancelTaxi() {
         this.state.cancelTaxi(this);
     }
 
+    /**
+     * Dispatch taxi for booking.
+     * 
+     * @param taxi the taxi to be dispatched.
+     */
     public void dispatchTaxi(Taxi taxi) {
         this.state.dispatchTaxi(this, taxi);
     }
 
+    /**
+     * Drop of passenger.
+     * 
+     * @param time time passenger dropped off.
+     */
     public void dropOffPassenger(Date time) {
         this.state.dropOffPassenger(this, time);
     }
 
+    /**
+     * Pickup passenger.
+     * 
+     * @param time time passenger picked up.
+     */
     public void pickupPassenger(Date time) {
         this.state.pickupPassenger(this, time);
     }
