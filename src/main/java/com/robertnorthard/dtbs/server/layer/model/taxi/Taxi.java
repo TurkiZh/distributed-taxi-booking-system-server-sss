@@ -180,7 +180,7 @@ public class Taxi extends Observable implements Serializable {
      * @return true if vehicle has enough free seats.
      */
     public boolean checkseatAvailability(int numberSeats) {
-        return this.vehicle.getNumberSeats() - 1 - numberSeats > 0;
+        return this.vehicle.getNumberSeats() - 1 - numberSeats >= 0;
     }
 
     /**

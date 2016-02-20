@@ -2,6 +2,7 @@ package com.robertnorthard.dtbs.server.layer.model;
 
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,9 +32,17 @@ public class TaxiTest {
      * Test taxi check seat availability.
      */
     @Test
-    public void testCheckSeatchAvailability() {
-
+    public void testCheckSeatchAvailability1() {
         this.vehicle.setNumberSeats(5);
-        assertFalse(this.taxi.checkseatAvailability(4));
+        assertTrue(this.taxi.checkseatAvailability(4));
+    }
+    
+    /**
+     * Test taxi check seat availability.
+     */
+    @Test
+    public void testCheckSeatchAvailability2() {
+        this.vehicle.setNumberSeats(5);
+        assertFalse(this.taxi.checkseatAvailability(5));
     }
 }
