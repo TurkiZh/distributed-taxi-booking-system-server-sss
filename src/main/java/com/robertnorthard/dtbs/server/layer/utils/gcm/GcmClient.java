@@ -20,6 +20,8 @@ public class GcmClient {
     
     // Google cloud messenger API key
     private String gcmApiKey;
+   
+    private DataMapper dataMapper;
     
     /**
      * Default constructor for class GcmClient.
@@ -30,15 +32,19 @@ public class GcmClient {
         this.gcmApiKey = ConfigService
                 .getConfig("application.properties")
                 .getProperty("google.gcm.api.key");
+        
+        this.dataMapper = DataMapper.getInstance();
     }
     
     /**
      * Constructor for GcmClient.
      * 
      * @param gcmApiKey Google Cloud Messenger API key.
+     * @param datamapper data mapper for object to JSON conversion. 
      */
-    public GcmClient(String gcmApiKey){
+    public GcmClient(String gcmApiKey, DataMapper datamapper){
         this.gcmApiKey = gcmApiKey;
+        this.dataMapper = datamapper;
     }
     
     /**
@@ -46,6 +52,7 @@ public class GcmClient {
      * 
      * @param status status to send alongside message.
      * @param eventType notification type.
+     * @param object object to encapsulate as JSON and send.
      * @param gcmRegistrationId Google Cloud Messenger registration id of device. 
      */
     public void sendMessage(String status, String eventType, Object object, String gcmRegistrationId){
@@ -53,7 +60,7 @@ public class GcmClient {
         Message outboundMessage = new Message.Builder()
                 .addData("status", status)
                 .addData("event", eventType)
-                .addData("data", DataMapper.getInstance().getObjectAsJson(object))
+                .addData("data", this.dataMapper.getObjectAsJson(object))
                 .build();
         try {
             Result result = sender.send(outboundMessage, gcmRegistrationId, GcmClient.GCM_SEND_RETRIES);
