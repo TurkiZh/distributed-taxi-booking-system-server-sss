@@ -11,10 +11,13 @@ import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.Route;
+import com.robertnorthard.dtbs.server.layer.model.booking.BookingStates;
+import com.robertnorthard.dtbs.server.layer.model.events.EventTypes;
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.RouteDao;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.persistence.dto.BookingDto;
+import com.robertnorthard.dtbs.server.layer.utils.gcm.GcmClient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +42,9 @@ public class BookingService implements BookingFacade {
     private TaxiDao taxiDao;
     @Inject
     private GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
+    
+    @Inject
+    private GcmClient gcmClient;
 
     public BookingService() {
         // Intentionally left blank for dependency injection. 
@@ -215,6 +221,13 @@ public class BookingService implements BookingFacade {
 
         try {
             booking.dispatchTaxi(taxi);
+            
+            // send GCM notification.
+            this.gcmClient.sendMessage(
+                    BookingStates.TAXI_DISPATCHED.toString(),
+                    EventTypes.BOOKING_EVENT.toString(),
+                    booking.getPassenger().getGcmRegId());
+            
             this.bookingDao.update(booking);
         } catch (IllegalStateException ex) {
              throw new IllegalBookingStateException(ex.getMessage());
@@ -312,7 +325,7 @@ public class BookingService implements BookingFacade {
         }
         
         try{
-            booking.cancelBooking();     
+            booking.cancelBooking();
         }catch(IllegalStateException ex){
             throw new IllegalBookingStateException(ex.getMessage());
         }

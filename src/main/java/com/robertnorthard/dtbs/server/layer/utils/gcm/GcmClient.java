@@ -4,6 +4,7 @@ import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.robertnorthard.dtbs.server.configuration.ConfigService;
+import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,11 +48,12 @@ public class GcmClient {
      * @param eventType event type.
      * @param gcmRegistrationId Google Cloud Messenger registration id of device. 
      */
-    public void sendMessage(String message, String eventType, String gcmRegistrationId){
+    public void sendMessage(String status, String eventType, Object object, String gcmRegistrationId){
         Sender sender = new Sender(this.gcmApiKey);
         Message outboundMessage = new Message.Builder()
-                .addData("message", message)
+                .addData("status", status)
                 .addData("event", eventType)
+                .addData("data", DataMapper.getInstance().getObjectAsJson(object))
                 .build();
         try {
             Result result = sender.send(outboundMessage, gcmRegistrationId, GcmClient.GCM_SEND_RETRIES);
