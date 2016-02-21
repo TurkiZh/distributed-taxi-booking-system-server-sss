@@ -206,7 +206,7 @@ public class BookingController {
      * @return the booking object. If the user is authenticated to view the
      * booking.
      */
-    @POST
+    @PUT
     @Path("/{id}/accept")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("driver")
@@ -238,9 +238,92 @@ public class BookingController {
                     ex.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
+    
+    
+    /**
+     * Drop of a passenger.
+     *
+     * @param securityContext user's security context injected by container.
+     * @param bookingId of booking to accept.
+     * @return the booking object. If the user is authenticated to view the
+     * booking.
+     */
+    @PUT
+    @Path("/{id}/dropoffpassenger")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("driver")
+    public Response dropOffPassenger(@Context SecurityContext securityContext, @PathParam("id") long bookingId) {
+
+        try {
+            if (securityContext != null) {
+
+                this.bookingService.dropOffPassenger(
+                        securityContext.getUserPrincipal().getName(), bookingId, System.currentTimeMillis());
+
+                return this.responseFactory.getResponse("Booking updated.", Response.Status.OK);
+
+            } else {
+                throw new AccountAuthenticationFailed();
+            }
+
+        } catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        } catch (TaxiNotFoundException | BookingNotFoundException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.NOT_FOUND);
+        } catch (IllegalBookingStateException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+        }
+    }
+    
+        /**
+     * Drop of a passenger.
+     *
+     * @param securityContext user's security context injected by container.
+     * @param bookingId of booking to accept.
+     * @return the booking object. If the user is authenticated to view the
+     * booking.
+     */
+    @PUT
+    @Path("/{id}/pickuppassenger")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("driver")
+    public Response pickupPassenger(@Context SecurityContext securityContext, @PathParam("id") long bookingId) {
+
+        try {
+            if (securityContext != null) {
+
+                this.bookingService.pickUpPassenger(
+                        securityContext.getUserPrincipal().getName(), bookingId, System.currentTimeMillis() );
+
+                return this.responseFactory.getResponse("Booking updated.", Response.Status.OK);
+
+            } else {
+                throw new AccountAuthenticationFailed();
+            }
+
+        } catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        } catch (TaxiNotFoundException | BookingNotFoundException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.NOT_FOUND);
+        } catch (IllegalBookingStateException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+        }
+    }
 
     /**
-     * Cancel a taxi booking,
+     * Cancel a booking.
      *
      * @param securityContext user's security context injected by container.
      * @param bookingId of booking to accept.
