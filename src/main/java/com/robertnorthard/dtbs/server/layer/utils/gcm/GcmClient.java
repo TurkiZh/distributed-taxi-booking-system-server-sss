@@ -44,8 +44,8 @@ public class GcmClient {
     /**
      * Send messenger to a Google Cloud Messenger connected device.
      * 
-     * @param message message to send.
-     * @param eventType event type.
+     * @param status status to send alongside message.
+     * @param eventType notification type.
      * @param gcmRegistrationId Google Cloud Messenger registration id of device. 
      */
     public void sendMessage(String status, String eventType, Object object, String gcmRegistrationId){
