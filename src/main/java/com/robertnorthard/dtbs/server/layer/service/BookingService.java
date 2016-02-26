@@ -9,6 +9,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
+import com.robertnorthard.dtbs.server.layer.business.rules.validator.BookingValidator;
 import com.robertnorthard.dtbs.server.layer.model.Account;
 import com.robertnorthard.dtbs.server.layer.model.Route;
 import com.robertnorthard.dtbs.server.layer.model.booking.BookingStates;
@@ -42,12 +43,30 @@ public class BookingService implements BookingFacade {
     private TaxiDao taxiDao;
     @Inject
     private GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
-    
     @Inject
     private GcmClient gcmClient;
 
+    /**
+     * Constructor for dependency injection/testing.
+     * 
+     * @param bookingDao booking dao.
+     * @param accountService account service.
+     * @param routeDao route dao.
+     * @param taxiDao taxi dao.
+     * @param googleDistanceMatrixFacade Google distance matrix service.
+     * @param gcmClient gcm client.
+     */
+    public BookingService(BookingDao bookingDao, AccountFacade accountService, RouteDao routeDao, TaxiDao taxiDao, GoogleDistanceMatrixFacade googleDistanceMatrixFacade, GcmClient gcmClient) {
+        this.bookingDao = bookingDao;
+        this.accountService = accountService;
+        this.routeDao = routeDao;
+        this.taxiDao = taxiDao;
+        this.googleDistanceMatrixFacade = googleDistanceMatrixFacade;
+        this.gcmClient = gcmClient;
+    }
+
     public BookingService() {
-        // Intentionally left blank for dependency injection. 
+        // Intentionally left blank for dependency injection.
     }
 
     @Override
@@ -80,7 +99,7 @@ public class BookingService implements BookingFacade {
      * @param bookingDto booking data transfer object. Requires: - username
      * username of passenger. - numberPassengers number of passengers. - pickup
      * location - destination location
-     * @throws AccountAuthenticationFailed invalid username.
+     * @throws AccountAuthenticationFailed if account authentication fails.
      * @throws RouteNotFoundException route not found.
      * @throws InvalidGoogleApiResponseException invalid response from Google
      * (Invalid JSON as there API has changed).
@@ -95,36 +114,41 @@ public class BookingService implements BookingFacade {
             InvalidBookingException {
 
         try {
-            if (bookingDto.getPassengerUsername() == null) {
-                throw new IllegalArgumentException("Username cannot be null.");
+            BookingValidator validator = new BookingValidator();
+
+            if (validator.validate(bookingDto)) {
+
+                Account passenger = this.accountService.findAccount(bookingDto.getPassengerUsername());
+
+                if (passenger == null) {
+                    throw new AccountAuthenticationFailed();
+                }
+
+          //  if (this.incompleteBookings(passenger.getUsername())) {
+                //       throw new InvalidBookingException("A user can only have one active booking.");
+                //  }
+                Route route = this.googleDistanceMatrixFacade.getRouteInfo(
+                        bookingDto.getStartLocation(),
+                        bookingDto.getEndLocation());
+
+                if (route == null) {
+                    throw new RouteNotFoundException();
+                }
+
+                Booking booking = new Booking(
+                        passenger,
+                        route,
+                        bookingDto.getNumberPassengers());
+
+                this.bookingDao.persistEntity(booking);
+
+                return booking;
+
+            } else {
+                List<String> errors = validator.getValidatorResult().getErrors();
+
+                throw new InvalidBookingException(errors);
             }
-
-            Account passenger = this.accountService.findAccount(bookingDto.getPassengerUsername());
-
-            if (passenger == null) {
-                throw new AccountAuthenticationFailed();
-            }
-
-            if (this.incompleteBookings(passenger.getUsername())) {
-                throw new InvalidBookingException("A user can only have one active booking.");
-            }
-
-            Route route = this.googleDistanceMatrixFacade.getRouteInfo(
-                    bookingDto.getStartLocation(),
-                    bookingDto.getEndLocation());
-
-            if (route == null) {
-                throw new RouteNotFoundException();
-            }
-
-            Booking booking = new Booking(
-                    passenger,
-                    route,
-                    bookingDto.getNumberPassengers());
-
-            this.bookingDao.persistEntity(booking);
-
-            return booking;
 
         } catch (InvalidGoogleApiResponseException ex) {
             throw ex;
@@ -206,7 +230,7 @@ public class BookingService implements BookingFacade {
      */
     @Override
     public synchronized void acceptBooking(String username, long bookingId)
-            throws TaxiNotFoundException, BookingNotFoundException,IllegalBookingStateException {
+            throws TaxiNotFoundException, BookingNotFoundException, IllegalBookingStateException {
 
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
         Booking booking = this.findBooking(bookingId);
@@ -221,17 +245,17 @@ public class BookingService implements BookingFacade {
 
         try {
             booking.dispatchTaxi(taxi);
-            
+
             // send GCM notification.
             this.gcmClient.sendMessage(
                     BookingStates.TAXI_DISPATCHED.toString(),
                     EventTypes.BOOKING_EVENT.toString(),
                     booking,
                     booking.getPassenger().getGcmRegId());
-            
+
             this.bookingDao.update(booking);
         } catch (IllegalStateException ex) {
-             throw new IllegalBookingStateException(ex.getMessage());
+            throw new IllegalBookingStateException(ex.getMessage());
         }
     }
 
@@ -247,7 +271,7 @@ public class BookingService implements BookingFacade {
      */
     @Override
     public void pickUpPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException {
+            throws BookingNotFoundException, TaxiNotFoundException, IllegalBookingStateException {
 
         Booking booking = this.findBooking(bookingId);
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
@@ -263,16 +287,16 @@ public class BookingService implements BookingFacade {
         try {
             booking.pickupPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
-            
+
             // send GCM notification.
             this.gcmClient.sendMessage(
                     BookingStates.PASSENGER_PICKED_UP.toString(),
                     EventTypes.BOOKING_EVENT.toString(),
                     booking,
                     booking.getPassenger().getGcmRegId());
-            
+
         } catch (IllegalStateException ex) {
-             throw new IllegalBookingStateException(ex.getMessage());
+            throw new IllegalBookingStateException(ex.getMessage());
         }
     }
 
@@ -287,7 +311,7 @@ public class BookingService implements BookingFacade {
      */
     @Override
     public void dropOffPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException {
+            throws BookingNotFoundException, TaxiNotFoundException, IllegalBookingStateException {
 
         Booking booking = this.findBooking(bookingId);
 
@@ -304,49 +328,50 @@ public class BookingService implements BookingFacade {
         try {
             booking.dropOffPassenger(new Date(timestamp));
             this.bookingDao.update(booking);
-            
+
             // send GCM notification.
             this.gcmClient.sendMessage(
                     BookingStates.COMPLETED_BOOKING.toString(),
                     EventTypes.BOOKING_EVENT.toString(),
                     booking,
                     booking.getPassenger().getGcmRegId());
-            
+
         } catch (IllegalStateException ex) {
-             throw new IllegalBookingStateException(ex.getMessage());
+            throw new IllegalBookingStateException(ex.getMessage());
         }
     }
-    
+
     /**
      * Cancel a booking.
-     * 
-     * @param username username of person requesting cancellation of  booking.
+     *
+     * @param username username of person requesting cancellation of booking.
      * @param bookingId booking to cancel.
      * @throws BookingNotFoundException booking not found.
-     * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
+     * @throws AccountAuthenticationFailed user does not have permission to
+     * cancel booking.
      * @throws IllegalBookingStateException if booking in an illegal state.
      */
     @Override
-    public void cancelBooking(String username, long bookingId) 
-            throws BookingNotFoundException, AccountAuthenticationFailed, IllegalBookingStateException{
-        
+    public void cancelBooking(String username, long bookingId)
+            throws BookingNotFoundException, AccountAuthenticationFailed, IllegalBookingStateException {
+
         Booking booking = this.findBooking(bookingId);
-        
-        if(booking == null){
+
+        if (booking == null) {
             throw new BookingNotFoundException();
         }
-        
+
         // the passenger can only cancel their own booking.
-        if(!booking.getPassenger().getUsername().equals(username)){
+        if (!booking.getPassenger().getUsername().equals(username)) {
             throw new AccountAuthenticationFailed();
         }
-        
-        try{
+
+        try {
             booking.cancelBooking();
-        }catch(IllegalStateException ex){
+        } catch (IllegalStateException ex) {
             throw new IllegalBookingStateException(ex.getMessage());
         }
-        
+
         this.bookingDao.update(booking);
     }
 }

@@ -48,17 +48,17 @@ public interface BookingFacade {
      * location - destination location
      *
      * @return the created booking.
-     * @throws AccountAuthenticationFailed invalid username.
      * @throws InvalidLocationException invalid location/not found.
      * @throws RouteNotFoundException route not found.
      * @throws InvalidGoogleApiResponseException unable to parse Google API
      * response.
      * @throws InvalidBookingException invalid booking e.g. user has active
      * bookings.
+     * @throws AccountAuthenticationFailed if account authentication fails.
      */
     public Booking makeBooking(BookingDto booking)
-            throws AccountAuthenticationFailed,
-            InvalidLocationException,
+            throws InvalidLocationException,
+            AccountAuthenticationFailed,
             RouteNotFoundException,
             InvalidGoogleApiResponseException,
             InvalidBookingException;
