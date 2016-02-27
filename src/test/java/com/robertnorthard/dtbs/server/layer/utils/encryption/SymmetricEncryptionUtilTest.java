@@ -24,14 +24,4 @@ public class SymmetricEncryptionUtilTest {
         this.keystore = SymmetricEncryptionUtil.loadKeyStore("src/test/resources/dtbs.store", "dtbsproject", "JCEKS");
         this.key = this.keystore.getKey("dtbssecret", "dtbsproject".toCharArray());
     }
-    
-    /**
-     * Test of encrypt method, of class SymmetricEncryptionUtil.
-     */
-    @Test
-    public void encryptValues() {
-
-        System.out.println(SymmetricEncryptionUtil.encrypt("AIzaSyDPF994xud0CTSnZOuxwRTdpSFc_UQgVM0", "AES", key));
-        System.out.println(SymmetricEncryptionUtil.encrypt("${~~:x3Nwb_ZE.<z", "AES", key));
-    }
 }
