@@ -1,7 +1,8 @@
 package com.robertnorthard.dtbs.server.layer.utils.mail;
 
 import com.robertnorthard.dtbs.server.configuration.ConfigService;
-import java.util.Properties;
+import com.robertnorthard.dtbs.server.layer.utils.encryption.EncryptedProperties;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Authenticator;
@@ -23,13 +24,13 @@ public class SmtpMailStrategy implements MailStrategy {
 
     private static final Logger LOGGER = Logger.getLogger(SmtpMailStrategy.class.getName());
 
-    private final Properties mailProperties;
+    private final EncryptedProperties mailProperties;
 
     /**
      * Default constructor for classSmtpMailStrategy.
      */
     public SmtpMailStrategy() {
-        mailProperties = ConfigService.getConfig("application.properties");
+        mailProperties = new EncryptedProperties(ConfigService.getConfig("application.properties"));
     }
 
     /**
@@ -37,7 +38,7 @@ public class SmtpMailStrategy implements MailStrategy {
      *
      * @param mailProperties mail properties.
      */
-    public SmtpMailStrategy(Properties mailProperties) {
+    public SmtpMailStrategy(EncryptedProperties mailProperties) {
         this.mailProperties = mailProperties;
     }
 
@@ -53,8 +54,8 @@ public class SmtpMailStrategy implements MailStrategy {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(
-                                mailProperties.getProperty("mail.smtp.username"),
-                                mailProperties.getProperty("mail.smtp.password"));
+                                mailProperties.getKey("mail.smtp.username"),
+                                mailProperties.getKey("mail.smtp.password"));
                     }
                 }
         );
@@ -79,7 +80,7 @@ public class SmtpMailStrategy implements MailStrategy {
 
             mailMessage.setFrom(
                     new InternetAddress(
-                            mailProperties.getProperty("mail.smtp.from.address")));
+                            mailProperties.getKey("mail.smtp.from.address")));
 
             mailMessage.setRecipient(Message.RecipientType.TO,
                     new InternetAddress(recipient));

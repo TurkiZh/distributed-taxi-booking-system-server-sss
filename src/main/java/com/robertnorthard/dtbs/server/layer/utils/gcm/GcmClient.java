@@ -5,6 +5,7 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.robertnorthard.dtbs.server.configuration.ConfigService;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
+import com.robertnorthard.dtbs.server.layer.utils.encryption.EncryptedProperties;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,9 +30,9 @@ public class GcmClient {
      * on the Java class path.
      */
     public GcmClient(){
-        this.gcmApiKey = ConfigService
-                .getConfig("application.properties")
-                .getProperty("google.gcm.api.key");
+        this.gcmApiKey = new EncryptedProperties(ConfigService
+                .getConfig("application.properties"))
+                .getKey("google.gcm.api.key");
         
         this.dataMapper = DataMapper.getInstance();
     }

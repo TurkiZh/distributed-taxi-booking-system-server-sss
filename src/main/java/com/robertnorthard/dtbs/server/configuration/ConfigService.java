@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.configuration;
 
+import com.robertnorthard.dtbs.server.layer.utils.encryption.EncryptedProperties;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
