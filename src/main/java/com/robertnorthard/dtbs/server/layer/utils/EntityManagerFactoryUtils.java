@@ -12,7 +12,7 @@ import javax.persistence.Persistence;
  */
 public class EntityManagerFactoryUtils {
     
-    private static EntityManagerFactory emf;
+    private static volatile EntityManagerFactory emf;
    
     private EntityManagerFactoryUtils(){
         // empty as utility close

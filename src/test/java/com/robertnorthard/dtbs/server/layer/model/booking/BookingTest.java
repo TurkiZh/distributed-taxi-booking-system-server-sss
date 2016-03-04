@@ -45,17 +45,15 @@ public class BookingTest {
         
         booking = new Booking(passenger,route, 2);
     }
+    
     /**
      * Test state transitions.
      */
     @Test
     public void bookingSunnyDayTest(){
-        assertTrue(booking.getState() instanceof AwaitingTaxiBookingState);
         booking.dispatchTaxi(taxi); 
         Date date = new Date();
-        assertTrue(booking.getState() instanceof TaxiDispatchedBookingState);
         booking.pickupPassenger(new Date(date.getTime()+1000000));
-        assertTrue(booking.getState() instanceof PassengerPickedUpBookingState);
         booking.dropOffPassenger(new Date(date.getTime()+20000000));    
         assertTrue(booking.getState() instanceof CompletedBookingState);
     }

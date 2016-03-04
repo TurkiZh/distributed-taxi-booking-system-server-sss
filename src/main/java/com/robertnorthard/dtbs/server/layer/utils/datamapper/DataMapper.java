@@ -14,14 +14,15 @@ import java.util.logging.Logger;
  */
 public class DataMapper extends ObjectMapper {
 
-    private static DataMapper dataMapper;
+    private static volatile DataMapper dataMapper;
 
     private DataMapper() {
         // private as singleton
     }
 
     /**
-     * Return an instance of data mapper. If it is null create a new instance.
+     * Return an instance of data mapper. 
+     * If it is null create a new instance.
      *
      * @return a instance of data mapper.
      */
@@ -34,7 +35,6 @@ public class DataMapper extends ObjectMapper {
                         PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
             }
         }
-
         return DataMapper.dataMapper;
     }
 
