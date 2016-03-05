@@ -32,7 +32,6 @@ public class AuthenticationControllerIT {
                 .post("http://localhost:8080/api/v1/auth/login");
     }
 
-       
     /** 
      * Test method login of AuthenticatioController.
      * Test: valid account.
