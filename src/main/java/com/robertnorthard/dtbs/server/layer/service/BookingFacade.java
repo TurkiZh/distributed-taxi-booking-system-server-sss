@@ -87,6 +87,15 @@ public interface BookingFacade {
     public List<Booking> findBookingHistory(String username);
 
     /**
+     * Return most recent active booking for a user.
+     * 
+     * @param username username of user.
+     * @return active booking for a user.
+     * @throws IllegalArgumentException if username is null;
+     */ 
+    public Booking checkActiveBooking(String username);
+    
+    /**
      * Accept a taxi booking.
      *
      * @param username of taxi driver.

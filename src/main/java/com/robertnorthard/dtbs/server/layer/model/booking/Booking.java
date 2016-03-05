@@ -380,6 +380,16 @@ public class Booking implements Serializable {
     public BookingState getState() {
         return state;
     }
+    
+    /**
+     * Return true if booking is active else false.
+     * @return true if booking is active, else false.
+     */
+    @JsonIgnore
+    public boolean isActive(){
+        return !(this.getState() instanceof CompletedBookingState 
+                || this.getState() instanceof CancelledBookingState);
+    }
 
     /**
      * Round to two decimal places.

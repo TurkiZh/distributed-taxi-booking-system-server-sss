@@ -65,7 +65,7 @@ public class HttpResponseFactory {
                         .entity(new HttpObjectResponse(object, "0")
                                 .toString()).build();
             case NOT_FOUND:
-                return Response.status(Response.Status.OK)
+                return Response.status(Response.Status.NOT_FOUND)
                         .entity(new HttpObjectResponse(object, "4")
                                 .toString()).build();
             default:

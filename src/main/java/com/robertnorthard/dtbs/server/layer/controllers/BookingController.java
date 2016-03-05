@@ -362,4 +362,41 @@ public class BookingController {
                     ex.getMessage(), Response.Status.NOT_FOUND);
         }
     }
+    
+    /**
+     * Check if active booking for user and return.
+     * 
+     * @param securityContext user's security context injected by container.
+     * @return the most recent active booking.
+     */
+    @GET
+    @Path("/active")
+    @RolesAllowed({"passenger","driver"})
+    public Response activeBookings(@Context SecurityContext securityContext){
+        
+        Booking booking = null;
+        
+        try{
+            
+            if(securityContext != null){
+                
+                booking = this.bookingService.checkActiveBooking(
+                        securityContext.getUserPrincipal().getName());
+                
+                if(booking == null){
+                    return this.responseFactory.getResponse("No active bookings.", Response.Status.OK);
+                }
+                
+                return this.responseFactory.getResponse(booking, Response.Status.OK);
+                
+            }else{
+                throw new AccountAuthenticationFailed();
+            }
+            
+        } catch (AccountAuthenticationFailed ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        }
+    }
 }

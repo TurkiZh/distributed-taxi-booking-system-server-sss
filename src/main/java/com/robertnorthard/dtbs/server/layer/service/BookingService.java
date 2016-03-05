@@ -374,4 +374,37 @@ public class BookingService implements BookingFacade {
 
         this.bookingDao.update(booking);
     }
+
+   /**
+     * Return most recent active booking for a user.
+     * 
+     * @param username username of user.
+     * @return active booking for a user.
+     * @throws IllegalArgumentException if username is null;
+     */ 
+    @Override
+    public Booking checkActiveBooking(String username) {
+        
+        if(username == null){
+            throw new IllegalArgumentException("Username cannot be null.");
+        }
+        
+        List<Booking> bookings = this.bookingDao.findBookingsForPassenger(username);
+        
+        if(bookings != null && bookings.size() > 0){
+            // return most recent booking
+            
+            Booking recentBooking = bookings.get(0);
+            
+            for(Booking b: bookings){
+                if(b.isActive() && !recentBooking.getTimestamp().after(b.getTimestamp())){
+                    recentBooking = b;
+                }
+            }
+            
+            return recentBooking;
+        }
+        
+        return null;
+    }
 }
