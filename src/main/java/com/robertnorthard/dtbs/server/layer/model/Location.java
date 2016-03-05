@@ -18,10 +18,10 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "LOCATION")
 public class Location implements Serializable {
-    
+
     @Transient
     private static final long serialVersionUID = -6935663821232865289L;
-    
+
     @Transient
     private static final double MIN_LATITUDE = -90;
     @Transient
@@ -30,7 +30,7 @@ public class Location implements Serializable {
     private static final double MIN_LONGITUDE = -180;
     @Transient
     private static final double MAX_LONGITUDE = 180;
-   
+
     @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -140,6 +140,40 @@ public class Location implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    /**
+     * Return distance in meters between start and end location using Haversine formula.
+     * http://stackoverflow.com/questions/120283/how-can-i-measure-distance-and-create-a-bounding-box-based-on-two-latitudelongi
+     * 
+     * @param startLocation start location.
+     * @param endLocation end location.
+     * @return distance in meters between start and end location.
+     * @throws IllegalArgumentException if start or end location is null.
+     */
+    public static double getDistance(Location startLocation, Location endLocation) {
+        
+        if(startLocation == null || endLocation == null){
+            throw new IllegalArgumentException("Start and end location can not be null.");
+        }
+        
+        double lat1 = startLocation.getLatitude();
+        double lat2 = endLocation.getLatitude();
+        double lng1 = startLocation.getLongitude();
+        double lng2 = endLocation.getLongitude();
+        
+        double earthRadius = 6371000;
+        
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+       
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return earthRadius * c;
     }
 
     @Override

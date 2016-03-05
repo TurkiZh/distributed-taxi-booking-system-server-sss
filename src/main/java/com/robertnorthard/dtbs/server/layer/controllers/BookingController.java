@@ -97,7 +97,7 @@ public class BookingController {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.UNAUTHORIZED);
-        } catch (InvalidLocationException | InvalidBookingException | RouteNotFoundException ex) {
+        } catch (InvalidLocationException | RouteNotFoundException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -114,6 +114,13 @@ public class BookingController {
             LOGGER.log(Level.SEVERE, null, ex);
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
+            
+        } catch (InvalidBookingException ex) {
+            
+            LOGGER.log(Level.INFO, null, ex);
+                 LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getErrors().get(0), Response.Status.NOT_FOUND);
         }
     }
 

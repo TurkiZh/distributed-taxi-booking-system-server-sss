@@ -144,10 +144,10 @@ public class BookingServiceTest {
         
         this.bookingService.makeBooking(bookingDto);
         
-        fail("Method should throw Route not found exception.");
+        fail("Method should throw authentication failed.");
     }
     
-       /**
+    /**
      * Test of findBooking method, of class BookingService.
      * Test: Authentication failed.
      */
@@ -170,7 +170,7 @@ public class BookingServiceTest {
         
         this.bookingService.makeBooking(bookingDto);
         
-        fail("Method should throw Route not found exception.");
+        fail("Method should throw authentication failed.");
     }
     
 }
