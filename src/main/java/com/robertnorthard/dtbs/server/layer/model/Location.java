@@ -141,7 +141,7 @@ public class Location implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+  
     /**
      * Return distance in meters between start and end location using Haversine formula.
      * http://stackoverflow.com/questions/120283/how-can-i-measure-distance-and-create-a-bounding-box-based-on-two-latitudelongi

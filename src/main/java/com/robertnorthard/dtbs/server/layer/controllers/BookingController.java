@@ -391,7 +391,7 @@ public class BookingController {
                         securityContext.getUserPrincipal().getName());
                 
                 if(booking == null){
-                    return this.responseFactory.getResponse("No active bookings.", Response.Status.OK);
+                    return this.responseFactory.getResponse("No active bookings.", Response.Status.NOT_FOUND);
                 }
                 
                 return this.responseFactory.getResponse(booking, Response.Status.OK);

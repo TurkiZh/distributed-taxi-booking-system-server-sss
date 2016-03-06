@@ -393,7 +393,6 @@ public class BookingService implements BookingFacade {
         
         if(bookings != null && bookings.size() > 0){
             // return most recent booking
-            
             Booking recentBooking = bookings.get(0);
             
             for(Booking b: bookings){
@@ -402,7 +401,7 @@ public class BookingService implements BookingFacade {
                 }
             }
             
-            return recentBooking;
+            return !recentBooking.isActive() ? null : recentBooking;
         }
         
         return null;
