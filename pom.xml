@@ -35,13 +35,6 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.robertnorthard.dtms.server</groupId>
-            <artifactId>DTMSServer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-            <type>war</type>
-        </dependency>
-        <dependency>
             <groupId>com.robertnorthard.dtms.server.common</groupId>
             <artifactId>DTBSCommon</artifactId>
             <version>1.0-SNAPSHOT</version>
