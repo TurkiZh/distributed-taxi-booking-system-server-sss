@@ -49,4 +49,39 @@ public class BookingControllerIT {
                 .when()
                 .post("http://127.0.0.1:8080/api/v1/booking");
     }
+    
+    /**
+     * Test method makeBooking of BookingController. 
+     * Test: unauthorised no credentials.
+     */
+    @Test
+    public void testMakeBookingUnathorisedNoCredentials() {
+        expect()
+                .statusCode(403)
+                .request()
+                .header("Content-Type", "application/json")
+                .body("{\"end_location\":{\"latitude\":51.763366,\"longitude\":-0.22309},\"start_location\":{{\"latitude\":51.763366,\"longitude\":-0.22309},\"number_passengers\":1}")
+                .and()
+                .response()
+                .when()
+                .post("http://127.0.0.1:8080/api/v1/booking");
+    }
+    
+    /**
+     * Test method makeBooking of BookingController. 
+     * Test: unauthorised as driver. Passengers should only be allowed to make taxi bookings.
+     */
+    @Test
+    public void testMakeBookingUnathorisedAsDriver() {
+        expect()
+                .statusCode(403)
+                .request()
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic am9obi5zbWl0aDpwYXNzd29yZA==")
+                .body("{\"end_location\":{\"latitude\":51.763366,\"longitude\":-0.22309},\"start_location\":{{\"latitude\":51.763366,\"longitude\":-0.22309},\"number_passengers\":1}")
+                .and()
+                .response()
+                .when()
+                .post("http://127.0.0.1:8080/api/v1/booking");
+    }
 }
