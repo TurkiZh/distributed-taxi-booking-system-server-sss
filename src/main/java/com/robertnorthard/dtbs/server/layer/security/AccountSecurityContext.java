@@ -6,7 +6,6 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Security context wrapper class account. Inspiration from:
- * https://simplapi.wordpress.com/2015/09/19/jersey-jax-rs-securitycontext-in-action/
  *
  * @author robertnorthard
  */

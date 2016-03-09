@@ -4,6 +4,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFai
 import com.robertnorthard.dtbs.server.layer.service.AccountFacade;
 import com.robertnorthard.dtbs.server.layer.service.AccountService;
 import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.utils.http.HttpHeader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String authHeader = requestContext.getHeaderString("Authorization");
+        String authHeader = requestContext.getHeaderString(HttpHeader.AUTHORIZATION.toString());
         String requestUri = requestContext.getUriInfo().getAbsolutePath().toString();
 
         Account account = null;
