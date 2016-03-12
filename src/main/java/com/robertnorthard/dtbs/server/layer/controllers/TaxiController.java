@@ -7,7 +7,6 @@ import com.robertnorthard.dtbs.server.layer.service.TaxiFacade;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import com.robertnorthard.dtbs.server.layer.model.Location;
 import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
-import com.robertnorthard.dtbs.server.layer.persistence.dto.HttpListResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
