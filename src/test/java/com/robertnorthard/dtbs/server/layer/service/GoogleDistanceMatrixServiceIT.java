@@ -122,30 +122,6 @@ public class GoogleDistanceMatrixServiceIT {
     }
 
     /**
-     * Test of getRouteInfo method, of class GoogleDistanceMatrixService for
-     * valid route.
-     */
-    @Test
-    public void testGetRouteInfoValidRoute() {
-
-        Location startLocation = new Location(51.753306, -0.241096);
-        Location endLocation = new Location(51.761143, -0.248649);
-        // max different between expected and actual - Google may choose different routes.
-        float delta = 100;
-        Route route = null;
-
-        try {
-            route = this.googleDistanceMatrixService.getRouteInfo(startLocation, endLocation);
-        } catch (InvalidGoogleApiResponseException ex) {
-            fail();
-        }
-
-        assertTrue(route.getStartAddress().getAddress().toString().equals("Automotive Centre, Hatfield, Hertfordshire AL10 9PN, UK"));
-        assertTrue(route.getEndAddress().getAddress().toString().equals("Sandridge, Hatfield, Hertfordshire AL10 9BL, UK"));
-        assertEquals(2588, route.getDistance(), delta);
-    }
-
-    /**
      * Test of getRouteInfo method, of class GoogleDistanceMatrixService for no
      * route.
      */

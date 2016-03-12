@@ -4,6 +4,7 @@ import com.robertnorthard.dtbs.server.layer.business.rules.account.PasswordConst
 import com.robertnorthard.dtbs.server.layer.business.rules.account.UniqueUsernameSpecification;
 import com.robertnorthard.dtbs.server.layer.business.rules.account.UsernameCannotMatchPasswordSpecification;
 import com.robertnorthard.dtbs.server.layer.business.rules.account.ValidEmailSpecification;
+import com.robertnorthard.dtbs.server.layer.business.rules.account.ValidFamilyCommonNameSpecification;
 import com.robertnorthard.dtbs.server.layer.business.rules.account.ValidPhoneNumberSpecification;
 import com.robertnorthard.dtbs.server.layer.business.rules.account.ValidUsernameSpecification;
 import com.robertnorthard.dtbs.server.layer.model.Account;
@@ -36,6 +37,7 @@ public class AccountValidator extends Validator<Account> {
                 .and(new ValidEmailSpecification(result))
                 .and(new UniqueUsernameSpecification(result))
                 .and(new ValidPhoneNumberSpecification(result))
+                .and(new ValidFamilyCommonNameSpecification(result))
                 .isSatisfiedBy(account);
     }
 }
