@@ -92,41 +92,6 @@ public class TaxiController {
                     ex.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
-    
-    /**
-     * Return a collection of all taxis on duty and available encapsulated 
-     * in a HTTP response list object.
-     * 
-     * @return a collection of all taxis on duty and available encapsulated 
-     * in a HTTP response list object.
-     */
-    @GET
-    @Path("/onduty")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"driver", "passenger"})
-    public Response findOnDutyAndAvailableTaxis(){
-        return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new HttpListResponse<>(
-                                    this.taxiService.findAllTaxiOnDutyAndAvailable(), "0").toString()).build();
-
-    }
-    
-    /**
-     * Return a collection of all taxis on duty and available encapsulated 
-     * in a HTTP response list object.
-     * 
-     * @return a collection of all taxis on duty and available encapsulated 
-     * in a HTTP response list object.
-     */
-    @GET
-    @Path("/offduty")
-    @Produces(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"driver", "passenger"})
-    public Response findOffDutytaxis(){
-        return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(new HttpListResponse<>(
-                                    this.taxiService.findAllTaxiOffDuty(), "0").toString()).build();
-    }
 
     /**
      * Find taxi by id.
@@ -151,14 +116,4 @@ public class TaxiController {
                     "Taxi not found.", Response.Status.NOT_FOUND);
         }
     }
-
-    /**
-     * Set passenger to picked up.
-     */
-    /**
-     * Send passenger to dropped of.
-     */
-    /**
-     * Drive accepts job.
-     */
 }
