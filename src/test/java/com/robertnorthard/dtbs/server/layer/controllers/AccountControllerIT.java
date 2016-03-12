@@ -173,7 +173,7 @@ public class AccountControllerIT {
      * Test: Account does not exist.
      */
     @Test
-    public void testResetAccount() {
+    public void testResetAccount7() {
         expect()
                 .statusCode(404)
                 .request()
@@ -183,5 +183,38 @@ public class AccountControllerIT {
                 .post("http://localhost:8080/api/v1/account/invalidAccountName/reset");
     }
 
+    /**
+     * Test method resetPassword of AccountController. 
+     * Test: Account does not exist
+     */
+    @Test
+    public void testResetPassword1() {
+        expect()
+                .statusCode(401)
+                .request()
+                .header("Content-Type", "application/json")
+                .body("{\n"
+                        + "  \"password\": \"robert\"" +
+                        "}")
+                .and()
+                .response()
+                .body("status", equalTo("1"))
+                .when()
+                .post("http://localhost:8080/api/v1/account/invalidAccountName/reset/100");
+    }
     
+    /**
+     * Test method resetPassword of AccountController. 
+     * Test: New password not provided.
+     */
+    @Test
+    public void testResetPassword2() {
+        expect()
+                .statusCode(400)
+                .request()
+                .response()
+                .body("status", equalTo("3"))
+                .when()
+                .post("http://localhost:8080/api/v1/account/invalidAccountName/reset/100");
+    }
 }
