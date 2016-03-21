@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.utils.geocoding;
 
-import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.service.entities.Location;
 import java.util.ArrayList;
 import java.util.List;
 

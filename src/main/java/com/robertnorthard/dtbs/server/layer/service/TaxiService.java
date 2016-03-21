@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
-import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import java.util.List;
 import java.util.Map;

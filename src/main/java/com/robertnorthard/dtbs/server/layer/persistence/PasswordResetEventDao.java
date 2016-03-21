@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent;
+import com.robertnorthard.dtbs.server.layer.service.entities.events.PasswordResetEvent;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

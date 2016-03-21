@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.taxi.Taxi;
-import com.robertnorthard.dtbs.server.layer.model.taxi.TaxiState;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.TaxiState;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

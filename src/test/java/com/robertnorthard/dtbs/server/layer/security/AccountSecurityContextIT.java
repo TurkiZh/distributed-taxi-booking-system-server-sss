@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.security;
 
-import com.robertnorthard.dtbs.server.layer.model.Account;
-import com.robertnorthard.dtbs.server.layer.model.AccountRole;
+import com.robertnorthard.dtbs.server.layer.service.entities.Account;
+import com.robertnorthard.dtbs.server.layer.service.entities.AccountRole;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

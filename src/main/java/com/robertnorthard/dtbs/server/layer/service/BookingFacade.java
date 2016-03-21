@@ -4,7 +4,7 @@ import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFai
 import com.robertnorthard.dtbs.server.common.exceptions.BookingNotFoundException;
 import com.robertnorthard.dtbs.server.common.exceptions.IllegalBookingStateException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidLocationException;
-import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.Booking;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidBookingException;
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;

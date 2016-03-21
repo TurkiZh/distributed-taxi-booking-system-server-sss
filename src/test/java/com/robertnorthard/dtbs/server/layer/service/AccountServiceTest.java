@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.service.entities.Account;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;

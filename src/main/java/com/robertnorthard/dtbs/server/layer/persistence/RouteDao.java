@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.Route;
+import com.robertnorthard.dtbs.server.layer.service.entities.Route;
 
 /**
  * A route id Data Access Object (DAO) class for handling and managing event

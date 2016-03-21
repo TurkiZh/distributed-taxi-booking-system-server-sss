@@ -1,11 +1,11 @@
 package com.robertnorthard.dtbs.server;
 
-import com.robertnorthard.dtbs.server.layer.controllers.AccountController;
-import com.robertnorthard.dtbs.server.layer.controllers.AuthenticationController;
-import com.robertnorthard.dtbs.server.layer.controllers.BookingController;
-import com.robertnorthard.dtbs.server.layer.controllers.GeocodeController;
-import com.robertnorthard.dtbs.server.layer.controllers.TaxiController;
-import com.robertnorthard.dtbs.server.layer.controllers.TestController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.AccountController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.AuthenticationController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.BookingController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.GeocodeController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.TaxiController;
+import com.robertnorthard.dtbs.server.layer.controllers.rest.TestController;
 import com.robertnorthard.dtbs.server.layer.security.AuthenticationFilter;
 import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;

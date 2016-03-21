@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.booking.Booking;
-import com.robertnorthard.dtbs.server.layer.model.booking.BookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.Booking;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.BookingState;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

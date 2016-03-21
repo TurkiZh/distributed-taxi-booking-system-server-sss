@@ -3,7 +3,7 @@ package com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.robertnorthard.dtbs.server.layer.model.booking.BookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.BookingState;
 import java.io.IOException;
 
 /**

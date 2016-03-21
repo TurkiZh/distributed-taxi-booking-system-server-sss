@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.service.entities.Account;
 
 /**
  * A account Data Access Object (DAO) class for handling and managing event

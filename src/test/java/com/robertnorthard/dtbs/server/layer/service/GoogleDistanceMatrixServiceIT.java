@@ -2,8 +2,8 @@ package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.InvalidGoogleApiResponseException;
 import com.robertnorthard.dtbs.server.common.exceptions.RouteNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Location;
-import com.robertnorthard.dtbs.server.layer.model.Route;
+import com.robertnorthard.dtbs.server.layer.service.entities.Location;
+import com.robertnorthard.dtbs.server.layer.service.entities.Route;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

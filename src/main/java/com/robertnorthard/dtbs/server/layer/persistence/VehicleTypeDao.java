@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence;
 
-import com.robertnorthard.dtbs.server.layer.model.VehicleType;
+import com.robertnorthard.dtbs.server.layer.service.entities.VehicleType;
 
 /**
  * A vehicle type Data Access Object (DAO) class for handling and managing event related

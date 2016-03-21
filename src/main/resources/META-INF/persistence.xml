@@ -2,17 +2,17 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="com.robertnorthard.dtms.server" transaction-type="JTA">
     <jta-data-source>dtbsdb</jta-data-source>
-    <class>com.robertnorthard.dtbs.server.layer.model.Account</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.Location</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.Route</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.Vehicle</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.VehicleType</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.events.PasswordResetEvent</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.booking.Booking</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.Address</class>
-    <class>com.robertnorthard.dtbs.server.layer.model.taxi.Taxi</class>
     <class>com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking.JpaBookingStateDataConverter</class>
     <class>com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JpaTaxiStateDataConverter</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.VehicleType</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.Vehicle</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.Address</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.Route</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.Location</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.Account</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.booking.Booking</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.events.PasswordResetEvent</class>
+    <class>com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

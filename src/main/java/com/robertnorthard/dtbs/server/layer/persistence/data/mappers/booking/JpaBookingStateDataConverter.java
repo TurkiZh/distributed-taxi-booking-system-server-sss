@@ -1,12 +1,12 @@
 package com.robertnorthard.dtbs.server.layer.persistence.data.mappers.booking;
 
-import com.robertnorthard.dtbs.server.layer.model.booking.AwaitingTaxiBookingState;
-import com.robertnorthard.dtbs.server.layer.model.booking.BookingState;
-import com.robertnorthard.dtbs.server.layer.model.booking.BookingStates;
-import com.robertnorthard.dtbs.server.layer.model.booking.CancelledBookingState;
-import com.robertnorthard.dtbs.server.layer.model.booking.CompletedBookingState;
-import com.robertnorthard.dtbs.server.layer.model.booking.PassengerPickedUpBookingState;
-import com.robertnorthard.dtbs.server.layer.model.booking.TaxiDispatchedBookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.AwaitingTaxiBookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.BookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.BookingStates;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.CancelledBookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.CompletedBookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.PassengerPickedUpBookingState;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.TaxiDispatchedBookingState;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

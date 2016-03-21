@@ -1,10 +1,10 @@
 package com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi;
 
-import com.robertnorthard.dtbs.server.layer.model.taxi.OffDutyTaxiState;
-import com.robertnorthard.dtbs.server.layer.model.taxi.OnDutyTaxiState;
-import com.robertnorthard.dtbs.server.layer.model.taxi.AcceptedJobTaxiState;
-import com.robertnorthard.dtbs.server.layer.model.taxi.TaxiState;
-import com.robertnorthard.dtbs.server.layer.model.taxi.TaxiStates;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.OffDutyTaxiState;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.OnDutyTaxiState;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.AcceptedJobTaxiState;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.TaxiState;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.TaxiStates;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

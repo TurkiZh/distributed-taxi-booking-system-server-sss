@@ -1,6 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.persistence.dto;
 
-import com.robertnorthard.dtbs.server.layer.model.Location;
+import com.robertnorthard.dtbs.server.layer.service.entities.Location;
 import java.io.Serializable;
 
 /**

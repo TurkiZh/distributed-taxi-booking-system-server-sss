@@ -3,7 +3,7 @@ package com.robertnorthard.dtbs.server.layer.service;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountAuthenticationFailed;
 import com.robertnorthard.dtbs.server.common.exceptions.AccountInvalidException;
 import com.robertnorthard.dtbs.server.common.exceptions.EntityNotFoundException;
-import com.robertnorthard.dtbs.server.layer.model.Account;
+import com.robertnorthard.dtbs.server.layer.service.entities.Account;
 import javax.ejb.Local;
 
 /**
