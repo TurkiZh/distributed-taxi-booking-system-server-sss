@@ -141,39 +141,72 @@ public class Location implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-  
+
     /**
-     * Return distance in meters between start and end location using Haversine formula.
+     * Return distance in meters between start and end location using Haversine
+     * formula.
      * http://stackoverflow.com/questions/120283/how-can-i-measure-distance-and-create-a-bounding-box-based-on-two-latitudelongi
-     * 
+     *
      * @param startLocation start location.
      * @param endLocation end location.
      * @return distance in meters between start and end location.
      * @throws IllegalArgumentException if start or end location is null.
      */
     public static double getDistance(Location startLocation, Location endLocation) {
-        
-        if(startLocation == null || endLocation == null){
+
+        if (startLocation == null || endLocation == null) {
             throw new IllegalArgumentException("Start and end location can not be null.");
         }
-        
+
         double lat1 = startLocation.getLatitude();
         double lat2 = endLocation.getLatitude();
         double lng1 = startLocation.getLongitude();
         double lng2 = endLocation.getLongitude();
-        
+
         double earthRadius = 6371000;
-        
+
         double dLat = Math.toRadians(lat2 - lat1);
         double dLng = Math.toRadians(lng2 - lng1);
-       
+
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-        
+
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return earthRadius * c;
+    }
+
+    /**
+     * Convert to maindenhead head grid reference. 
+     * Code reference: https://github.com/Smerty/jham/blob/master/src/main/java/org/smerty/jham/Location.java
+     * @param latitudeIn latitude.
+     * @param longitudeIn longitude.
+     * @return a string representation of the maidenhead grid reference for the latitude and longitude.
+     */
+    public static String toMaidenhead(final double latitudeIn,
+            final double longitudeIn) {
+
+        double longitude = longitudeIn + 180;
+        longitude /= 2;
+        char lonFirst = (char) ('A' + (longitude / 10));
+        char lonSecond = (char) ('0' + longitude % 10);
+        char lonThird = (char) ('A' + (longitude % 1) * 24);
+
+        double latitude = latitudeIn + 90;
+        char latFirst = (char) ('A' + (latitude / 10));
+        char latSecond = (char) ('0' + latitude % 10);
+        char latThird = (char) ('A' + (latitude % 1) * 24);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(lonFirst);
+        sb.append(latFirst);
+        sb.append(lonSecond);
+        sb.append(latSecond);
+        sb.append(("" + lonThird).toLowerCase());
+        sb.append(("" + latThird).toLowerCase());
+
+        return sb.toString();
     }
 
     @Override

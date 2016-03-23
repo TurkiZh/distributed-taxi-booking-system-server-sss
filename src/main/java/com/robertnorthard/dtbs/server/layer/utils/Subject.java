@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.utils;
 
+import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
  */
 public abstract class Subject {
 
-    private Set<Observer> observers;
+    private Set<LocationTrackingObserver> observers;
 
     public Subject() {
         this.observers = new HashSet<>();
@@ -21,7 +22,7 @@ public abstract class Subject {
      *
      * @param observer observer to register.
      */
-    public void registerObserver(Observer observer) {
+    public void registerObserver(LocationTrackingObserver observer) {
         this.observers.add(observer);
     }
 
@@ -30,7 +31,7 @@ public abstract class Subject {
      *
      * @param observer observer to unsubscribe.
      */
-    public void removeObserver(Observer observer) {
+    public void removeObserver(LocationTrackingObserver observer) {
         this.observers.remove(observer);
     }
 
@@ -39,9 +40,17 @@ public abstract class Subject {
      *
      * @param obj updated object.
      */
-    public void notifyObservers(Object obj) {
-        for (Observer o : this.observers) {
+    public void notifyObservers(TaxiLocationEventDto obj) {
+        for (LocationTrackingObserver o : this.observers) {
             o.update(obj);
         }
+    }
+    
+    /**
+     * Return observers.
+     * @return a set of location tracking WebSocketObservers
+     */
+    public Set<LocationTrackingObserver> getObservers(){
+        return this.observers;
     }
 }

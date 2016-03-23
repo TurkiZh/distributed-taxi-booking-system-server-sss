@@ -29,8 +29,8 @@ import javax.websocket.server.ServerEndpoint;
  * @author robertnorthard
  */
 @Singleton
-@ServerEndpoint(value = "/ws/v1/locations/taxi/all")
-public class LocationTrackingWebSocketEndpoint implements LocationTrackingObserver {
+@ServerEndpoint(value = "/ws/v1/locations/taxi/IO91vs")
+public class LocationTrackingWebSocketIO91vsEndpoint implements LocationTrackingObserver {
 
     private static final Logger LOGGER = Logger.getLogger(
             LocationTrackingWebSocketEndpoint.class.getName());
@@ -77,14 +77,14 @@ public class LocationTrackingWebSocketEndpoint implements LocationTrackingObserv
 
     @Override
     public void update(Object obj) {
-        for (Session o : LocationTrackingWebSocketEndpoint.observers) {
+        for (Session o : observers) {
             if (o.isOpen()) {
                 if (obj instanceof TaxiLocationEventDto) {
                     try {
                         TaxiLocationEventDto e = (TaxiLocationEventDto) obj;
                         o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
                     } catch (JsonProcessingException ex) {
-                        Logger.getLogger(LocationTrackingWebSocketEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(LocationTrackingWebSocketIO91vsEndpoint.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -93,6 +93,6 @@ public class LocationTrackingWebSocketEndpoint implements LocationTrackingObserv
 
     @Override
     public String getGridReference() {
-        return "all";
+        return "IO91vs";
     }
 }

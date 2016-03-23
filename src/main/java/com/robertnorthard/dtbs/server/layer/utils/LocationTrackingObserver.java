@@ -5,7 +5,7 @@ package com.robertnorthard.dtbs.server.layer.utils;
  *
  * @author robertnorthard
  */
-public interface Observer {
+public interface LocationTrackingObserver {
 
     /**
      * Method called whenever subject state changes.
@@ -13,5 +13,9 @@ public interface Observer {
      * @param obj updated event.
      */
     public void update(Object obj);
-
+    
+    /**
+     * @return string representation of sockets grid reference.
+     */
+    public String getGridReference();
 }

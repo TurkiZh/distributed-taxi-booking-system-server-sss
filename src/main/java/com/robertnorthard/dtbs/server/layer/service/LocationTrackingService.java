@@ -7,6 +7,7 @@ import com.robertnorthard.dtbs.server.layer.service.entities.Location;
 import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.LocationDao;
 import com.robertnorthard.dtbs.server.layer.persistence.data.mappers.taxi.JpaTaxiStateDataConverter;
+import com.robertnorthard.dtbs.server.layer.utils.LocationTrackingObserver;
 import com.robertnorthard.dtbs.server.layer.utils.Subject;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -63,12 +64,30 @@ public class LocationTrackingService extends Subject implements LocationTracking
         this.taxiService.updateTaxi(taxi);
 
         // create taxi location event suitable for data transfer.
-        TaxiLocationEventDto event = new TaxiLocationEventDto(id, 
-                new JpaTaxiStateDataConverter().convertToDatabaseColumn(taxi.getState()), 
+        TaxiLocationEventDto event = new TaxiLocationEventDto(id,
+                new JpaTaxiStateDataConverter().convertToDatabaseColumn(taxi.getState()),
                 new LocationDto(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()),
                 timestamp);
 
         //notify all taxi subscribers of updated taxi location
         this.notifyObservers(event);
+    }
+
+    /**
+     * Notify observer if within grid reference or all.
+     * @param event 
+     */
+    @Override
+    public void notifyObservers(TaxiLocationEventDto event) {
+
+        for (LocationTrackingObserver o : this.getObservers()) {
+            if (o.getGridReference().equals("all") || o.getGridReference().equals(
+                    Location.toMaidenhead(
+                            event.getLocation().getLatitude(),
+                            event.getLocation().getLongitude()))){
+             
+                o.update(event);
+            }
+        }
     }
 }
