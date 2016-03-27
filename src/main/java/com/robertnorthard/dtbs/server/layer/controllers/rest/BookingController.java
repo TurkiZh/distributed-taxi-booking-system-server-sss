@@ -137,7 +137,7 @@ public class BookingController {
 
         if (securityContext != null) {
 
-            return Response.status(Response.Status.UNAUTHORIZED)
+            return Response.status(Response.Status.OK)
                     .entity(new HttpListResponse<>(
                                     this.bookingService.findBookingHistory(
                                             securityContext.getUserPrincipal().getName()), "0").toString()).build();
