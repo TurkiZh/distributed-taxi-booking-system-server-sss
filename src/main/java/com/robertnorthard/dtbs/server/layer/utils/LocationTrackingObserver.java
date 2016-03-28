@@ -13,9 +13,4 @@ public interface LocationTrackingObserver {
      * @param obj updated event.
      */
     public void update(Object obj);
-    
-    /**
-     * @return string representation of sockets grid reference.
-     */
-    public String getGridReference();
 }

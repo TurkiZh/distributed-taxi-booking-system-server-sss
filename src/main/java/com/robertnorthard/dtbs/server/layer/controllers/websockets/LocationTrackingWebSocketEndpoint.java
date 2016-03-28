@@ -90,9 +90,4 @@ public class LocationTrackingWebSocketEndpoint implements LocationTrackingObserv
             }
         }
     }
-
-    @Override
-    public String getGridReference() {
-        return "all";
-    }
 }

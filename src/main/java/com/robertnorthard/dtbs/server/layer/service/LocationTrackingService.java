@@ -75,19 +75,14 @@ public class LocationTrackingService extends Subject implements LocationTracking
 
     /**
      * Notify observer if within grid reference or all.
-     * @param event 
+     *
+     * @param event
      */
     @Override
     public void notifyObservers(TaxiLocationEventDto event) {
 
         for (LocationTrackingObserver o : this.getObservers()) {
-            if (o.getGridReference().equals("all") || o.getGridReference().equals(
-                    Location.toMaidenhead(
-                            event.getLocation().getLatitude(),
-                            event.getLocation().getLongitude()))){
-             
-                o.update(event);
-            }
+            o.update(event);
         }
     }
 }

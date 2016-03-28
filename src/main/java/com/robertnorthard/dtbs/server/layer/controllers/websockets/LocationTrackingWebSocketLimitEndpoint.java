@@ -3,12 +3,15 @@ package com.robertnorthard.dtbs.server.layer.controllers.websockets;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
+import com.robertnorthard.dtbs.server.layer.service.entities.Location;
 import com.robertnorthard.dtbs.server.layer.utils.LocationTrackingObserver;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,13 +32,14 @@ import javax.websocket.server.ServerEndpoint;
  * @author robertnorthard
  */
 @Singleton
-@ServerEndpoint(value = "/ws/v1/locations/taxi/IO91vr")
-public class LocationTrackingWebSocketIO91vrEndpoint implements LocationTrackingObserver {
+@ServerEndpoint(value = "/ws/v1/locations/taxi/limit")
+public class LocationTrackingWebSocketLimitEndpoint implements LocationTrackingObserver {
 
     private static final Logger LOGGER = Logger.getLogger(
             LocationTrackingWebSocketEndpoint.class.getName());
 
     private static final Set<Session> observers = Collections.synchronizedSet(new HashSet<Session>());
+    private static final Map<String, Location> observerLocations = Collections.synchronizedMap(new HashMap<String, Location>());
 
     @Inject
     private LocationTrackingService locationTrackingService;
@@ -60,6 +64,7 @@ public class LocationTrackingWebSocketIO91vrEndpoint implements LocationTracking
         while (iterator.hasNext()) {
             if (iterator.next().getId().equals(session.getId())) {
                 iterator.remove();
+                observerLocations.remove(session.getId());
                 break;
             }
         }
@@ -68,6 +73,9 @@ public class LocationTrackingWebSocketIO91vrEndpoint implements LocationTracking
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         // Empty - communication one way. Server to client.
+        Location location = DataMapper.getInstance().readValue(message, Location.class);
+        observerLocations.put(session.getId(), location);
+        LOGGER.log(Level.INFO, "Session: {0}GPS Location Update: {1},{2}", new Object[]{session.getId(), location.getLatitude(), location.getLongitude()});
     }
 
     @OnError
@@ -82,17 +90,18 @@ public class LocationTrackingWebSocketIO91vrEndpoint implements LocationTracking
                 if (obj instanceof TaxiLocationEventDto) {
                     try {
                         TaxiLocationEventDto e = (TaxiLocationEventDto) obj;
-                        o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
+
+                        if (e.getLocation() != null && observerLocations.get(o.getId()) != null) {
+                            if (Location.getDistance(observerLocations.get(o.getId()), new Location(e.getLocation().getLatitude(), e.getLocation().getLongitude())) <= 10000) {
+
+                                o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
+                            }
+                        }
                     } catch (JsonProcessingException ex) {
-                        Logger.getLogger(LocationTrackingWebSocketIO91vsEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(LocationTrackingWebSocketLimitEndpoint.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public String getGridReference() {
-        return "IO91vr";
     }
 }

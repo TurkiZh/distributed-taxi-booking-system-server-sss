@@ -155,7 +155,7 @@ public class Location implements Serializable {
     public static double getDistance(Location startLocation, Location endLocation) {
 
         if (startLocation == null || endLocation == null) {
-            throw new IllegalArgumentException("Start and end location can not be null.");
+            throw new IllegalArgumentException("Start and end location cannot be null.");
         }
 
         double lat1 = startLocation.getLatitude();
