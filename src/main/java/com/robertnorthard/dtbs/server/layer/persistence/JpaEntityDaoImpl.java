@@ -60,12 +60,13 @@ public class JpaEntityDaoImpl<K, V> implements EntityDao<K, V> {
         try{
            foundEntity = em.find(persistentClass, id);
         }finally{
-            if(em.isOpen()){
+            if(em != null && em.isOpen()){
                 em.close();
             }
         }
         return foundEntity;        
     }
+    
 
     /**
      * Persist an entity to the data layer.

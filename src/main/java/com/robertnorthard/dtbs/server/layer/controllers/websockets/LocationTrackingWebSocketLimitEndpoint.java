@@ -8,11 +8,11 @@ import com.robertnorthard.dtbs.server.layer.utils.LocationTrackingObserver;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -39,7 +39,7 @@ public class LocationTrackingWebSocketLimitEndpoint implements LocationTrackingO
             LocationTrackingWebSocketEndpoint.class.getName());
 
     private static final Set<Session> observers = Collections.synchronizedSet(new HashSet<Session>());
-    private static final Map<String, Location> observerLocations = Collections.synchronizedMap(new HashMap<String, Location>());
+    private static final Map<String, Location> observerLocations = new ConcurrentHashMap<>();
 
     @Inject
     private LocationTrackingService locationTrackingService;
@@ -92,13 +92,15 @@ public class LocationTrackingWebSocketLimitEndpoint implements LocationTrackingO
                         TaxiLocationEventDto e = (TaxiLocationEventDto) obj;
 
                         if (e.getLocation() != null && observerLocations.get(o.getId()) != null) {
-                            if (Location.getDistance(observerLocations.get(o.getId()), new Location(e.getLocation().getLatitude(), e.getLocation().getLongitude())) <= 10000) {
+                            if (Location.getDistance(
+                                    observerLocations.get(o.getId()),
+                                    new Location(e.getLocation().getLatitude(), e.getLocation().getLongitude())) <= 10000) {
 
                                 o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
                             }
                         }
                     } catch (JsonProcessingException ex) {
-                        Logger.getLogger(LocationTrackingWebSocketLimitEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                        LOGGER.log(Level.SEVERE, null, ex);
                     }
                 }
             }

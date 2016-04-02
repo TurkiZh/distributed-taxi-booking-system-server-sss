@@ -124,9 +124,11 @@ public class BookingService implements BookingFacade {
                     throw new AccountAuthenticationFailed();
                 }
 
-          //  if (this.incompleteBookings(passenger.getUsername())) {
-                //       throw new InvalidBookingException("A user can only have one active booking.");
-                //  }
+                if (this.incompleteBookings(passenger.getUsername())) {
+                    validator.getValidatorResult().addError("A user can only have one active booking.");
+                    throw new InvalidBookingException(validator.getValidatorResult().getErrors());
+                }
+                
                 Route route = this.googleDistanceMatrixFacade.getRouteInfo(
                         bookingDto.getStartLocation(),
                         bookingDto.getEndLocation());
@@ -235,13 +237,8 @@ public class BookingService implements BookingFacade {
         Taxi taxi = this.taxiDao.findTaxiForDriver(username);
         Booking booking = this.findBooking(bookingId);
 
-        if (taxi == null) {
-            throw new TaxiNotFoundException();
-        }
-
-        if (booking == null) {
-            throw new BookingNotFoundException();
-        }
+        if (taxi == null) throw new TaxiNotFoundException();
+        if (booking == null) throw new BookingNotFoundException();
 
         try {
             booking.dispatchTaxi(taxi);

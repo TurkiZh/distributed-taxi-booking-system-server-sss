@@ -59,7 +59,7 @@ public class BookingDao extends JpaEntityDaoImpl<Long, Booking> {
     }
 
     /**
-     * Return a collection of in complete bookings for the specified user.
+     * Return a collection of incomplete bookings for the specified user.
      *
      * @param username the user's username.
      * @return a collection of in complete bookings for the specified user.
@@ -73,6 +73,7 @@ public class BookingDao extends JpaEntityDaoImpl<Long, Booking> {
             Query query = em.createNamedQuery("Booking.findBookingsforUserInState", Booking.class);
             query.setParameter("username", username);
             query.setParameter("state", Booking.getCompletedTaxiBookingState());
+            query.setParameter("state2", Booking.getCancelledBookingState());
             bookings = query.getResultList();
         } finally {
             if (em.isOpen()) {

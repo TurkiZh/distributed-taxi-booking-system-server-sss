@@ -47,7 +47,7 @@ import javax.persistence.Transient;
     ),
     @NamedQuery(
             name = "Booking.findBookingsforUserInState",
-            query = "SELECT b FROM Booking b WHERE b.passenger.username = :username AND NOT (b.state = :state)"
+            query = "SELECT b FROM Booking b WHERE b.passenger.username = :username AND NOT (b.state = :state) AND NOT (b.state = :state2)"
     )
 })
 public class Booking implements Serializable {

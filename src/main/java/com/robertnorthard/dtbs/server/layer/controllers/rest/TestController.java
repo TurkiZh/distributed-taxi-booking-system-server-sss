@@ -32,19 +32,29 @@ public class TestController {
 
         String password = AuthenticationUtils.hashPassword("password");
 
-        Account passenger = new Account("john.doe", "John", "Doe", password, "07645346541", "john.doe@example.com");
+        Account passenger = new Account("robert.northard", "Robert", "Northard", password, "07645346541", "robertnorthard@googlemail.com");
         passenger.setRole(AccountRole.PASSENGER);
+        
+        Account passenger2 = new Account("john.doe", "John", "Doe", password, "07645346541", "john.doe@example.com");
+        passenger2.setRole(AccountRole.PASSENGER);
 
-        Account passenger2 = new Account("timsmith", "Tim", "Smith", password, "07526888826", "tim_smith@example.com");
+        Account passenger3 = new Account("timsmith", "Tim", "Smith", password, "07526888826", "tim_smith@example.com");
         passenger2.setRole(AccountRole.PASSENGER);
 
         Account driver = new Account("john.smith", "John", "Smith", password, "02345346548", "john.smith@example.com");
         driver.setRole(AccountRole.DRIVER);
+        
+        Account driver2 = new Account("robert.a.northard", "Robert", "Northard", password, "02345346548", "robertnorthard@googlemail.com");
+        driver.setRole(AccountRole.DRIVER);
 
         VehicleType type = new VehicleType("Cruiser", "Hyundai", "Matrix", 0.3);
+        VehicleType type2 = new VehicleType("People Carrier", "Honda", "Civic", 0.5);
+        
         Vehicle vehicle = new Vehicle("RN12 NGE", 5, type);
-
+        Vehicle vehicle2 = new Vehicle("RN13 NGB", 5, type2);
+        
         Taxi taxi = new Taxi(vehicle, driver);
+        Taxi taxi2 = new Taxi(vehicle2, driver2);
 
         Location startLocation = new Location(51.763366, -0.22309);
 
@@ -62,13 +72,17 @@ public class TestController {
         AccountDao accountDao = new AccountDao();
         accountDao.persistEntity(passenger);
         accountDao.persistEntity(passenger2);
+        accountDao.persistEntity(passenger3);
         accountDao.persistEntity(driver);
+        accountDao.persistEntity(driver2);
 
         VehicleDao vehicleDao = new VehicleDao();
         vehicleDao.persistEntity(vehicle);
+        vehicleDao.persistEntity(vehicle2);
 
         TaxiDao taxiDao = new TaxiDao();
         taxiDao.persistEntity(taxi);
+        taxiDao.persistEntity(taxi2);
 
         BookingDao bookingDao = new BookingDao();
         bookingDao.persistEntity(booking);
