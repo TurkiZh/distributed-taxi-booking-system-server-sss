@@ -28,11 +28,20 @@ public class ValidateStartEndLocationSpecification extends CompositeSpecificatio
             return false;
         }
         
+        double distanceAtoB = Location.getDistance(candidate.getStartLocation(), candidate.getEndLocation());
+        
         // if destination within 200 metres fail booking validation.
-        if(Location.getDistance(candidate.getStartLocation(), candidate.getEndLocation()) <= 200.0){
+        if(distanceAtoB <= 200.0){
             this.getErrorResult()
                     .addError(
                     "Do you need a taxi? You are within 200 metres of your destination");
+            return false;
+        }
+        
+        if(distanceAtoB >= 80467.2){
+             this.getErrorResult()
+                    .addError(
+                    "Journeys cannot be more than 50 miles.");
             return false;
         }
         

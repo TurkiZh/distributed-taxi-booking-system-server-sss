@@ -20,8 +20,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * A controller class for receiving and handling all geocoding related
- * transactions.
+ * A controller class for receiving and handling all geocoding related transactions.
  *
  * @author robertnorthard
  */
@@ -42,10 +41,8 @@ public class GeocodeController {
     /**
      * Return a route from start and end location latitude and longitude.
      *
-     * @param url url with start_latitude, start_longitude, end_latitude and
-     * end_longitude query parameters.
-     * @return a route from start to end location using provided a latitudes and
-     * longitudes.
+     * @param url url with start_latitude, start_longitude, end_latitude and end_longitude query parameters.
+     * @return a route from start to end location using provided a latitudes and longitudes.
      */
     @GET
     @Path("/route")
@@ -136,8 +133,8 @@ public class GeocodeController {
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
-   /**
+
+    /**
      * Return location (lat/lng) corresponding to provided address.
      *
      * @param url url with address query parameter.
@@ -171,7 +168,7 @@ public class GeocodeController {
 
             LOGGER.log(Level.INFO, "addressLookup - LatLng {0},{1}",
                     new Object[]{location.getLatitude(), location.getLongitude()});
-                
+
             return this.responseFactory.getResponse(location, Response.Status.OK);
 
         } catch (IllegalArgumentException ex) {
@@ -189,10 +186,8 @@ public class GeocodeController {
     /**
      * Return estimate travel time between start and end location in seconds.
      *
-     * @param url url with start_latitude, start_longitude, end_latitude
-     * and end_longitude query parameters.
-     * @return a route from start to end location using provided a latitudes and
-     * longitudes.
+     * @param url url with start_latitude, start_longitude, end_latitude and end_longitude query parameters.
+     * @return a route from start to end location using provided a latitudes and longitudes.
      */
     @GET
     @Path("/route/estimate/time")
@@ -216,6 +211,46 @@ public class GeocodeController {
             double time = this.googleDistanceMatrixService.estimateTravelTime(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
 
             return this.responseFactory.getResponse(time, Response.Status.OK);
+
+        } catch (IllegalArgumentException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+
+        } catch (InvalidGoogleApiResponseException ex) {
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Find address via textual description.
+     *
+     * @param url url with address query parameter.
+     * @return the found address, else "Address not found.".
+     */
+    @GET
+    @Path("/address")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"driver", "passenger"})
+    public Response findAddress(@Context UriInfo url) {
+
+        MultivaluedMap<String, String> query = url.getQueryParameters();
+
+        try {
+            if (!(query.containsKey("address") && query.containsKey("address"))) {
+                throw new IllegalArgumentException("Address must be provided.");
+            }
+
+            String address = this.googleDistanceMatrixService.findAddress(query.getFirst("address"));
+
+            if (address == null) {
+                return this.responseFactory.getResponse(
+                        "Address not found.", Response.Status.NOT_FOUND);
+            }
+
+            return this.responseFactory.getResponse(address, Response.Status.OK);
 
         } catch (IllegalArgumentException ex) {
             LOGGER.log(Level.INFO, null, ex);

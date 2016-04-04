@@ -45,7 +45,7 @@ public class TestController {
         driver.setRole(AccountRole.DRIVER);
         
         Account driver2 = new Account("robert.a.northard", "Robert", "Northard", password, "02345346548", "robertnorthard@googlemail.com");
-        driver.setRole(AccountRole.DRIVER);
+        driver2.setRole(AccountRole.DRIVER);
 
         VehicleType type = new VehicleType("Cruiser", "Hyundai", "Matrix", 0.3);
         VehicleType type2 = new VehicleType("People Carrier", "Honda", "Civic", 0.5);

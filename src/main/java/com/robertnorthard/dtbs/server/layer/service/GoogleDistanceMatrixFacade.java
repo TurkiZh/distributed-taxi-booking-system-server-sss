@@ -78,5 +78,12 @@ public interface GoogleDistanceMatrixFacade {
      * @throws IllegalArgumentException invalid location object.
      */
     public long estimateTravelTime(Location startLocation, Location endLocation) throws InvalidGoogleApiResponseException;
-
+    
+    /**
+     * Find address via textual description.
+     * @param address address to search.
+     * @return complete address.
+     * @throws InvalidGoogleApiResponseException 
+     */
+    public String findAddress(String address) throws InvalidGoogleApiResponseException;
 }

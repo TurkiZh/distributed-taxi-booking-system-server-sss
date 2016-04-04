@@ -40,8 +40,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     }
 
     /**
-     * Example:
-     * https://maps.googleapis.com/maps/api/distancematrix/json?origins=30%20Cheviots%20hatfield&destinations=welwyn
+     * Example: https://maps.googleapis.com/maps/api/distancematrix/json?origins=30%20Cheviots%20hatfield&destinations=welwyn
      *
      * @param origin origin to search from
      * @param destination destination
@@ -65,7 +64,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
             LOGGER.log(Level.FINEST, json.toString());
 
-            LOGGER.log(Level.INFO,json.toString());
+            LOGGER.log(Level.INFO, json.toString());
             if (!(json.toString().contains("ZERO_RESULTS") || json.toString().contains("NOT_FOUND"))) {
                 return json.getJSONArray("rows")
                         .getJSONObject(0)
@@ -85,8 +84,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     }
 
     /**
-     * Perform a Geocode reverse lookup using latitude and longitude. Query
-     * example:
+     * Perform a Geocode reverse lookup using latitude and longitude. Query example:
      * http://maps.googleapis.com/maps/api/geocode/json?latlng=44.4647452,7.3553838
      *
      * @param latitude latitude.
@@ -129,8 +127,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     /**
      * Use Google Geocoding API to determine address coordinates.
      *
-     * Example query:
-     * http://maps.googleapis.com/maps/api/geocode/json?address=%22po5%201pl%22
+     * Example query: http://maps.googleapis.com/maps/api/geocode/json?address=%22po5%201pl%22
      *
      * @param address address to lookup.
      * @return location of specified address.
@@ -167,9 +164,37 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
         }
     }
 
+    @Override
+    public String findAddress(String address) throws InvalidGoogleApiResponseException {
+
+        try {
+            String query = this.properties.getProperty("google.geocoding.api.address.lookup.text");
+
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("address", HttpUtils.stringEncode(address));
+            query = ConfigService.parseProperty(query, tokens);
+
+            JSONObject json = HttpUtils.getUrl(query);
+
+            if (this.validateJsonResponse(json)) {
+                JSONArray results = json.getJSONArray("results");
+                JSONObject object = results.getJSONObject(0);
+
+                String location = object.getString("formatted_address");
+
+                return location;
+            } else {
+                return null;
+            }
+        } catch (JSONException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+            throw new InvalidGoogleApiResponseException();
+        }
+
+    }
+
     /**
-     * Get route info (distance, route, travel time, start and end textual
-     * address) using start and end location.
+     * Get route info (distance, route, travel time, start and end textual address) using start and end location.
      *
      * @param startLocation start location
      * @param endLocation end location.
@@ -195,7 +220,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
         query = ConfigService.parseProperty(query, tokens);
 
         LOGGER.log(Level.INFO, "getRouteInfo - {0}", query);
-        
+
         try {
 
             LOGGER.log(Level.INFO, "getRouteInfo - {0}", query);
@@ -250,12 +275,9 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
     }
 
     /**
-     * Get routes from valid Google Directions API response. Pre-condition:
-     * response contain a valid route e.g. API response status is OK. Example
+     * Get routes from valid Google Directions API response. Pre-condition: response contain a valid route e.g. API response status is OK. Example
      *
-     * Example query:
-     * https://maps.googleapis.com/maps/api/directions/json?origin
-     * =place_id:ChIJ685WIFYViEgRHlHvBbiD5nE&destination=
+     * Example query: https://maps.googleapis.com/maps/api/directions/json?origin =place_id:ChIJ685WIFYViEgRHlHvBbiD5nE&destination=
      * place_id:ChIJA01I-8YVhkgRGJb0fW4UX7Y&key=AIzaSyDY6IVa8pcYJD4lMDbFaCayQr6327cyqMc
      *
      * @param json json to parse.
