@@ -12,9 +12,7 @@ public class OnDutyTaxiState implements TaxiState {
     }
 
     @Override
-    public void goOnDuty(Taxi taxi) {
-         throw new IllegalStateException("Already on duty.");
-    }
+    public void goOnDuty(Taxi taxi) {}
 
     @Override
     public void acceptJob(Taxi taxi) {

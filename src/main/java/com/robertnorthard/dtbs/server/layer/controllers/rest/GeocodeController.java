@@ -239,7 +239,7 @@ public class GeocodeController {
         MultivaluedMap<String, String> query = url.getQueryParameters();
 
         try {
-            if (!(query.containsKey("address") && query.containsKey("address"))) {
+            if (!(query.containsKey("address"))) {
                 throw new IllegalArgumentException("Address must be provided.");
             }
 

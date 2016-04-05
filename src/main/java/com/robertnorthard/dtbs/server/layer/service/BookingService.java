@@ -22,6 +22,7 @@ import com.robertnorthard.dtbs.server.layer.utils.gcm.GcmClient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -45,6 +46,8 @@ public class BookingService implements BookingFacade {
     private GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
     @Inject
     private GcmClient gcmClient;
+    @Inject
+    private TaxiFacade taxiService;
 
     /**
      * Constructor for dependency injection/testing.
@@ -56,13 +59,14 @@ public class BookingService implements BookingFacade {
      * @param googleDistanceMatrixFacade Google distance matrix service.
      * @param gcmClient gcm client.
      */
-    public BookingService(BookingDao bookingDao, AccountFacade accountService, RouteDao routeDao, TaxiDao taxiDao, GoogleDistanceMatrixFacade googleDistanceMatrixFacade, GcmClient gcmClient) {
+    public BookingService(BookingDao bookingDao, AccountFacade accountService, RouteDao routeDao, TaxiDao taxiDao, GoogleDistanceMatrixFacade googleDistanceMatrixFacade, GcmClient gcmClient, TaxiService taxiService) {
         this.bookingDao = bookingDao;
         this.accountService = accountService;
         this.routeDao = routeDao;
         this.taxiDao = taxiDao;
         this.googleDistanceMatrixFacade = googleDistanceMatrixFacade;
         this.gcmClient = gcmClient;
+        this.taxiService = taxiService;
     }
 
     public BookingService() {
@@ -144,6 +148,8 @@ public class BookingService implements BookingFacade {
 
                 this.bookingDao.persistEntity(booking);
 
+                this.allocateTaxi(booking);
+                
                 return booking;
 
             } else {
@@ -333,6 +339,9 @@ public class BookingService implements BookingFacade {
                     booking,
                     booking.getPassenger().getGcmRegId());
 
+            
+            this.allocateTaxi();
+            
         } catch (IllegalStateException ex) {
             throw new IllegalBookingStateException(ex.getMessage());
         }
@@ -362,6 +371,12 @@ public class BookingService implements BookingFacade {
         if (!booking.getPassenger().getUsername().equals(username)) {
             throw new AccountAuthenticationFailed();
         }
+        
+        if(booking.getTaxi() != null){
+            Taxi taxi = booking.getTaxi();
+            taxi.goOnDuty();
+            this.taxiDao.update(taxi);
+        }
 
         try {
             booking.cancelBooking();
@@ -370,6 +385,8 @@ public class BookingService implements BookingFacade {
         }
 
         this.bookingDao.update(booking);
+        
+        this.allocateTaxi();
     }
 
    /**
@@ -402,5 +419,42 @@ public class BookingService implements BookingFacade {
         }
         
         return null;
+    }
+    
+       /**
+     * Allocate taxi to current waiting bookings.
+     */
+    @Override
+    public void allocateTaxi() {
+
+       List<Booking> bookings = this.findBookingsInAwaitingTaxiDispatchState();
+
+       if (!bookings.isEmpty()) {
+            Random random = new Random();
+            int randomBooking = random.nextInt(bookings.size());
+
+            this.allocateTaxi(bookings.get(randomBooking));
+        }
+    }
+    
+    
+    @Override
+    public void allocateTaxi(Booking booking) {
+        List<Taxi> taxis = this.taxiDao.findAllOnDuty();
+
+        if (taxis.size() >= 1) {
+            Random random = new Random();
+            int allocatedTaxi = random.nextInt(taxis.size());
+
+            Taxi taxi = taxis.get(allocatedTaxi);
+
+            // send GCM notification.
+            this.gcmClient.sendMessage(
+                    EventTypes.BOOKING_EVENT.toString(),
+                    EventTypes.BOOKING_EVENT.toString(),
+                    booking,
+                    taxi.getAccount().getGcmRegId());
+        }
+
     }
 }

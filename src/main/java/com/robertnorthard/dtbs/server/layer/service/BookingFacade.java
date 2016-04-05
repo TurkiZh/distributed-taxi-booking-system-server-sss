@@ -14,8 +14,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- * An interface for defining and enforcing operations needed for the Booking
- * Service class.
+ * An interface for defining and enforcing operations needed for the Booking Service class.
  *
  * @author robertnorthard
  */
@@ -35,25 +34,21 @@ public interface BookingFacade {
      *
      * @param id id of booking.
      * @param username username of authenticated user.
-     * @return return booking if booking id matches the authenticated user, else
-     * null.
+     * @return return booking if booking id matches the authenticated user, else null.
      */
     public Booking findBookingForUser(Long id, String username);
 
     /**
      * Book a taxi.
      *
-     * @param booking booking data transfer object. Requires: - username
-     * username of passenger. - numberPassengers number of passengers. - pickup
+     * @param booking booking data transfer object. Requires: - username username of passenger. - numberPassengers number of passengers. - pickup
      * location - destination location
      *
      * @return the created booking.
      * @throws InvalidLocationException invalid location/not found.
      * @throws RouteNotFoundException route not found.
-     * @throws InvalidGoogleApiResponseException unable to parse Google API
-     * response.
-     * @throws InvalidBookingException invalid booking e.g. user has active
-     * bookings.
+     * @throws InvalidGoogleApiResponseException unable to parse Google API response.
+     * @throws InvalidBookingException invalid booking e.g. user has active bookings.
      * @throws AccountAuthenticationFailed if account authentication fails.
      */
     public Booking makeBooking(BookingDto booking)
@@ -78,8 +73,7 @@ public interface BookingFacade {
     public List<Booking> findBookingsInAwaitingTaxiDispatchState();
 
     /**
-     * A collections of bookings. If passenger display booking history. If
-     * driver display job history.
+     * A collections of bookings. If passenger display booking history. If driver display job history.
      *
      * @param username username.
      * @return booking history.
@@ -88,13 +82,13 @@ public interface BookingFacade {
 
     /**
      * Return most recent active booking for a user.
-     * 
+     *
      * @param username username of user.
      * @return active booking for a user.
      * @throws IllegalArgumentException if username is null;
-     */ 
+     */
     public Booking checkActiveBooking(String username);
-    
+
     /**
      * Accept a taxi booking.
      *
@@ -131,17 +125,29 @@ public interface BookingFacade {
      * @throws IllegalBookingStateException if booking in an illegal state.
      */
     public void dropOffPassenger(String username, long bookingId, long timestamp)
-            throws BookingNotFoundException, TaxiNotFoundException,IllegalBookingStateException;
-    
+            throws BookingNotFoundException, TaxiNotFoundException, IllegalBookingStateException;
+
     /**
      * Cancel a booking.
-     * 
-     * @param username username of person requesting cancellation of  booking.
+     *
+     * @param username username of person requesting cancellation of booking.
      * @param bookingId booking to cancel.
      * @throws BookingNotFoundException booking not found.
      * @throws AccountAuthenticationFailed user does not have permission to cancel booking.
      * @throws IllegalBookingStateException if booking in an illegal state.
      */
     public void cancelBooking(String username, long bookingId)
-            throws BookingNotFoundException, AccountAuthenticationFailed,IllegalBookingStateException;
+            throws BookingNotFoundException, AccountAuthenticationFailed, IllegalBookingStateException;
+
+    /**
+     * Allocate booking to taxi.
+     *
+     * @param booking
+     */
+    public void allocateTaxi(Booking booking);
+
+    /**
+     * On booking completion/cancel reallocate taxis.
+     */
+    public void allocateTaxi();
 }

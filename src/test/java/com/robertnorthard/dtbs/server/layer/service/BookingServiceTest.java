@@ -34,6 +34,7 @@ public class BookingServiceTest {
     private final TaxiDao taxiDao;
     private final GoogleDistanceMatrixFacade googleDistanceMatrixFacade;
     private final GcmClient gcmClient;
+    private final TaxiService taxiService;
 
     private final BookingService bookingService;
 
@@ -52,13 +53,15 @@ public class BookingServiceTest {
         this.taxiDao = mock(TaxiDao.class);
         this.googleDistanceMatrixFacade = mock(GoogleDistanceMatrixFacade.class);
         this.gcmClient = mock(GcmClient.class);
+        this.taxiService = mock(TaxiService.class);
 
         this.bookingService = new BookingService(this.bookingDao,
                 this.accountFacade,
                 this.routeDao,
                 this.taxiDao,
                 this.googleDistanceMatrixFacade,
-                this.gcmClient);
+                this.gcmClient,
+                this.taxiService);
     }
 
     @Before

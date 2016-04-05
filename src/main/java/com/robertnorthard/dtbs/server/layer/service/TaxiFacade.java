@@ -1,5 +1,6 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.Booking;
 import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
 import java.util.List;
 import javax.ejb.Local;

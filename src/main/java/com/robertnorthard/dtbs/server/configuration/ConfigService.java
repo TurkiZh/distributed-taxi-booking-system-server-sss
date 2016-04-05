@@ -58,15 +58,12 @@ public class ConfigService {
      * @return property with values replaced by tokens.
      */
     public static String parseProperty(String property, Map<String, String> tokens) {
-
-        if (property == null || tokens == null || tokens.isEmpty()) {
+        
+            if (property == null || tokens == null || tokens.isEmpty()) {
             throw new IllegalArgumentException();
         }
 
-        for (Map.Entry<String, String> key : tokens.entrySet()) {
-            property = property.replace("{" + key.getKey().trim() + "}", key.getValue());
-        }
-
-        return property;
+   
+        return new URLTokenParser(tokens).tokenize(property);
     }
 }

@@ -2,8 +2,12 @@ package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.Booking;
+import com.robertnorthard.dtbs.server.layer.service.entities.events.EventTypes;
+import com.robertnorthard.dtbs.server.layer.utils.gcm.GcmClient;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.ejb.Stateless;
 
@@ -54,17 +58,17 @@ public class TaxiService implements TaxiFacade {
 
     /**
      * Return a collection of taxis on duty and available.
-     * 
+     *
      * @return a collection of taxis on duty and available.
      */
     @Override
     public List<Taxi> findAllTaxiOnDutyAndAvailable() {
         return this.taxiDao.findAllOnDuty();
     }
-    
+
     /**
      * Return a collection of taxis on duty and available.
-     * 
+     *
      * @return a collection of taxis on duty and available.
      */
     @Override

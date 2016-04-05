@@ -100,6 +100,7 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("latitude", String.valueOf(latitude));
         tokens.put("longitude", String.valueOf(longitude));
+        
         query = ConfigService.parseProperty(query, tokens);
 
         try {

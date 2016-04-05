@@ -14,6 +14,7 @@ import com.robertnorthard.dtbs.server.layer.persistence.BookingDao;
 import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.persistence.VehicleDao;
 import com.robertnorthard.dtbs.server.layer.service.GoogleDistanceMatrixService;
+import com.robertnorthard.dtbs.server.layer.service.entities.booking.CompletedBookingState;
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -32,19 +33,23 @@ public class TestController {
 
         String password = AuthenticationUtils.hashPassword("password");
 
-        Account passenger = new Account("robert.northard", "Robert", "Northard", password, "07645346541", "robertnorthard@googlemail.com");
+        Account passenger = new Account("robert.northard", "Robert", "Northard", AuthenticationUtils.hashPassword("robert"), "07645346541", "robertnorthard@googlemail.com");
         passenger.setRole(AccountRole.PASSENGER);
         
         Account passenger2 = new Account("john.doe", "John", "Doe", password, "07645346541", "john.doe@example.com");
         passenger2.setRole(AccountRole.PASSENGER);
 
-        Account passenger3 = new Account("timsmith", "Tim", "Smith", password, "07526888826", "tim_smith@example.com");
-        passenger2.setRole(AccountRole.PASSENGER);
-
+        Account passenger3 = new Account("tim.smith", "Tim", "Smith", password, "07526888826", "tim_smith@example.com");
+        passenger3.setRole(AccountRole.PASSENGER);
+       
+        Account passenger4 = new Account("yorkie", "Poly", "Morphism", password, "02555346548", "yorkie@example.com");
+        passenger4.setRole(AccountRole.PASSENGER);
+        passenger4.setInActive();
+        
         Account driver = new Account("john.smith", "John", "Smith", password, "02345346548", "john.smith@example.com");
         driver.setRole(AccountRole.DRIVER);
         
-        Account driver2 = new Account("robert.a.northard", "Robert", "Northard", password, "02345346548", "robertnorthard@googlemail.com");
+        Account driver2 = new Account("joe.bloggs", "Joe", "Bloggs", password, "02345346548", "jblogs99@example.com");
         driver2.setRole(AccountRole.DRIVER);
 
         VehicleType type = new VehicleType("Cruiser", "Hyundai", "Matrix", 0.3);
@@ -57,7 +62,6 @@ public class TestController {
         Taxi taxi2 = new Taxi(vehicle2, driver2);
 
         Location startLocation = new Location(51.763366, -0.22309);
-
         Location endLocation = new Location(51.7535889, -0.2446257);
 
         GoogleDistanceMatrixService service = new GoogleDistanceMatrixService();
@@ -65,6 +69,7 @@ public class TestController {
         Route route = service.getRouteInfo(startLocation, endLocation);
 
         Booking booking = new Booking(passenger, route, 2);
+        booking.setState(new CompletedBookingState());
 
         /*
          * Persist entities.
@@ -73,6 +78,7 @@ public class TestController {
         accountDao.persistEntity(passenger);
         accountDao.persistEntity(passenger2);
         accountDao.persistEntity(passenger3);
+        accountDao.persistEntity(passenger4);
         accountDao.persistEntity(driver);
         accountDao.persistEntity(driver2);
 

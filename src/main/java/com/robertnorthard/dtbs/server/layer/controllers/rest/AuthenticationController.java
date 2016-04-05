@@ -19,8 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * A controller class for receiving and handling all authentication related
- * transactions.
+ * A controller class for receiving and handling all authentication related transactions.
  *
  * @author robertnorthard
  */
@@ -61,6 +60,35 @@ public class AuthenticationController {
                         .authenticate(ac.getUsername(), ac.getPassword());
 
             }
+
+            return this.responseFactory.getResponse(
+                    ac, Response.Status.OK);
+
+        } catch (IOException ex) {
+
+            LOGGER.log(Level.SEVERE, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.BAD_REQUEST);
+
+        } catch (AccountAuthenticationFailed ex) {
+
+            LOGGER.log(Level.SEVERE, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @POST
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response logout(String credentials) {
+        try {
+            Account ac = this.mapper.readValue(credentials, Account.class);
+
+            this.accountService
+                    .logout(ac.getUsername(), ac.getPassword());
 
             return this.responseFactory.getResponse(
                     ac, Response.Status.OK);

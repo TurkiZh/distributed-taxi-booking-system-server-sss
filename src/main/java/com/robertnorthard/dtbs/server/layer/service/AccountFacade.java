@@ -35,6 +35,15 @@ public interface AccountFacade {
     public Account authenticate(String username, String password)
             throws AccountAuthenticationFailed;
 
+  /**
+     * Logout a user. Used for taxi driver to notify they are now off duty.
+     *
+     * @param username username of account
+     * @param password password of account
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
+    public void logout(String username, String password) throws AccountAuthenticationFailed;
+    
     /**
      * Authenticate a user and add Google GCM registration id
      *

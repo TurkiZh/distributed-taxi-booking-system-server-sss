@@ -378,7 +378,7 @@ public class BookingController {
      */
     @GET
     @Path("/active")
-    @RolesAllowed({"driver"})
+    @RolesAllowed({"passenger", "driver"})
     public Response activeBookings(@Context SecurityContext securityContext){
         
         Booking booking = null;

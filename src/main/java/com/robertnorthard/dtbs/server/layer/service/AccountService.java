@@ -7,9 +7,12 @@ import com.robertnorthard.dtbs.server.layer.service.business.rules.validator.Acc
 import com.robertnorthard.dtbs.server.layer.service.entities.events.PasswordResetEvent;
 import com.robertnorthard.dtbs.server.layer.persistence.AccountDao;
 import com.robertnorthard.dtbs.server.layer.persistence.PasswordResetEventDao;
+import com.robertnorthard.dtbs.server.layer.persistence.TaxiDao;
 import com.robertnorthard.dtbs.server.layer.utils.AuthenticationUtils;
 import com.robertnorthard.dtbs.server.layer.utils.mail.MailStrategy;
 import com.robertnorthard.dtbs.server.layer.service.entities.Account;
+import com.robertnorthard.dtbs.server.layer.service.entities.AccountRole;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.Taxi;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -29,6 +32,8 @@ public class AccountService implements AccountFacade {
     @Inject
     private MailStrategy mailStrategy;
 
+    private TaxiDao taxiDao = new TaxiDao();
+
     public AccountService() {
         this.accountDao = new AccountDao();
     }
@@ -47,8 +52,7 @@ public class AccountService implements AccountFacade {
     }
 
     /**
-     * Register a new account. Checks if user exists and confirms validity of
-     * email. If email is valid generate hash of user's password and send email
+     * Register a new account. Checks if user exists and confirms validity of email. If email is valid generate hash of user's password and send email
      * to user to confirm account creation.
      *
      * @param acct account to create.
@@ -100,8 +104,7 @@ public class AccountService implements AccountFacade {
      * Return account with corresponding username.
      *
      * @param username username.
-     * @return an account with the corresponding username. If the account does
-     * not exist return null.
+     * @return an account with the corresponding username. If the account does not exist return null.
      */
     @Override
     public Account findAccount(final String username) {
@@ -133,10 +136,49 @@ public class AccountService implements AccountFacade {
             throw new AccountAuthenticationFailed();
         }
 
+        if (account.hasRole(AccountRole.DRIVER.toString())) {
+            Taxi taxi = this.taxiDao.findTaxiForDriver(username);
+
+            if (taxi != null) {
+                taxi.goOnDuty();
+                this.taxiDao.update(taxi);
+            }
+        }
+
         return account;
     }
     
    /**
+     * Logout a user. Used for taxi driver to notify they are now off duty.
+     *
+     * @param username username of account
+     * @param password password of account
+     * @throws AccountAuthenticationFailed if authentication fails.
+     */
+    @Override
+    public void logout(String username, String password) throws AccountAuthenticationFailed{
+         Account account = this.findAccount(username);
+
+        if (account == null) {
+            throw new AccountAuthenticationFailed();
+        }
+
+        if (!AuthenticationUtils.
+                checkPassword(password, account.getPassword()) || !account.isActive()) {
+            throw new AccountAuthenticationFailed();
+        }
+
+        if (account.hasRole(AccountRole.DRIVER.toString())) {
+            Taxi taxi = this.taxiDao.findTaxiForDriver(username);
+
+            if (taxi != null) {
+                taxi.goOffDuty();
+                this.taxiDao.update(taxi);
+            }
+        }
+    }
+
+    /**
      * Authenticate a user and add Google GCM registration id.
      *
      * @param username username of account
@@ -148,16 +190,15 @@ public class AccountService implements AccountFacade {
     @Override
     public Account authenticate(String username, String password, String googleGcmRegId)
             throws AccountAuthenticationFailed {
-        Account account = this.authenticate(username,password);        
+        Account account = this.authenticate(username, password);
         account.setGcmRegId(googleGcmRegId);
         this.accountDao.update(account);
         return account;
     }
 
-
     /**
-     * Reset account password via temporary code. 1 - Generate temporary code 2
-     * - Create reset event. 3 - Send email to use with temporary access code.
+     * Reset account password via temporary code. 1 - Generate temporary code 2 - Create reset event. 3 - Send email to use with temporary access
+     * code.
      *
      * @param username username of account to reset.
      * @throws AccountInvalidException account not found.
@@ -202,10 +243,8 @@ public class AccountService implements AccountFacade {
      * @param code temporary authentication code.
      * @param username username to authenticate with.
      * @param newPassword new password for user.
-     * @throws AccountAuthenticationFailed if username and code do not match a
-     * valid, active password reset event.
-     * @throws EntityNotFoundException account not found but password resets
-     * exist. Indicates data integrity issues.
+     * @throws AccountAuthenticationFailed if username and code do not match a valid, active password reset event.
+     * @throws EntityNotFoundException account not found but password resets exist. Indicates data integrity issues.
      */
     @Override
     public void resetPassword(final String code, final String username, final String newPassword)

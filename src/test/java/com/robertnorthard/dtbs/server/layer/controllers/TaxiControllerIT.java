@@ -54,7 +54,7 @@ public class TaxiControllerIT {
                 .and()
                 .response()
                 .when()
-                .get("http://127.0.0.1:8080/api/v1/taxi/51");
+                .get("http://127.0.0.1:8080/api/v1/taxi/101");
     }
     
     /**
@@ -71,7 +71,7 @@ public class TaxiControllerIT {
                 .and()
                 .response()
                 .when()
-                .post("http://127.0.0.1:8080/api/v1/taxi/51/location");
+                .post("http://127.0.0.1:8080/api/v1/taxi/101/location");
     }
     
     /**
@@ -109,7 +109,7 @@ public class TaxiControllerIT {
                         "}\n")
                 .response()
                 .when()
-                .post("http://127.0.0.1:8080/api/v1/taxi/51/location");
+                .post("http://127.0.0.1:8080/api/v1/taxi/101/location");
     } 
 }
 
