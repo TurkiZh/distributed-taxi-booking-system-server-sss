@@ -65,7 +65,7 @@ public class GcmClient {
                 .build();
         try {
             Result result = sender.send(outboundMessage, gcmRegistrationId, GcmClient.GCM_SEND_RETRIES);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(GcmClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

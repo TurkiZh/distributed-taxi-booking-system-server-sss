@@ -144,7 +144,7 @@ public class BookingServiceTest {
 
         this.bookingService.makeBooking(bookingDto);
 
-        fail("Method should throw authentication failed.");
+        fail("Method should throw route not found.");
     }
 
     /**

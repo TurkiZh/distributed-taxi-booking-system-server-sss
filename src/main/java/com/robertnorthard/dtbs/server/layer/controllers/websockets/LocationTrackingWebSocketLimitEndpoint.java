@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.robertnorthard.dtbs.server.common.dto.TaxiLocationEventDto;
 import com.robertnorthard.dtbs.server.layer.service.LocationTrackingService;
 import com.robertnorthard.dtbs.server.layer.service.entities.Location;
+import com.robertnorthard.dtbs.server.layer.service.entities.taxi.TaxiStates;
 import com.robertnorthard.dtbs.server.layer.utils.LocationTrackingObserver;
 import com.robertnorthard.dtbs.server.layer.utils.datamapper.DataMapper;
 import java.io.IOException;
@@ -26,8 +27,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 /**
- * Web socket (bidirectional endpoint) for broadcasting location events to all
- * connected clients.
+ * Web socket (bidirectional endpoint) for broadcasting location events to all connected clients.
  *
  * @author robertnorthard
  */
@@ -96,7 +96,9 @@ public class LocationTrackingWebSocketLimitEndpoint implements LocationTrackingO
                                     observerLocations.get(o.getId()),
                                     new Location(e.getLocation().getLatitude(), e.getLocation().getLongitude())) <= 10000) {
 
-                                o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
+                                if (e.getState().equals(TaxiStates.ON_DUTY.toString()) || e.getState().equals(TaxiStates.ON_JOB.toString())) {
+                                    o.getAsyncRemote().sendObject(DataMapper.getInstance().writeValueAsString(e));
+                                }
                             }
                         }
                     } catch (JsonProcessingException ex) {

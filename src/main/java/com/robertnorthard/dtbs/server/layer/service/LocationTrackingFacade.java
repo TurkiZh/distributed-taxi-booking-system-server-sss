@@ -1,7 +1,7 @@
 package com.robertnorthard.dtbs.server.layer.service;
 
 import com.robertnorthard.dtbs.server.common.exceptions.TaxiNotFoundException;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  * An interface for defining and enforcing operations needed for the 
@@ -9,7 +9,7 @@ import javax.ejb.Local;
  *
  * @author robertnorthard
  */
-@Local
+@Remote
 public interface LocationTrackingFacade {
 
     /**

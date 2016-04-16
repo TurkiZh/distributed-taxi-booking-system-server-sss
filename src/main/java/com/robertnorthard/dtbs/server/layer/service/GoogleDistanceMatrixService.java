@@ -105,11 +105,11 @@ public class GoogleDistanceMatrixService implements GoogleDistanceMatrixFacade {
 
         try {
 
-            LOGGER.log(Level.FINEST, "getGeocode query - {0}", query);
+            LOGGER.log(Level.INFO, "getGeocode query - {0}", query);
 
             JSONObject json = HttpUtils.getUrl(query);
 
-            LOGGER.log(Level.FINEST, "getGeocode - {0}", json);
+            LOGGER.log(Level.INFO, "getGeocode - {0}", json);
 
             if (!"ZERO_RESULTS".equals(json.getString("status"))) {
                 JSONArray results = json.getJSONArray("results");

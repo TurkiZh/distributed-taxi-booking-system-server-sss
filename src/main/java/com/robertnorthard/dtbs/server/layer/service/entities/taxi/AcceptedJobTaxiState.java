@@ -8,7 +8,7 @@ public class AcceptedJobTaxiState implements TaxiState {
 
     @Override
     public void goOffDuty(Taxi taxi) {
-        throw new IllegalStateException("Cango off duty after accepting a booking.");
+        throw new IllegalStateException("Cannot off duty after accepting a booking.");
     }
 
     @Override
@@ -17,7 +17,9 @@ public class AcceptedJobTaxiState implements TaxiState {
     }
 
     @Override
-    public void goOnDuty(Taxi taxi) {}
+    public void goOnDuty(Taxi taxi) {
+        taxi.setState(Taxi.getOnDutyTaxiState());
+    }
     
     @Override
     public void completeJob(Taxi taxi) {

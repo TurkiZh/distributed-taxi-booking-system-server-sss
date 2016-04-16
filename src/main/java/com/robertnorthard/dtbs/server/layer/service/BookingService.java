@@ -147,8 +147,6 @@ public class BookingService implements BookingFacade {
                         bookingDto.getNumberPassengers());
 
                 this.bookingDao.persistEntity(booking);
-
-                this.allocateTaxi(booking);
                 
                 return booking;
 
@@ -249,6 +247,9 @@ public class BookingService implements BookingFacade {
         try {
             booking.dispatchTaxi(taxi);
 
+            taxi.acceptJob();
+            this.taxiDao.update(taxi);
+            
             // send GCM notification.
             this.gcmClient.sendMessage(
                     BookingStates.TAXI_DISPATCHED.toString(),
@@ -330,6 +331,9 @@ public class BookingService implements BookingFacade {
 
         try {
             booking.dropOffPassenger(new Date(timestamp));
+            taxi.goOnDuty();       
+            this.taxiDao.update(taxi);
+            
             this.bookingDao.update(booking);
 
             // send GCM notification.
@@ -338,9 +342,6 @@ public class BookingService implements BookingFacade {
                     EventTypes.BOOKING_EVENT.toString(),
                     booking,
                     booking.getPassenger().getGcmRegId());
-
-            
-            this.allocateTaxi();
             
         } catch (IllegalStateException ex) {
             throw new IllegalBookingStateException(ex.getMessage());
@@ -385,8 +386,6 @@ public class BookingService implements BookingFacade {
         }
 
         this.bookingDao.update(booking);
-        
-        this.allocateTaxi();
     }
 
    /**
