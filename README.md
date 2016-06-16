@@ -9,4 +9,4 @@ The server provide RESTful web services for the pull-based interaction between t
 
 ## Architecture
 
-![GitHub Logo](/documentation/limages/three-tier-server.png)
+![GitHub Logo](/documentation/images/three-tier-server.png)
