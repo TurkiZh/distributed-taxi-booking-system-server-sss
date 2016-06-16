@@ -217,8 +217,7 @@ public class AccountControllerIT {
                 .when()
                 .post("http://localhost:8080/api/v1/account/invalidAccountName/reset/100");
     }
-    
-    /**
+  /**
      * Test method resetPassword of AccountController. 
      * Test: Valid credentials
      */
@@ -228,38 +227,11 @@ public class AccountControllerIT {
                 .statusCode(200)
                 .request()
                 .header("Content-Type", "application/json")
-                .body("{\n"
-                        + "  \"username\": \"john.doe\",\n"
-                        + "  \"password\":\"password\",\n"
-                        + "  \"gcm_reg_id\":\"name\",\n"
-                        + "}")
+                .body("{\"username\":\"yorkie\", \"password\":\"password\",\"gcm_reg_id\":\"asdasdasd\"}")
                 .and()
                 .response()
-                .body("status", equalTo("0"))
                 .when()
-                .post("http://localhost:8080/api/v1/account/login");
-    }
-    
-  /**
-     * Test method resetPassword of AccountController. 
-     * Test: Valid credentials
-     */
-    @Test
-    public void testLogin2() {
-        expect()
-                .statusCode(200)
-                .request()
-                .header("Content-Type", "application/json")
-                .body("{\n"
-                        + "  \"username\": \"yorkie\",\n"
-                        + "  \"password\":\"password\",\n"
-                        + "  \"gcm_reg_id\":\"name\",\n"
-                        + "}")
-                .and()
-                .response()
-                .body("status", equalTo("1"))
-                .when()
-                .post("http://localhost:8080/api/v1/account/login");
+                .post("http://127.0.0.1:8080/api/v1/auth/login");
     }
     
     
