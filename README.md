@@ -5,7 +5,7 @@ An Android client and Java server was developed for a final year project to enab
 
 The server provide RESTful web services for the pull-based interaction between the client and server for the stateless components and WebSockets for streaming taxi location updates events and Google Cloud Messenger (GCM) for pushed-based events such as taxi booking updates.
 
-See [here](https://github.com/RobertNorthard/dtbs-android-client) for the Android moible client source code which is used to interface with the server application.
+See [here](https://github.com/RobertNorthard/dtbs-android-client) for the Android moible client source code which is used to interface with the services provided by the server application.
 
 Please see documentation folder for application design.
 
