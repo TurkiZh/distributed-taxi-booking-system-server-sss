@@ -7,7 +7,7 @@ The server provide RESTful web services for the pull-based interaction between t
 
 See [here](https://github.com/RobertNorthard/dtbs-android-client) for the Android moible client source code which is used to interface with the services provided by the server application.
 
-Please see documentation folder for application design.
+Please see documentation in this repository for for the server's application design.
 
 ## Server Architecture
 
