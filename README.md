@@ -14,3 +14,10 @@ Please see documentation folder for application design.
 ### Three tier overview
 
 ![GitHub Logo](/documentation/images/three-tier-architecture.png)
+
+### Third-Party APIs
+
+### Google
+
+The Google Maps, directions and geocoding APIs were used for address revere lookups, route planning and calculating estimated arrival times.
+
