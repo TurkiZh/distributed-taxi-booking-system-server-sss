@@ -1,7 +1,7 @@
 
 ## Find a Ride: Project Overview
 
-An Android client and Java server was developed for a final year project to enable a user to book a taxi and provide real-time updates on the status of the booking and the locations of taxis by integrating with the Google Maps Application Programming Interfaces (APIs). The locations of taxis were simulated.
+An Android client and Java server was developed for my final year project as part of my BSc (Hons) Computer Science degree to enable a user to book a taxi and provide real-time updates on the status of the booking and the locations of taxis by integrating with the Google Maps Application Programming Interfaces (APIs). The locations of taxis were simulated.
 
 The server provide RESTful web services for the pull-based interaction between the client and server for the stateless components and WebSockets for streaming taxi location updates events and Google Cloud Messenger (GCM) for pushed-based events such as taxi booking updates.
 
