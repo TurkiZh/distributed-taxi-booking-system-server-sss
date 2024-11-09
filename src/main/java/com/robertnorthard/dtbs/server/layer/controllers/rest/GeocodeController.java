@@ -38,6 +38,11 @@ public class GeocodeController {
         this.responseFactory = HttpResponseFactory.getInstance();
     }
 
+    public double start_latitude;
+    public double start_longitude;
+    public double end_latitude;
+    public double end_longitude;
+
     /**
      * Return a route from start and end location latitude and longitude.
      *
@@ -58,10 +63,10 @@ public class GeocodeController {
                 throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
             }
 
-            double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
-            double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
-            double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
-            double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
+            start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
+            start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
+            end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
+            end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
 
             Route route = this.googleDistanceMatrixService.getRouteInfo(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
 
@@ -203,10 +208,10 @@ public class GeocodeController {
                 throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
             }
 
-            double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
-            double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
-            double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
-            double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
+            start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
+            start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
+            end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
+            end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
 
             double time = this.googleDistanceMatrixService.estimateTravelTime(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
 
