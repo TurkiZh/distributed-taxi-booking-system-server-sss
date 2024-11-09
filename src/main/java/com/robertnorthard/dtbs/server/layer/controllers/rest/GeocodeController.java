@@ -58,7 +58,14 @@ public class GeocodeController {
                 throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
             }
 
-            return getResponse(query);
+            double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
+            double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
+            double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
+            double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
+
+            Route route = this.googleDistanceMatrixService.getRouteInfo(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
+
+            return this.responseFactory.getResponse(route, Response.Status.OK);
 
         } catch (IllegalArgumentException ex) {
             LOGGER.log(Level.INFO, null, ex);
@@ -196,7 +203,14 @@ public class GeocodeController {
                 throw new IllegalArgumentException("Latitude and longitude parameter must be provided for start and end locations.");
             }
 
-            return getResponse(query);
+            double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
+            double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
+            double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
+            double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
+
+            double time = this.googleDistanceMatrixService.estimateTravelTime(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
+
+            return this.responseFactory.getResponse(time, Response.Status.OK);
 
         } catch (IllegalArgumentException ex) {
             LOGGER.log(Level.INFO, null, ex);
@@ -208,17 +222,6 @@ public class GeocodeController {
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    private Response getResponse(MultivaluedMap<String, String> query) throws InvalidGoogleApiResponseException {
-        double start_latitude = Double.parseDouble(query.getFirst("start_latitude"));
-        double start_longitude = Double.parseDouble(query.getFirst("start_longitude"));
-        double end_latitude = Double.parseDouble(query.getFirst("end_latitude"));
-        double end_longitude = Double.parseDouble(query.getFirst("end_longitude"));
-
-        double time = this.googleDistanceMatrixService.estimateTravelTime(new Location(start_latitude, start_longitude), new Location(end_latitude, end_longitude));
-
-        return this.responseFactory.getResponse(time, Response.Status.OK);
     }
 
     /**
