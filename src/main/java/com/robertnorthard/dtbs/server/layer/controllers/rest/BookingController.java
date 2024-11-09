@@ -93,8 +93,10 @@ public class BookingController {
             return this.responseFactory.getResponse(booking, Response.Status.OK);
 
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
 
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (InvalidLocationException | RouteNotFoundException ex) {
 
             LOGGER.log(Level.INFO, null, ex);
@@ -193,8 +195,9 @@ public class BookingController {
             }
 
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
-
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (EntityNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -229,8 +232,9 @@ public class BookingController {
             }
 
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
-
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (TaxiNotFoundException | BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -270,8 +274,9 @@ public class BookingController {
             }
 
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
-
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (TaxiNotFoundException | BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -310,8 +315,9 @@ public class BookingController {
             }
 
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
-
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (TaxiNotFoundException | BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -354,8 +360,9 @@ public class BookingController {
             return this.responseFactory.getResponse(
                     ex.getMessage(), Response.Status.BAD_REQUEST);
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
-
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         } catch (BookingNotFoundException ex) {
             LOGGER.log(Level.INFO, null, ex);
             return this.responseFactory.getResponse(
@@ -394,13 +401,9 @@ public class BookingController {
             }
             
         } catch (AccountAuthenticationFailed ex) {
-            return getResponse(ex);
+            LOGGER.log(Level.INFO, null, ex);
+            return this.responseFactory.getResponse(
+                    ex.getMessage(), Response.Status.UNAUTHORIZED);
         }
-    }
-
-    private Response getResponse(AccountAuthenticationFailed ex) {
-        LOGGER.log(Level.INFO, null, ex);
-        return this.responseFactory.getResponse(
-                ex.getMessage(), Response.Status.UNAUTHORIZED);
     }
 }
